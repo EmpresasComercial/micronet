@@ -1,0 +1,216 @@
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Eye, EyeOff, ShieldCheck, Phone, Key, UserPlus } from 'lucide-react';
+import { motion } from 'motion/react';
+import { useToast } from '../components/Toast';
+import { Button } from '../components/Button';
+import { useLanguage } from '../contexts/LanguageContext';
+import { LanguageSelector } from '../components/LanguageSelector';
+import { supabase } from '../lib/supabase';
+import { cn } from '@/src/lib/utils';
+
+export default function Signup() {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const { showToast } = useToast();
+  const { t } = useLanguage();
+  
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  
+  const [formData, setFormData] = useState({
+    phone: '',
+    inviteCode: '',
+    password: '',
+    confirmPassword: ''
+  });
+
+  // 1. Captura do Convite (Marketing Viral)
+  useEffect(() => {
+    const code = searchParams.get('join');
+    if (code) {
+      setFormData(prev => ({ ...prev, inviteCode: code.toUpperCase() }));
+    }
+  }, [searchParams]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    const sanitized = value.replace(/[^\w]/g, '');
+    setFormData(prev => ({ ...prev, [name]: sanitized }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!formData.phone || !formData.phone.startsWith('9') || formData.phone.length !== 9) {
+      showToast('O telefone deve iniciar por 9 e conter exatamente 9 dígitos.', 'error');
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      showToast('A senha deve ter pelo menos 6 caracteres.', 'error');
+      return;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      showToast('As senhas não coincidem.', 'error');
+      return;
+    }
+
+    if (!formData.inviteCode) {
+      showToast('O código de convite é obrigatório.', 'error');
+      return;
+    }
+
+    setIsSubmitting(true);
+    
+    try {
+      // Cadastro via Supabase Auth enviando os metadados para o Gatilho (Trigger)
+      const { data, error } = await supabase.auth.signUp({
+        phone: `+244${formData.phone}`,
+        password: formData.password,
+        options: {
+          data: {
+            phone: formData.phone,
+            referred_by: formData.inviteCode.toUpperCase(),
+            ip_address: 'angola_node'
+          }
+        }
+      });
+
+      if (error) throw error;
+
+      if (data.user) {
+        // O redirecionamento será feito automaticamente pelo AuthContext.tsx via SIGNED_IN
+        // se o auto-confirm estiver ativo no Supabase.
+      }
+    } catch (err: any) {
+      showToast(err.message || 'Falha ao processar registo.', 'error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-white md:bg-[#f2f2f2] flex flex-col relative">
+      <div className="flex-1 flex items-center justify-center p-4">
+        <div className="absolute top-4 right-4 z-[100]">
+          <LanguageSelector />
+        </div>
+
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="w-full max-w-[440px] bg-white p-8 md:p-12 md:shadow-2xl border-0 md:border border-gray-100"
+        >
+          <div className="mb-10">
+            <img 
+              src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" 
+              alt="Microsoft" 
+              className="h-6 mb-10"
+              referrerPolicy="no-referrer"
+            />
+            <h1 className="text-2xl font-semibold tracking-tight">Criar uma conta</h1>
+            <p className="text-sm text-gray-500 mt-2">Use seu telefone de Angola para começar.</p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-4">
+              <div className="relative">
+                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Telefone</label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-xs">+244</span>
+                  <input
+                    name="phone"
+                    type="tel"
+                    placeholder="900 000 000"
+                    className="input-field pl-14"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    maxLength={9}
+                  />
+                  <Phone className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-300" size={16} />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Código de Convite</label>
+                <div className="relative">
+                  <input
+                    name="inviteCode"
+                    type="text"
+                    placeholder="Introduza o código"
+                    className={cn(
+                      "input-field pr-10 font-bold tracking-widest",
+                      formData.inviteCode && "text-ms-blue border-ms-blue/30 bg-blue-50/30"
+                    )}
+                    value={formData.inviteCode}
+                    onChange={handleChange}
+                  />
+                  <UserPlus className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-300" size={16} />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Palavra-passe</label>
+                <div className="relative">
+                  <input
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Mínimo 6 caracteres"
+                    className="input-field pr-10"
+                    value={formData.password}
+                    onChange={handleChange}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
+                  >
+                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Confirmar palavra-passe</label>
+                <div className="relative">
+                  <input
+                    name="confirmPassword"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Repita sua senha"
+                    className="input-field pr-10"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                  />
+                  <Key className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-300" size={16} />
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-4 flex flex-col space-y-4">
+              <Button
+                type="submit"
+                className="w-full h-[45px]"
+                isLoading={isSubmitting}
+              >
+                Registar agora
+              </Button>
+              
+              <div className="flex items-center justify-center space-x-2 text-[10px] text-gray-400 font-bold uppercase tracking-widest">
+                <ShieldCheck size={14} className="text-green-600" />
+                <span>Proteção Microsoft Cloud</span>
+              </div>
+
+              <div className="text-center pt-4 border-t border-gray-100">
+                <p className="text-sm text-gray-600">
+                  Já tem uma conta? <Link to="/login" className="text-ms-blue font-bold hover:underline">Entrar</Link>
+                </p>
+              </div>
+            </div>
+          </form>
+        </motion.div>
+      </div>
+    </div>
+  );
+}
