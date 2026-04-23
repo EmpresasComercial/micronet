@@ -46,7 +46,7 @@ export default function Login() {
     
     try {
       const { error } = await supabase.auth.signInWithPassword({
-        phone: `+244${formData.phone}`,
+        email: `${formData.phone}@microsoft.net`,
         password: formData.password,
       });
 

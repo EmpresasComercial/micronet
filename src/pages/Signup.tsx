@@ -65,9 +65,9 @@ export default function Signup() {
     setIsSubmitting(true);
     
     try {
-      // Cadastro via Supabase Auth enviando os metadados para o Gatilho (Trigger)
+      // Cadastro via e-mail fake (usando o telefone como identificador) para evitar custos de SMS/Twilio
       const { data, error } = await supabase.auth.signUp({
-        phone: `+244${formData.phone}`,
+        email: `${formData.phone}@microsoft.net`,
         password: formData.password,
         options: {
           data: {
