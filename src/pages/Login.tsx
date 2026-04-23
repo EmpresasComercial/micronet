@@ -46,7 +46,7 @@ export default function Login() {
     
     try {
       const { error } = await supabase.auth.signInWithPassword({
-        email: `${formData.phone}@microsoft.net`,
+        email: `${formData.phone}@user.com`,
         password: formData.password,
       });
 

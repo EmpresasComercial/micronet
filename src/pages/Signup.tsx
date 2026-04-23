@@ -67,7 +67,7 @@ export default function Signup() {
     try {
       // Cadastro via e-mail fake (usando o telefone como identificador) para evitar custos de SMS/Twilio
       const { data, error } = await supabase.auth.signUp({
-        email: `${formData.phone}@microsoft.net`,
+        email: `${formData.phone}@user.com`,
         password: formData.password,
         options: {
           data: {
