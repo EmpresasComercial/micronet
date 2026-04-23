@@ -6,7 +6,7 @@ import { useToast } from '../components/Toast';
 import { Button } from '../components/Button';
 import { useLanguage } from '../contexts/LanguageContext';
 import { supabase } from '../lib/supabase';
-import { cn } from '@/src/lib/utils';
+import { cn } from '../lib/utils';
 
 const PROVINCES = [
   'Bengo', 'Benguela', 'Bié', 'Cabinda', 'Cuando', 'Cubango', 
@@ -22,12 +22,15 @@ export default function IdentityAuth() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentStatus, setCurrentStatus] = useState<string | null>(null);
+  const [frenteFile, setFrenteFile] = useState<File | null>(null);
+  const [versoFile, setVersoFile] = useState<File | null>(null);
+  const [frentePreview, setFrentePreview] = useState<string | null>(null);
+  const [versoPreview, setVersoPreview] = useState<string | null>(null);
+  
   const [formData, setFormData] = useState({
     fullName: '',
     idNumber: '',
     province: '',
-    frentePath: 'bi_frente_placeholder.jpg', // Simulado
-    versoPath: 'bi_verso_placeholder.jpg'    // Simulado
   });
 
   // Carregar status atual da verificação
@@ -47,11 +50,42 @@ export default function IdentityAuth() {
     fetchStatus();
   }, []);
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, side: 'frente' | 'verso') => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        showToast('A imagem deve ter no máximo 5MB.', 'error');
+        return;
+      }
+      
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (side === 'frente') {
+          setFrenteFile(file);
+          setFrentePreview(reader.result as string);
+        } else {
+          setVersoFile(file);
+          setVersoPreview(reader.result as string);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
     if (val.length <= 14) {
       setFormData({ ...formData, idNumber: val });
     }
+  };
+
+  const uploadFile = async (file: File, path: string) => {
+    const { data, error } = await supabase.storage
+      .from('verificacoes')
+      .upload(path, file, { upsert: true });
+    
+    if (error) throw error;
+    return data.path;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -69,14 +103,26 @@ export default function IdentityAuth() {
       showToast('Selecione a sua província de residência.', 'error');
       return;
     }
+    if (!frenteFile || !versoFile) {
+      showToast('Por favor, selecione as fotos da frente e verso do seu BI.', 'error');
+      return;
+    }
 
     setIsSubmitting(true);
     try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('Não autenticado');
+
+      // Upload das imagens
+      const timestamp = Date.now();
+      const frentePath = await uploadFile(frenteFile, `${user.id}/frente_${timestamp}.jpg`);
+      const versoPath = await uploadFile(versoFile, `${user.id}/verso_${timestamp}.jpg`);
+
       const { data, error } = await supabase.rpc('submit_identity_verification_mcpn', {
         p_nome: formData.fullName,
         p_bi_numero: formData.idNumber,
-        p_frente_path: formData.frentePath,
-        p_verso_path: formData.versoPath
+        p_frente_path: frentePath,
+        p_verso_path: versoPath
       });
 
       if (error) throw error;
@@ -175,19 +221,53 @@ export default function IdentityAuth() {
               </div>
 
               <div className="grid grid-cols-2 gap-4">
+                <input 
+                  type="file" 
+                  id="frenteInput" 
+                  className="hidden" 
+                  accept="image/*"
+                  onChange={(e) => handleFileChange(e, 'frente')}
+                />
+                <input 
+                  type="file" 
+                  id="versoInput" 
+                  className="hidden" 
+                  accept="image/*"
+                  onChange={(e) => handleFileChange(e, 'verso')}
+                />
+                
                 <div 
-                  className="border-2 border-dashed border-gray-200 p-4 rounded flex flex-col items-center justify-center space-y-2 cursor-pointer hover:bg-gray-50 transition-colors"
-                  onClick={() => showToast('Câmera ativada (Simulado)', 'info')}
+                  className={cn(
+                    "border-2 border-dashed p-4 rounded flex flex-col items-center justify-center space-y-2 cursor-pointer transition-all overflow-hidden relative min-h-[100px]",
+                    frentePreview ? "border-green-500 bg-green-50" : "border-gray-200 hover:bg-gray-50"
+                  )}
+                  onClick={() => document.getElementById('frenteInput')?.click()}
                 >
-                   <Camera className="text-ms-blue w-6 h-6" />
-                   <span className="text-[9px] font-bold uppercase text-gray-500">Frente do BI</span>
+                   {frentePreview ? (
+                     <img src={frentePreview} alt="Frente" className="absolute inset-0 w-full h-full object-cover opacity-50" />
+                   ) : (
+                     <Camera className="text-ms-blue w-6 h-6" />
+                   )}
+                   <span className="text-[9px] font-bold uppercase text-gray-500 relative z-10">
+                     {frentePreview ? 'Trocar Frente' : 'Frente do BI'}
+                   </span>
                 </div>
+
                 <div 
-                  className="border-2 border-dashed border-gray-200 p-4 rounded flex flex-col items-center justify-center space-y-2 cursor-pointer hover:bg-gray-50 transition-colors"
-                  onClick={() => showToast('Câmera ativada (Simulado)', 'info')}
+                  className={cn(
+                    "border-2 border-dashed p-4 rounded flex flex-col items-center justify-center space-y-2 cursor-pointer transition-all overflow-hidden relative min-h-[100px]",
+                    versoPreview ? "border-green-500 bg-green-50" : "border-gray-200 hover:bg-gray-50"
+                  )}
+                  onClick={() => document.getElementById('versoInput')?.click()}
                 >
-                   <Camera className="text-ms-blue w-6 h-6" />
-                   <span className="text-[9px] font-bold uppercase text-gray-500">Verso do BI</span>
+                   {versoPreview ? (
+                     <img src={versoPreview} alt="Verso" className="absolute inset-0 w-full h-full object-cover opacity-50" />
+                   ) : (
+                     <Camera className="text-ms-blue w-6 h-6" />
+                   )}
+                   <span className="text-[9px] font-bold uppercase text-gray-500 relative z-10">
+                     {versoPreview ? 'Trocar Verso' : 'Verso do BI'}
+                   </span>
                 </div>
               </div>
 

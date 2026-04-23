@@ -40,6 +40,7 @@ import AboutMicrosoft from './pages/AboutMicrosoft';
 import HelpFAQ from './pages/HelpFAQ';
 import SupportFeedback from './pages/SupportFeedback';
 import SocialProof from './pages/SocialProof';
+import ConfirmarRecarga from './pages/ConfirmarRecarga';
 
 export default function App() {
   return (
@@ -81,6 +82,7 @@ export default function App() {
                 <Route path="help-faq" element={<HelpFAQ />} />
                 <Route path="suporte/feedback" element={<SupportFeedback />} />
                 <Route path="provas-social" element={<SocialProof />} />
+                <Route path="confirmar-recarga" element={<ConfirmarRecarga />} />
               </Route>
 
               {/* Redirecionamento Global */}

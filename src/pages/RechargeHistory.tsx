@@ -80,7 +80,7 @@ export default function RechargeHistory() {
                     <CreditCard size={20} />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-[#2b2b2b]">Recarga via {item.nome_banco}</p>
+                    <p className="text-sm font-semibold text-[#2b2b2b]">Recarga via {item.banco_origem}</p>
                     <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Depósito Bancário</p>
                   </div>
                 </div>
@@ -100,7 +100,7 @@ export default function RechargeHistory() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">Valor Solicitado</p>
-                    <p className="text-lg font-bold text-[#2b2b2b]">{Number(item.valor_deposito).toLocaleString()},00 Kz</p>
+                    <p className="text-lg font-bold text-[#2b2b2b]">{Number(item.valor).toLocaleString()},00 Kz</p>
                   </div>
                   <div>
                     <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">Chave Transação</p>
