@@ -6,6 +6,7 @@ import { useToast } from '../components/Toast';
 import { Button } from '../components/Button';
 import { useLanguage } from '../contexts/LanguageContext';
 import { supabase } from '../lib/supabase';
+import { formatCurrency } from '../lib/currency';
 
 export default function Withdraw() {
   const navigate = useNavigate();
@@ -62,7 +63,7 @@ export default function Withdraw() {
     setIsSubmitting(true);
     
     try {
-      const { data, error } = await supabase.rpc('request_withdrawal_mcpn', {
+      const { data, error } = await supabase.rpc('process_withdrawal_request', {
         p_amount: withdrawAmount
       });
 
@@ -103,7 +104,7 @@ export default function Withdraw() {
         >
           <div className="relative z-10">
             <p className="text-[10px] font-bold uppercase tracking-[0.2em] opacity-80 mb-1">Saldo Disponível</p>
-            <h2 className="text-4xl font-light tracking-tight">{balance.toLocaleString()} <span className="text-sm font-bold">Kz</span></h2>
+            <h2 className="text-4xl font-light tracking-tight">{formatCurrency(balance, 'KZ')}</h2>
           </div>
           <Wallet className="absolute right-[-20px] bottom-[-20px] w-40 h-40 text-white opacity-10 rotate-12" />
         </motion.div>

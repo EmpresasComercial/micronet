@@ -35,13 +35,12 @@ export default function BankInfo() {
   const handleDelete = async (id: string) => {
     if (window.confirm('Tem certeza que deseja excluir esta conta bancária?')) {
       try {
-        // RPC para deletar banco (opcional, mas bom ter)
-        const { error } = await supabase
-          .from('contas_bancarias_mcpn')
-          .delete()
-          .eq('id', id);
+        const { data, error } = await supabase.rpc('remove_bank_account_mcpn', {
+          p_id: id
+        });
         
         if (error) throw error;
+        if (!data.success) throw new Error(data.message);
         
         setLinkedBanks(prev => prev.filter(b => b.id !== id));
         alert('Conta excluída com sucesso!');
