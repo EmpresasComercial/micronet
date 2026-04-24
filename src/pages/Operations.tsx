@@ -35,19 +35,20 @@ export default function Operations() {
         if (pError) throw pError;
         
         if (userProds && userProds.length > 0) {
-          // Filtrar os ativos e mapear para os detalhes do produto estático
+          // Filtrar os ativos (considerando null como ativo se não houver coluna)
           const activeProds = userProds.filter((p: any) => {
-            const hasDays = (p.dias_restantes === undefined || p.dias_restantes > 0);
-            const isActive = (p.ativo === undefined || p.ativo === true);
+            const hasDays = (p.dias_restantes === null || p.dias_restantes === undefined || Number(p.dias_restantes) > 0);
+            const isActive = (p.ativo === null || p.ativo === undefined || p.ativo === true || p.ativo === 'true');
             return hasDays && isActive;
           });
           
           if (activeProds.length > 0) {
             let total = 0;
             activeProds.forEach((up: any) => {
-              const baseProd = products.find(p => p.id === up.produto_id.toString());
+              // Buscar o produto base pelo ID (convertendo para string para garantir o match)
+              const baseProd = products.find(p => p.id === String(up.produto_id));
               if (baseProd) {
-                // A renda diária é 5% do valor do produto conforme o ProductCard
+                // A renda diária é 5% do valor do produto
                 total += (baseProd.priceValue * 0.05);
               }
             });
