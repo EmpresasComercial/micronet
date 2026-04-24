@@ -36,15 +36,14 @@ export default function IdentityAuth() {
   // Carregar status atual da verificação
   useEffect(() => {
     async function fetchStatus() {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        const { data } = await supabase
-          .from('verificacoes_usuarios_mcpn')
-          .select('status')
-          .eq('user_id', user.id)
-          .maybeSingle();
-        
-        if (data) setCurrentStatus(data.status);
+      try {
+        const { data, error } = await supabase.rpc('get_my_verification_status_mcpn');
+        if (error) throw error;
+        if (data && data.length > 0) {
+          setCurrentStatus(data[0].status);
+        }
+      } catch (err) {
+        console.error('Erro ao buscar status:', err);
       }
     }
     fetchStatus();

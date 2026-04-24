@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ReceiptText, Clock, CreditCard, Banknote, ShieldCheck } from 'lucide-react';
 import { motion } from 'motion/react';
 import { supabase } from '../lib/supabase';
-import { useEffect, useState } from 'react';
+import { cn } from '../lib/utils';
 
 export default function WithdrawalHistory() {
   const navigate = useNavigate();
@@ -13,10 +13,7 @@ export default function WithdrawalHistory() {
   useEffect(() => {
     async function fetchWithdrawals() {
       try {
-        const { data, error } = await supabase
-          .from('retiradas_mcpn')
-          .select('*')
-          .order('created_at', { ascending: false });
+        const { data, error } = await supabase.rpc('get_my_withdrawals_mcpn');
 
         if (error) throw error;
         if (data) setHistory(data);

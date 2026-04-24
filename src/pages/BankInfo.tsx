@@ -1,32 +1,53 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ShieldCheck } from 'lucide-react';
 import { motion } from 'motion/react';
+import { supabase } from '../lib/supabase';
 
 export default function BankInfo() {
   const navigate = useNavigate();
 
-  // Mock data - In a real app this would come from state/API
-  const linkedBanks = [
-    {
-      id: '1',
-      ownerName: 'Benjamim Ihinda Suku',
-      bankName: 'BAI',
-      iban: 'AO060040000012345678901', // Example IBAN
+  const [linkedBanks, setLinkedBanks] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchBanks() {
+      try {
+        const { data, error } = await supabase.rpc('get_my_bank_accounts_mcpn');
+        if (error) throw error;
+        if (data) setLinkedBanks(data);
+      } catch (err) {
+        console.error('Erro ao buscar bancos:', err);
+      } finally {
+        setLoading(false);
+      }
     }
-  ];
+    fetchBanks();
+  }, []);
 
   const maskIban = (iban: string) => {
-    if (iban.length < 21) return iban;
+    if (!iban || iban.length < 21) return iban;
     const start = iban.slice(0, 4);
     const end = iban.slice(-4);
     return `${start} • • • • ${end}`;
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (window.confirm('Tem certeza que deseja excluir esta conta bancária?')) {
-      alert('Conta excluída com sucesso!');
-      // Logic to remove bank would go here
+      try {
+        // RPC para deletar banco (opcional, mas bom ter)
+        const { error } = await supabase
+          .from('contas_bancarias_mcpn')
+          .delete()
+          .eq('id', id);
+        
+        if (error) throw error;
+        
+        setLinkedBanks(prev => prev.filter(b => b.id !== id));
+        alert('Conta excluída com sucesso!');
+      } catch (err: any) {
+        alert('Erro ao excluir: ' + err.message);
+      }
     }
   };
 
@@ -57,7 +78,7 @@ export default function BankInfo() {
                 <div className="space-y-5">
                   <div className="flex justify-between items-start border-b border-[#f3f3f3] pb-4">
                     <div>
-                      <h3 className="text-base font-semibold text-[#2b2b2b]">{bank.bankName}</h3>
+                      <h3 className="text-base font-semibold text-[#2b2b2b]">{bank.bank_name}</h3>
                       <p className="text-sm text-gray-500 font-mono tracking-tight">{maskIban(bank.iban)}</p>
                     </div>
                     <div className="flex items-center text-[#107c10] text-[11px] font-bold uppercase tracking-wider bg-[#dff6dd] px-2 py-1 rounded-sm">
@@ -68,7 +89,7 @@ export default function BankInfo() {
                   <div className="grid grid-cols-1 gap-4">
                     <div>
                       <div className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">Nome do titular</div>
-                      <p className="text-[#2b2b2b] text-sm font-medium">{bank.ownerName}</p>
+                      <p className="text-[#2b2b2b] text-sm font-medium">{bank.owner_name}</p>
                     </div>
                   </div>
 

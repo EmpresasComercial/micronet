@@ -34,11 +34,7 @@ export default function SocialProof() {
   useEffect(() => {
     async function fetchProofs() {
       try {
-        const { data, error } = await supabase
-          .from('social_proofs_mcpn')
-          .select('*')
-          .eq('status', 'aprovado')
-          .order('created_at', { ascending: false });
+        const { data, error } = await supabase.rpc('get_approved_social_proofs_mcpn');
 
         if (error) throw error;
         if (data) {
@@ -95,15 +91,10 @@ export default function SocialProof() {
 
     setIsSubmitting(true);
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('Sessão expirada.');
-
-      const { error } = await supabase.from('social_proofs_mcpn').insert({
-        user_id: user.id,
-        valor: Number(amount),
-        comentario: comment,
-        imagem_url: image,
-        status: 'pendente'
+      const { data, error } = await supabase.rpc('submit_social_proof_mcpn', {
+        p_valor: Number(amount),
+        p_comentario: comment,
+        p_imagem_url: image
       });
 
       if (error) throw error;

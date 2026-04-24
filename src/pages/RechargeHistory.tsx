@@ -13,10 +13,7 @@ export default function RechargeHistory() {
   useEffect(() => {
     async function fetchHistory() {
       try {
-        const { data, error } = await supabase
-          .from('recargas_mcpn')
-          .select('*')
-          .order('created_at', { ascending: false });
+        const { data, error } = await supabase.rpc('get_my_recharges_mcpn');
 
         if (error) throw error;
         if (data) setHistory(data);

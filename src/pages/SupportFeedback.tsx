@@ -31,12 +31,8 @@ export default function SupportFeedback() {
     setIsSubmitting(true);
     
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      
-      const { error } = await supabase.from('suporte_feedback').insert({
-        user_id: user?.id,
-        mensagem: feedback,
-        status: 'pendente'
+      const { data, error } = await supabase.rpc('submit_support_feedback_mcpn', {
+        p_mensagem: feedback
       });
 
       if (error) throw error;

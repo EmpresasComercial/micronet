@@ -22,10 +22,7 @@ export default function RechargeHistoryUSDT() {
   useEffect(() => {
     async function fetchHistory() {
       try {
-        const { data, error } = await supabase
-          .from('recharges_usdt_mcpn')
-          .select('*')
-          .order('created_at', { ascending: false });
+        const { data, error } = await supabase.rpc('get_my_usdt_recharges_mcpn');
 
         if (error) throw error;
 

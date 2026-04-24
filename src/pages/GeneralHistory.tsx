@@ -27,10 +27,7 @@ export default function GeneralHistory() {
     async function fetchHistory() {
       setLoading(true);
       try {
-        const { data, error } = await supabase
-          .from('v_historico_geral')
-          .select('*')
-          .order('created_at', { ascending: false });
+        const { data, error } = await supabase.rpc('get_general_history_mcpn');
 
         if (error) throw error;
 

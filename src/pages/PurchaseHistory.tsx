@@ -4,6 +4,7 @@ import { ChevronLeft, ReceiptText, Laptop, Server, Cpu, ExternalLink, Download }
 import { motion } from 'motion/react';
 import { supabase } from '../lib/supabase';
 import { useEffect, useState } from 'react';
+import { cn } from '../lib/utils';
 
 export default function PurchaseHistory() {
   const navigate = useNavigate();
@@ -13,21 +14,7 @@ export default function PurchaseHistory() {
   useEffect(() => {
     async function fetchPurchases() {
       try {
-        const { data, error } = await supabase
-          .from('user_produtos')
-          .select(`
-            id,
-            preco_pago,
-            data_inicio,
-            data_fim,
-            dias_restantes,
-            ativo,
-            produtos (
-              nome,
-              imagem_url
-            )
-          `)
-          .order('created_at', { ascending: false });
+        const { data, error } = await supabase.rpc('get_my_purchased_products_mcpn');
 
         if (error) throw error;
         if (data) setPurchases(data);
@@ -72,16 +59,16 @@ export default function PurchaseHistory() {
               {/* Product Image */}
               <div className="w-20 h-20 shrink-0 overflow-hidden border border-[#f2f2f2] bg-[#fbfbfb] flex items-center justify-center">
                 <img 
-                  src={item.produtos?.imagem_url} 
+                  src={item.produto_imagem} 
                   className="w-full h-full object-cover mix-blend-multiply opacity-80" 
-                  alt={item.produtos?.nome}
+                  alt={item.produto_nome}
                   referrerPolicy="no-referrer"
                 />
               </div>
 
               {/* Product Info */}
               <div className="flex-1 min-w-0">
-                <h3 className="text-base font-bold text-gray-900 mb-1">{item.produtos?.nome}</h3>
+                <h3 className="text-base font-bold text-gray-900 mb-1">{item.produto_nome}</h3>
                 
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-y-3 gap-x-6 mb-4">
                   <div className="space-y-0.5">
@@ -105,7 +92,7 @@ export default function PurchaseHistory() {
 
                 <div className="flex items-center space-x-4">
                   <button 
-                    onClick={() => alert(`Acessando terminal remoto: ${item.produtos?.nome}`)}
+                    onClick={() => alert(`Acessando terminal remoto: ${item.produto_nome}`)}
                     className="text-ms-blue text-[10px] font-bold uppercase tracking-wider hover:underline flex items-center"
                   >
                     <ExternalLink className="w-3 h-3 mr-1" />

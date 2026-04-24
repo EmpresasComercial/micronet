@@ -18,23 +18,15 @@ export default function Withdraw() {
 
   useEffect(() => {
     async function fetchData() {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        // Buscar Saldo
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('balance')
-          .eq('id', user.id)
-          .single();
-        if (profile) setBalance(profile.balance);
-
-        // Verificar se tem banco
-        const { data: bank } = await supabase
-          .from('bancos_clientes')
-          .select('id')
-          .eq('user_id', user.id)
-          .maybeSingle();
-        setHasBank(!!bank);
+      try {
+        const { data, error } = await supabase.rpc('get_withdraw_info_mcpn');
+        if (error) throw error;
+        if (data && data.length > 0) {
+          setBalance(Number(data[0].balance));
+          setHasBank(data[0].has_bank);
+        }
+      } catch (err: any) {
+        console.error('Erro ao buscar dados:', err.message);
       }
     }
     fetchData();

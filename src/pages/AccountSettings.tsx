@@ -16,17 +16,17 @@ export default function AccountSettings() {
 
   useEffect(() => {
     async function fetchProfile() {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        const { data } = await supabase
-          .from('profiles')
-          .select('phone, invite_code')
-          .eq('id', user.id)
-          .single();
-        
-        if (data) setProfile(data);
+      try {
+        const { data, error } = await supabase.rpc('get_my_settings_data_mcpn');
+        if (error) throw error;
+        if (data && data.length > 0) {
+          setProfile(data[0]);
+        }
+      } catch (err: any) {
+        console.error('Erro ao buscar perfil:', err.message);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     }
     fetchProfile();
   }, []);
