@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, Wallet, Landmark, Info, ShieldCheck, AlertCircle } from 'lucide-react';
+import { ChevronLeft, Wallet, Landmark, Info, ShieldCheck, AlertCircle, ReceiptText } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useToast } from '../components/Toast';
 import { Button } from '../components/Button';
@@ -94,6 +94,13 @@ export default function Withdraw() {
           <ChevronLeft className="w-6 h-6" />
         </button>
         <h1 className="text-sm font-semibold ml-2 text-[#2b2b2b]">Levantamento</h1>
+        <button 
+          onClick={() => navigate('/registro-retirada')}
+          className="ml-auto p-2 text-gray-400 hover:text-ms-blue transition-colors"
+          title="Histórico de Levantamentos"
+        >
+          <ReceiptText className="w-6 h-6" strokeWidth={1.5} />
+        </button>
       </header>
 
       <div className="p-6 max-w-lg mx-auto">

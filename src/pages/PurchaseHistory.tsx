@@ -109,7 +109,7 @@ export default function PurchaseHistory() {
                   <span className="text-gray-200">|</span>
                   <div className="flex items-center text-gray-400 text-[10px] font-bold uppercase tracking-wider">
                     <Download className="w-3 h-3 mr-1" />
-                    {t('history.backup_iso')}
+                    {5 + (idx % 3)} {t('history.backup_iso')}
                   </div>
                 </div>
               </div>

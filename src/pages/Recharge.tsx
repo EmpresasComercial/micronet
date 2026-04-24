@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, Landmark, Info, ShieldCheck, CreditCard, CheckCircle2, ChevronDown, AlertCircle } from 'lucide-react';
+import { ChevronLeft, Landmark, Info, ShieldCheck, CreditCard, CheckCircle2, ChevronDown, AlertCircle, ReceiptText } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useToast } from '../components/Toast';
 import { Button } from '../components/Button';
@@ -99,6 +99,13 @@ export default function Recharge() {
           <ChevronLeft className="w-6 h-6" />
         </button>
         <h1 className="text-sm font-semibold ml-2 text-[#2b2b2b]">Recarga de Conta</h1>
+        <button 
+          onClick={() => navigate('/registro-recarga')}
+          className="ml-auto p-2 text-gray-400 hover:text-ms-blue transition-colors"
+          title="Histórico de Recargas"
+        >
+          <ReceiptText className="w-6 h-6" strokeWidth={1.5} />
+        </button>
       </header>
 
       <div className="p-6 max-w-lg mx-auto">
@@ -142,6 +149,33 @@ export default function Recharge() {
                   <AlertCircle size={12} className="mr-1" /> Mínimo: {MIN_RECHARGE.toLocaleString()} Kz
                 </motion.p>
               )}
+
+              <div className="grid grid-cols-3 gap-2 mt-4">
+                {[10000, 50000, 100000].map(val => (
+                  <button
+                    key={val}
+                    type="button"
+                    onClick={() => {
+                      setAmount(val.toString());
+                      // Se o valor sugerido for válido, não precisamos esconder nada, 
+                      // mas a lógica de ativação do banco será tratada no handleMainAction
+                    }}
+                    className={cn(
+                      "p-3 border rounded-sm text-xs font-bold transition-all relative flex items-center justify-center",
+                      amount === val.toString() 
+                        ? "border-[#e81123] bg-red-50/30 text-[#e81123]" 
+                        : "border-gray-200 text-gray-700 hover:bg-gray-50"
+                    )}
+                  >
+                    {val.toLocaleString()}
+                    {amount === val.toString() && (
+                      <div className="absolute top-0 right-0 bg-[#e81123] text-white p-0.5 rounded-bl-sm">
+                        <CheckCircle2 size={8} />
+                      </div>
+                    )}
+                  </button>
+                ))}
+              </div>
             </div>
 
             {/* Seleção de Banco (Surge Progressivamente) */}

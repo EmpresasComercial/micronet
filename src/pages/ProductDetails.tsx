@@ -127,13 +127,13 @@ export default function ProductDetails() {
             <motion.div 
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="aspect-square border border-black/10 bg-white shadow-[0_1px_3px_rgba(0,0,0,0.05)] flex items-center justify-center mb-4 overflow-hidden"
+              className="h-32 md:h-48 border border-black/10 bg-white shadow-[0_1px_3px_rgba(0,0,0,0.05)] flex items-center justify-center overflow-hidden rounded-sm"
             >
               {product.imagem_url ? (
                 <img 
                   src={product.imagem_url} 
                   alt={product.nome} 
-                  className="w-full h-full object-cover mix-blend-multiply opacity-90"
+                  className="w-full h-full object-contain mix-blend-multiply opacity-90 p-2"
                   referrerPolicy="no-referrer"
                 />
               ) : (
@@ -142,17 +142,6 @@ export default function ProductDetails() {
                 </div>
               )}
             </motion.div>
-
-            <div className="bg-[#f2f2f2] p-3 text-[11px] space-y-3">
-              <div className="border-b border-gray-300 pb-2">
-                <p className="text-gray-400 font-bold uppercase mb-0.5">{t('products.os_version')}</p>
-                <p className="text-gray-800 font-semibold">{t(`${product.key}.version`)}</p>
-              </div>
-              <div>
-                <p className="text-gray-400 font-bold uppercase mb-0.5">{t('products.cloud_space')}</p>
-                <p className="text-gray-800 font-semibold">{product.storage_size || product.size}</p>
-              </div>
-            </div>
           </div>
 
           {/* Right: Info & CTA */}

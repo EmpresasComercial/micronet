@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, Play, Cpu, Activity, Zap, CheckCircle2, Cloud } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { ChevronLeft, Cpu, Activity, Zap, CheckCircle2, Cloud } from 'lucide-react';
+import { motion } from 'motion/react';
 import { cn } from '@/src/lib/utils';
 import { Button } from '../components/Button';
 import { useToast } from '../components/Toast';
 import { useLanguage } from '../contexts/LanguageContext';
 import { supabase } from '../lib/supabase';
-import { useEffect } from 'react';
 
 export default function Operations() {
   const navigate = useNavigate();
@@ -18,16 +17,21 @@ export default function Operations() {
   const [isCompleted, setIsCompleted] = useState(false);
   const [estimatedIncome, setEstimatedIncome] = useState(0);
   const [hasServers, setHasServers] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function checkStatus() {
       try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+
         // Get active products to calculate estimated income
         const { data: prods, error: pError } = await supabase
           .from('user_produtos')
           .select('renda_diaria')
+          .eq('user_id', user.id)
           .eq('ativo', true)
-          .gt('data_fim', new Date().toISOString());
+          .gt('dias_restantes', 0);
 
         if (pError) throw pError;
         
@@ -37,11 +41,16 @@ export default function Operations() {
           setHasServers(true);
         }
 
-        // Check if already collected today
+        // Check if already collected today using Luanda time (matching the RPC)
+        // We'll call the RPC with a 'dry run' or just check the table with the correct date
+        const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Africa/Luanda' }); // YYYY-MM-DD
+        
         const { data: collected, error: cError } = await supabase
           .from('renda_diaria_mcpn')
           .select('id')
-          .gte('created_at', new Date().toISOString().split('T')[0])
+          .eq('user_id', user.id)
+          .gte('created_at', `${today}T00:00:00`)
+          .lte('created_at', `${today}T23:59:59`)
           .limit(1);
 
         if (cError) throw cError;
@@ -50,7 +59,9 @@ export default function Operations() {
           setProgress(100);
         }
       } catch (err: any) {
-        console.error('Erro ao checar status de operações:', err.message);
+        console.error('Erro ao checar status:', err.message);
+      } finally {
+        setLoading(false);
       }
     }
     checkStatus();
@@ -58,41 +69,61 @@ export default function Operations() {
 
   const startTask = async () => {
     if (isCompleted || !hasServers) {
-      if (!hasServers) showToast('Você não tem servidores ativos.', 'error');
+      if (!hasServers) showToast('Você não tem servidores ativos para coletar rendimentos.', 'error');
       return;
     }
     
     setIsOperating(true);
+    setProgress(0);
+
+    // Visual animation of progress
+    const duration = 2000; // 2 seconds
+    const interval = 50;
+    const steps = duration / interval;
+    const increment = 100 / steps;
+    
     let currentProgress = 0;
-    const interval = setInterval(async () => {
-      currentProgress += 5;
-      setProgress(currentProgress);
-      
+    const timer = setInterval(() => {
+      currentProgress += increment;
       if (currentProgress >= 100) {
-        clearInterval(interval);
-        
-        // Finalize in backend
-        try {
-          const { data, error } = await supabase.rpc('collect_daily_earnings');
-          if (error) throw error;
-          
-          if (data?.success) {
-            setIsCompleted(true);
-            setIsOperating(false);
-            showToast(`${t('common.success')}: +${Number(data.total_collected).toLocaleString()} Kz coletados`, 'success');
-          } else {
-            setIsOperating(false);
-            setProgress(0);
-            showToast(data?.message || 'Erro ao coletar rendimentos.', 'error');
-          }
-        } catch (err: any) {
-          setIsOperating(false);
-          setProgress(0);
-          showToast('Erro na conexão com o servidor.', 'error');
-        }
+        setProgress(100);
+        clearInterval(timer);
+        finalizeCollection();
+      } else {
+        setProgress(Math.floor(currentProgress));
       }
-    }, 100);
+    }, interval);
   };
+
+  const finalizeCollection = async () => {
+    try {
+      const { data, error } = await supabase.rpc('collect_daily_earnings');
+      
+      if (error) throw error;
+      
+      if (data?.success) {
+        setIsCompleted(true);
+        setIsOperating(false);
+        showToast(data.message || 'Rendimentos coletados com sucesso!', 'success');
+      } else {
+        setIsOperating(false);
+        setProgress(0);
+        showToast(data?.message || 'Erro ao coletar rendimentos.', 'error');
+      }
+    } catch (err: any) {
+      setIsOperating(false);
+      setProgress(0);
+      showToast(err.message || 'Erro na conexão com o servidor.', 'error');
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-ms-bg">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-ms-blue"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-ms-bg pb-20">
@@ -120,13 +151,6 @@ export default function Operations() {
                 )} />
               )}
             </div>
-            {isOperating && (
-              <motion.div 
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="absolute inset-0 border-4 border-ms-blue/30 rounded-full animate-ping"
-              />
-            )}
           </div>
           
           <div className="text-center">
@@ -142,8 +166,8 @@ export default function Operations() {
         </div>
 
         {/* Task Control Card */}
-        <div className="ms-card p-10 space-y-8 overflow-hidden relative">
-          <div className="absolute top-0 right-0 p-4 opacity-10">
+        <div className="ms-card p-10 space-y-8 overflow-hidden relative bg-white border border-[#e1e1e1] shadow-sm">
+          <div className="absolute top-0 right-0 p-4 opacity-5">
              <Cloud className="w-20 h-20 text-ms-blue" />
           </div>
 
@@ -167,7 +191,7 @@ export default function Operations() {
               <motion.div 
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
-                className="h-full bg-gradient-to-r from-ms-blue to-blue-400 transition-all duration-300"
+                className="h-full bg-ms-blue transition-all duration-300"
               />
             </div>
             
@@ -181,7 +205,7 @@ export default function Operations() {
              <div className="grid grid-cols-2 gap-4">
                 <div className="bg-gray-50/50 p-4 rounded-sm border border-black/5">
                    <p className="text-[9px] text-gray-400 font-bold uppercase tracking-widest mb-1 italic">{t('ops.estimated')}</p>
-                   <p className="text-sm font-bold text-gray-900">{estimatedIncome.toLocaleString()},00 Kz</p>
+                   <p className="text-sm font-bold text-gray-900">{estimatedIncome.toLocaleString('pt-BR')},00 Kz</p>
                 </div>
                 <div className="bg-gray-50/50 p-4 rounded-sm border border-black/5">
                    <p className="text-[9px] text-gray-400 font-bold uppercase tracking-widest mb-1 italic">{t('ops.tasks_left')}</p>
@@ -193,12 +217,12 @@ export default function Operations() {
                onClick={startTask}
                isLoading={isOperating}
                className={cn(
-                 "w-full",
+                 "w-full py-4 text-sm font-bold uppercase tracking-widest",
                  isCompleted ? "bg-green-500 hover:bg-green-600 text-white cursor-default" : ""
                )}
-               disabled={isCompleted}
+               disabled={isCompleted || loading}
              >
-               {isCompleted ? <CheckCircle2 size={18} /> : <Zap size={18} />}
+               {isCompleted ? <CheckCircle2 size={18} className="mr-2" /> : <Zap size={18} className="mr-2" />}
                <span>{isCompleted ? t('ops.btn_finished') : t('ops.btn_start')}</span>
              </Button>
           </div>
@@ -206,13 +230,13 @@ export default function Operations() {
 
         {/* Footer Identity */}
         <div className="text-center pt-10">
-          <div className="inline-flex items-center space-x-4 opacity-30 grayscale saturate-0 mb-2">
-            <div className="w-1 h-3 bg-red-500" />
-            <div className="w-1 h-3 bg-green-500" />
-            <div className="w-1 h-3 bg-blue-500" />
-            <div className="w-1 h-3 bg-yellow-500" />
+          <div className="inline-flex items-center space-x-4 opacity-20 grayscale saturate-0 mb-2">
+            <div className="w-1 h-3 bg-[#f25022]" />
+            <div className="w-1 h-3 bg-[#7fba00]" />
+            <div className="w-1 h-3 bg-[#00a4ef]" />
+            <div className="w-1 h-3 bg-[#ffb900]" />
           </div>
-          <p className="text-[9px] text-gray-300 font-bold uppercase tracking-[0.3em]">Microsoft Partner Network Official Node</p>
+          <p className="text-[9px] text-gray-400 font-bold uppercase tracking-[0.3em]">Microsoft Partner Network Official Node</p>
         </div>
       </div>
     </div>

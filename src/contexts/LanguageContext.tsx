@@ -399,8 +399,8 @@ const translations: Record<Language, Record<string, string>> = {
     'history.status_active': 'Ativo e Rendendo',
     'history.status_expired': 'Expirado',
     'history.remaining': 'Duração Restante',
-    'history.manage_server': 'Gerenciar Servidor',
-    'history.backup_iso': 'Backup ISO',
+    'history.manage_server': 'Fazer Download Setup',
+    'history.backup_iso': 'MB',
   },
   en: {
     // Navigation
@@ -791,8 +791,8 @@ const translations: Record<Language, Record<string, string>> = {
     'history.status_active': 'Active & Earning',
     'history.status_expired': 'Expired',
     'history.remaining': 'Remaining Duration',
-    'history.manage_server': 'Manage Server',
-    'history.backup_iso': 'ISO Backup',
+    'history.manage_server': 'Download Setup',
+    'history.backup_iso': 'MB',
   },
   fr: {
     // Navigation
