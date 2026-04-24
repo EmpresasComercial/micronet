@@ -19,7 +19,7 @@ export const products: Product[] = [
     durationDays: 30,
     size: '3.8 GB',
     icon: <Monitor className="w-10 h-10 text-blue-500" />,
-    imageUrl: 'https://images.unsplash.com/photo-1625032549247-498188169824?q=80&w=800&auto=format&fit=crop',
+    imageUrl: '/office.webp',
   },
   {
     id: '2',
@@ -28,7 +28,7 @@ export const products: Product[] = [
     durationDays: 45,
     size: '4.2 GB',
     icon: <ShieldCheck className="w-10 h-10 text-blue-600" />,
-    imageUrl: 'https://images.unsplash.com/photo-1542317148-8b4398105771?q=80&w=800&auto=format&fit=crop',
+    imageUrl: '/carrocel_un.webp',
   },
   {
     id: '3',
@@ -37,7 +37,7 @@ export const products: Product[] = [
     durationDays: 60,
     size: '5.4 GB',
     icon: <Zap className="w-10 h-10 text-blue-700" />,
-    imageUrl: 'https://images.unsplash.com/photo-1587620962725-abab7fe55159?q=80&w=800&auto=format&fit=crop',
+    imageUrl: '/micro-carrocel.webp',
   },
   {
     id: '4',
@@ -46,6 +46,6 @@ export const products: Product[] = [
     durationDays: 90,
     size: '6.2 GB',
     icon: <Monitor className="w-10 h-10 text-blue-800" />,
-    imageUrl: 'https://images.unsplash.com/photo-1633419461186-7d40a38105ec?q=80&w=800&auto=format&fit=crop',
+    imageUrl: '/Introduccion-a-Microsoft-Windows.webp',
   },
 ];

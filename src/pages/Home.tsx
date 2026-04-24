@@ -97,7 +97,7 @@ export default function Home() {
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: -300, opacity: 0 }}
                 transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-                className="absolute inset-0 h-full w-full object-cover"
+                className="absolute inset-0 h-full w-full object-contain"
                 referrerPolicy="no-referrer"
                 alt={`Slide ${currentIndex + 1}`}
               />

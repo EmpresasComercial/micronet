@@ -20,8 +20,12 @@ export const HeroSection: React.FC = () => {
       </div>
       
       {/* Background Accent */}
-      <div className="absolute right-[-20%] top-[-10%] opacity-10 rotate-12">
-          <Laptop className="w-80 h-80" />
+      <div className="absolute right-[-10%] top-0 bottom-0 w-[60%] opacity-20 overflow-hidden pointer-events-none">
+          <img 
+            src="/micro-carrocel.webp" 
+            alt="" 
+            className="w-full h-full object-contain blur-[2px]" 
+          />
       </div>
     </section>
   );

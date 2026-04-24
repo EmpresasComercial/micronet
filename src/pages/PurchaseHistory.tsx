@@ -68,7 +68,7 @@ export default function PurchaseHistory() {
               <div className="w-20 h-20 shrink-0 overflow-hidden border border-[#f2f2f2] bg-[#fbfbfb] flex items-center justify-center">
                 <img 
                   src={item.produto_imagem} 
-                  className="w-full h-full object-cover mix-blend-multiply opacity-80" 
+                  className="w-full h-full object-contain mix-blend-multiply opacity-80" 
                   alt={item.produto_nome}
                   referrerPolicy="no-referrer"
                 />

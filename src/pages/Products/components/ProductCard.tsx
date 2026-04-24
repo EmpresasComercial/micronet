@@ -27,7 +27,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index, onBuy 
             <img 
               src={product.imagem_url} 
               alt={t(`${product.key}.name`)} 
-              className="w-full h-full object-cover mix-blend-multiply opacity-90"
+              className="w-full h-full object-contain mix-blend-multiply opacity-90"
               referrerPolicy="no-referrer"
             />
           ) : (

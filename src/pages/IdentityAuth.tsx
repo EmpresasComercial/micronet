@@ -247,7 +247,7 @@ export default function IdentityAuth() {
                   onClick={() => document.getElementById('frenteInput')?.click()}
                 >
                    {frentePreview ? (
-                     <img src={frentePreview} alt="Frente" className="absolute inset-0 w-full h-full object-cover opacity-50" />
+                     <img src={frentePreview} alt="Frente" className="absolute inset-0 w-full h-full object-contain opacity-50" />
                    ) : (
                      <Camera className="text-ms-blue w-6 h-6" />
                    )}
@@ -264,7 +264,7 @@ export default function IdentityAuth() {
                   onClick={() => document.getElementById('versoInput')?.click()}
                 >
                    {versoPreview ? (
-                     <img src={versoPreview} alt="Verso" className="absolute inset-0 w-full h-full object-cover opacity-50" />
+                     <img src={versoPreview} alt="Verso" className="absolute inset-0 w-full h-full object-contain opacity-50" />
                    ) : (
                      <Camera className="text-ms-blue w-6 h-6" />
                    )}
