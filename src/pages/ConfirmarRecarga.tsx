@@ -140,6 +140,8 @@ export default function ConfirmRecharge() {
                 className="hidden" 
                 accept="image/*,application/pdf"
                 onChange={handleFileChange}
+                title="Carregar comprovativo de pagamento"
+                aria-label="Carregar comprovativo de pagamento"
               />
               <div 
                 className={cn(

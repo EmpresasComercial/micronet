@@ -40,6 +40,7 @@ export default function BankInfo() {
   };
 
   const handleDelete = async (id: string) => {
+    console.log('Deletando banco:', id);
     try {
       const { data, error } = await supabase.rpc('remove_bank_account_mcpn', {
         p_id: id
@@ -57,8 +58,23 @@ export default function BankInfo() {
 
   return (
     <div className="min-h-screen bg-ms-bg pb-20">
+      <ConfirmDialog 
+        isOpen={deleteDialog.isOpen}
+        onClose={() => setDeleteDialog({ isOpen: false, id: null })}
+        onConfirm={() => deleteDialog.id && handleDelete(deleteDialog.id)}
+        title="Remover Conta"
+        message="Tem certeza que deseja excluir esta conta bancária? Esta ação não pode ser desfeita."
+        confirmText="Sim, Remover"
+        cancelText="Cancelar"
+        variant="danger"
+      />
       <header className="bg-white p-4 flex items-center border-b border-[#e1e1e1]">
-        <button onClick={() => navigate('/perfil')} className="p-2 -ml-2 text-[#616161] hover:text-[#2b2b2b]">
+        <button 
+          onClick={() => navigate('/perfil')} 
+          className="p-2 -ml-2 text-[#616161] hover:text-[#2b2b2b]"
+          title="Voltar para o perfil"
+          aria-label="Voltar para o perfil"
+        >
           <ChevronLeft className="w-6 h-6" />
         </button>
         <h1 className="text-sm font-semibold ml-2 text-[#2b2b2b]">Conta Microsoft</h1>
@@ -99,8 +115,12 @@ export default function BankInfo() {
 
                   <div className="pt-4 flex flex-col space-y-3">
                     <button 
-                      onClick={() => setDeleteDialog({ isOpen: true, id: bank.id })}
+                      onClick={() => {
+                        console.log('Abrindo diálogo para:', bank.id);
+                        setDeleteDialog({ isOpen: true, id: bank.id });
+                      }}
                       className="text-sm text-[#a4262c] font-semibold hover:underline flex items-center justify-start"
+                      aria-label={`Remover conta ${bank.bank_name}`}
                     >
                       Remover este método de pagamento
                     </button>
@@ -120,17 +140,6 @@ export default function BankInfo() {
             + Adicionar um novo método de pagamento
           </motion.button>
 
-          <ConfirmDialog 
-            isOpen={deleteDialog.isOpen}
-            onClose={() => setDeleteDialog({ isOpen: false, id: null })}
-            onConfirm={() => deleteDialog.id && handleDelete(deleteDialog.id)}
-            title="Remover Conta"
-            message="Tem certeza que deseja excluir esta conta bancária? Esta ação não pode ser desfeita."
-            confirmText="Sim, Remover"
-            cancelText="Cancelar"
-            variant="danger"
-          />
-
           {/* Microsoft Standard Terms/Info Section */}
           <div className="mt-16 pt-10 border-t border-[#e1e1e1] space-y-6">
             <div className="space-y-4">
@@ -139,7 +148,6 @@ export default function BankInfo() {
                 As informações da sua conta bancária são armazenadas de forma segura e criptografada. A <strong>Microsoft Cloud platform Net</strong> segue os padrões globais de conformidade financeira para garantir que suas transações sejam sempre protegidas.
               </p>
             </div>
-            
           </div>
         </div>
       </div>

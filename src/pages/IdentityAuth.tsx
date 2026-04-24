@@ -226,6 +226,8 @@ export default function IdentityAuth() {
                   className="hidden" 
                   accept="image/*"
                   onChange={(e) => handleFileChange(e, 'frente')}
+                  title="Foto da Frente do BI"
+                  aria-label="Carregar foto da frente do BI"
                 />
                 <input 
                   type="file" 
@@ -233,6 +235,8 @@ export default function IdentityAuth() {
                   className="hidden" 
                   accept="image/*"
                   onChange={(e) => handleFileChange(e, 'verso')}
+                  title="Foto do Verso do BI"
+                  aria-label="Carregar foto do verso do BI"
                 />
                 
                 <div 
