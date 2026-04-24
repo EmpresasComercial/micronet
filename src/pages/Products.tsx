@@ -1,13 +1,38 @@
 import React from 'react';
 import { ReceiptText } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { products } from '../constants/products';
 import { useLanguage } from '../contexts/LanguageContext';
 import { ProductCard } from './Products/components/ProductCard';
+import { supabase } from '../lib/supabase';
 
 export default function Products() {
   const navigate = useNavigate();
   const { t } = useLanguage();
+  const [products, setProducts] = React.useState<any[]>([]);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const { data, error } = await supabase.rpc('get_available_products_mcpn');
+        if (error) throw error;
+        setProducts(data || []);
+      } catch (err) {
+        console.error('Erro ao buscar produtos:', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProducts();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[50vh]">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-ms-blue"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-4 max-w-2xl mx-auto">

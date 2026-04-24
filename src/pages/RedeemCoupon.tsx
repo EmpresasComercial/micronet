@@ -32,13 +32,13 @@ export default function RedeemCoupon() {
     
     try {
       const { data, error } = await supabase.rpc('redeem_coupon_mcpn', {
-        p_coupon_code: coupon
+        p_code: coupon
       });
 
       if (error) throw error;
 
       if (data.success) {
-        showToast(`Sucesso! Você recebeu ${data.amount} Kz de bônus.`, 'success');
+        showToast(data.message, 'success');
         navigate('/perfil');
       } else {
         showToast(data.message, 'error');
@@ -75,31 +75,33 @@ export default function RedeemCoupon() {
           animate={{ opacity: 1, y: 0 }}
           className="bg-white border border-[#e1e1e1] p-8 rounded-sm shadow-sm"
         >
-          <form onSubmit={handleSubmit} className="space-y-8">
-            <div>
-              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Código do Cupom</label>
-              <div className="relative">
-                <input
-                  type="text"
-                  className="input-field text-xl font-bold tracking-[0.3em] text-center h-16 border-ms-blue/30"
-                  placeholder="EXEM-PLO20"
-                  value={coupon}
-                  onChange={handleCouponChange}
-                  maxLength={15}
-                />
-                <Ticket className="absolute left-4 top-1/2 -translate-y-1/2 text-ms-blue opacity-20" size={24} />
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-4">
+              <div>
+                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Código do Cupom</label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    className="input-field pr-10"
+                    placeholder="Introduza o código"
+                    value={coupon}
+                    onChange={handleCouponChange}
+                    maxLength={20}
+                  />
+                  <Ticket className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-300" size={16} />
+                </div>
+              </div>
+
+              <div className="bg-purple-50/50 border border-purple-100 p-6 rounded-sm flex items-start space-x-4">
+                <Sparkles className="text-purple-600 shrink-0" size={20} />
+                <p className="text-[11px] text-purple-900 font-medium leading-relaxed">
+                  Cada código pode ser usado apenas uma vez por conta. Verifique a validade com o suporte oficial.
+                </p>
               </div>
             </div>
 
-            <div className="bg-purple-50/50 border border-purple-100 p-6 rounded-sm flex items-start space-x-4">
-              <Sparkles className="text-purple-600 shrink-0" size={20} />
-              <p className="text-[11px] text-purple-900 font-medium leading-relaxed">
-                Cada código pode ser usado apenas uma vez por conta. Verifique a validade com o suporte oficial.
-              </p>
-            </div>
-
             <div className="pt-4 space-y-4">
-              <Button type="submit" className="w-full h-14" isLoading={isSubmitting}>
+              <Button type="submit" className="w-full h-[45px]" isLoading={isSubmitting}>
                 Resgatar Agora
               </Button>
               <div className="flex items-center justify-center space-x-2 text-[10px] text-gray-400 font-bold uppercase tracking-widest">

@@ -2,11 +2,9 @@ import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ChevronLeft, Globe, CheckCircle2 } from 'lucide-react';
 import { motion } from 'motion/react';
-import { products } from '../constants/products';
-import { useToast } from '../components/Toast';
-import { Button } from '../components/Button';
 import { useLanguage } from '../contexts/LanguageContext';
 import { supabase } from '../lib/supabase';
+import { Monitor, ShieldCheck, Zap } from 'lucide-react';
 
 export default function ProductDetails() {
   const { id } = useParams<{ id: string }>();
@@ -14,21 +12,27 @@ export default function ProductDetails() {
   const { showToast } = useToast();
   const { language, t } = useLanguage();
   const [isBuying, setIsBuying] = useState(false);
+  const [product, setProduct] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
-  const product = products.find((p) => p.id === id);
-
-  if (!product) {
-    return (
-      <div className="min-h-screen flex items-center justify-center p-4">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">{t('products.not_found')}</h2>
-          <button onClick={() => navigate('/produtos')} className="ms-btn-primary">
-            {t('products.back_to_list')}
-          </button>
-        </div>
-      </div>
-    );
-  }
+  React.useEffect(() => {
+    async function fetchProduct() {
+      try {
+        const { data, error } = await supabase.rpc('get_product_details_mcpn', {
+          p_id: id
+        });
+        if (error) throw error;
+        if (data && data.length > 0) {
+          setProduct(data[0]);
+        }
+      } catch (err) {
+        console.error('Erro ao buscar produto:', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProduct();
+  }, [id]);
 
   const handleBuy = async () => {
     setIsBuying(true);
@@ -52,9 +56,40 @@ export default function ProductDetails() {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-ms-blue"></div>
+      </div>
+    );
+  }
+
+  if (!product) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-4">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-4">{t('products.not_found')}</h2>
+          <button onClick={() => navigate('/produtos')} className="ms-btn-primary">
+            {t('products.back_to_list')}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const getIcon = (key: string) => {
+    switch (key) {
+      case 'product.win7': return <Monitor className="w-10 h-10 text-blue-500" />;
+      case 'product.win8': return <ShieldCheck className="w-10 h-10 text-blue-600" />;
+      case 'product.win10': return <Zap className="w-10 h-10 text-blue-700" />;
+      case 'product.win11': return <Monitor className="w-10 h-10 text-blue-800" />;
+      default: return <Monitor className="w-10 h-10 text-gray-500" />;
+    }
+  };
+
   const today = new Date();
   const expirationDate = new Date();
-  expirationDate.setDate(today.getDate() + product.durationDays);
+  expirationDate.setDate(today.getDate() + (product.duracao_dias || product.duration_dias));
 
   const features = [
     t(`${product.key}.feat1`),
@@ -93,7 +128,7 @@ export default function ProductDetails() {
               className="aspect-square border border-black/10 bg-white shadow-[0_1px_3px_rgba(0,0,0,0.05)] flex items-center justify-center mb-4"
             >
               <div className="transform scale-125">
-                {product.icon}
+                {getIcon(product.key)}
               </div>
             </motion.div>
 
@@ -138,13 +173,13 @@ export default function ProductDetails() {
                   <div>
                     <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">{t('products.daily_income')}</p>
                     <p className="text-xl font-bold text-gray-800">
-                      {(product.priceValue * 0.05).toLocaleString('pt-BR')} Kz / {t('product.unit.day')}
+                      {Number(product.renda_diaria).toLocaleString('pt-BR')} Kz / {t('product.unit.day')}
                     </p>
                   </div>
                   <div>
                     <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">{t('products.duration')}</p>
                     <p className="text-xl font-bold text-gray-800">
-                      {product.durationDays} {product.durationDays === 1 ? t('product.unit.day') : t('product.unit.days')}
+                      {product.duracao_dias} {product.duracao_dias === 1 ? t('product.unit.day') : t('product.unit.days')}
                     </p>
                   </div>
                 </div>
@@ -152,7 +187,7 @@ export default function ProductDetails() {
                 <div className="pt-2 border-t border-gray-300">
                   <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">{t('products.total_price')}</p>
                   <p className="text-3xl font-black text-[#1b1b1b]">
-                    {product.priceValue.toLocaleString('pt-BR')} Kz
+                    {Number(product.preco).toLocaleString('pt-BR')} Kz
                   </p>
                 </div>
               </div>
