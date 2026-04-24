@@ -2,13 +2,20 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ShieldCheck } from 'lucide-react';
 import { motion } from 'motion/react';
+import { ConfirmDialog } from '../components/ConfirmDialog';
 import { supabase } from '../lib/supabase';
+import { useToast } from '../components/Toast';
 
 export default function BankInfo() {
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   const [linkedBanks, setLinkedBanks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleteDialog, setDeleteDialog] = useState<{ isOpen: boolean; id: string | null }>({
+    isOpen: false,
+    id: null
+  });
 
   useEffect(() => {
     async function fetchBanks() {
@@ -33,20 +40,18 @@ export default function BankInfo() {
   };
 
   const handleDelete = async (id: string) => {
-    if (window.confirm('Tem certeza que deseja excluir esta conta bancária?')) {
-      try {
-        const { data, error } = await supabase.rpc('remove_bank_account_mcpn', {
-          p_id: id
-        });
-        
-        if (error) throw error;
-        if (!data.success) throw new Error(data.message);
-        
-        setLinkedBanks(prev => prev.filter(b => b.id !== id));
-        alert('Conta excluída com sucesso!');
-      } catch (err: any) {
-        alert('Erro ao excluir: ' + err.message);
-      }
+    try {
+      const { data, error } = await supabase.rpc('remove_bank_account_mcpn', {
+        p_id: id
+      });
+      
+      if (error) throw error;
+      if (!data.success) throw new Error(data.message);
+      
+      setLinkedBanks(prev => prev.filter(b => b.id !== id));
+      showToast('Conta excluída com sucesso!', 'success');
+    } catch (err: any) {
+      showToast('Erro ao excluir: ' + err.message, 'error');
     }
   };
 
@@ -94,7 +99,7 @@ export default function BankInfo() {
 
                   <div className="pt-4 flex flex-col space-y-3">
                     <button 
-                      onClick={() => handleDelete(bank.id)}
+                      onClick={() => setDeleteDialog({ isOpen: true, id: bank.id })}
                       className="text-sm text-[#a4262c] font-semibold hover:underline flex items-center justify-start"
                     >
                       Remover este método de pagamento
@@ -115,6 +120,17 @@ export default function BankInfo() {
             + Adicionar um novo método de pagamento
           </motion.button>
 
+          <ConfirmDialog 
+            isOpen={deleteDialog.isOpen}
+            onClose={() => setDeleteDialog({ isOpen: false, id: null })}
+            onConfirm={() => deleteDialog.id && handleDelete(deleteDialog.id)}
+            title="Remover Conta"
+            message="Tem certeza que deseja excluir esta conta bancária? Esta ação não pode ser desfeita."
+            confirmText="Sim, Remover"
+            cancelText="Cancelar"
+            variant="danger"
+          />
+
           {/* Microsoft Standard Terms/Info Section */}
           <div className="mt-16 pt-10 border-t border-[#e1e1e1] space-y-6">
             <div className="space-y-4">
@@ -124,20 +140,6 @@ export default function BankInfo() {
               </p>
             </div>
             
-            <div className="space-y-4">
-              <h4 className="text-sm font-semibold text-[#2b2b2b]">Informações adicionais</h4>
-              <div className="grid grid-cols-1 gap-3">
-                <button className="text-xs text-[#0067b8] hover:underline flex items-center">Contrato de Serviços da Microsoft</button>
-                <button className="text-xs text-[#0067b8] hover:underline flex items-center">Política de Privacidade de dados financeiros</button>
-                <button className="text-xs text-[#0067b8] hover:underline flex items-center">Gerenciar permissões de faturamento</button>
-              </div>
-            </div>
-            
-            <div className="pt-4">
-              <p className="text-[10px] text-gray-400 uppercase tracking-widest font-bold">
-                ID da Entidade: MS-SEC-8842-ANG
-              </p>
-            </div>
           </div>
         </div>
       </div>
