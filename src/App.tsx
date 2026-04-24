@@ -41,6 +41,7 @@ import HelpFAQ from './pages/HelpFAQ';
 import SupportFeedback from './pages/SupportFeedback';
 import SocialProof from './pages/SocialProof';
 import ConfirmarRecarga from './pages/ConfirmarRecarga';
+import { ConnectivityOverlay } from './components/ConnectivityOverlay';
 
 export default function App() {
   return (
@@ -48,6 +49,7 @@ export default function App() {
       <BrowserRouter>
         <ToastProvider>
           <AuthProvider> {/* O Escudo Invisível envolve tudo */}
+            <ConnectivityOverlay />
             <Routes>
               {/* 🔓 Rotas Públicas */}
               <Route path="/login" element={<Login />} />
