@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ReceiptText, Laptop, Server, Cpu, ExternalLink, Download } from 'lucide-react';
 import { motion } from 'motion/react';
 import { supabase } from '../lib/supabase';
+import { useLanguage } from '../contexts/LanguageContext';
 import { useEffect, useState } from 'react';
 import { cn } from '../lib/utils';
 

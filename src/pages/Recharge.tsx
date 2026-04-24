@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, Landmark, Info, ShieldCheck, CreditCard, CheckCircle2 } from 'lucide-react';
-import { motion } from 'motion/react';
+import { ChevronLeft, Landmark, Info, ShieldCheck, CreditCard, CheckCircle2, X, ChevronDown } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 import { useToast } from '../components/Toast';
 import { Button } from '../components/Button';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -14,23 +14,41 @@ export default function Recharge() {
   const { t } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [amount, setAmount] = useState('');
+  const [banks, setBanks] = useState<any[]>([]);
+  const [selectedBank, setSelectedBank] = useState<any>(null);
+  const [showBankSelector, setShowBankSelector] = useState(false);
+
+  React.useEffect(() => {
+    async function fetchBanks() {
+      const { data, error } = await supabase
+        .from('bancos_arrecadacao_mcpn')
+        .select('*');
+      if (!error && data) setBanks(data);
+    }
+    fetchBanks();
+  }, []);
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Sanitização: Apenas números
     const val = e.target.value.replace(/\D/g, '');
     setAmount(val);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
+  const handleContinue = () => {
     const rechargeAmount = parseInt(amount);
-
     if (!amount || rechargeAmount < 9000) {
       showToast('O valor mínimo de recarga é 9.000 Kz.', 'error');
       return;
     }
+    setShowBankSelector(true);
+  };
 
+  const handleSubmit = async () => {
+    if (!selectedBank) {
+      showToast('Por favor, selecione um banco para depósito.', 'error');
+      return;
+    }
+
+    const rechargeAmount = parseInt(amount);
     setIsSubmitting(true);
     
     try {
@@ -41,8 +59,8 @@ export default function Recharge() {
       if (error) throw error;
 
       if (data.success) {
-        // Redireciona para a página de confirmação (onde o usuário envia o comprovativo)
-        navigate(`/confirmar-recarga?id=${data.recharge_id}&amount=${rechargeAmount}`);
+        // Passamos o ID do banco selecionado para a próxima página
+        navigate(`/confirmar-recarga?id=${data.recharge_id}&amount=${rechargeAmount}&bankId=${selectedBank.id}`);
       } else {
         showToast(data.message, 'error');
       }
@@ -59,7 +77,6 @@ export default function Recharge() {
         <button 
           onClick={() => navigate('/home')} 
           className="p-2 -ml-2 text-gray-600 hover:text-ms-blue transition-colors"
-          aria-label="Voltar para a home"
           title="Voltar"
         >
           <ChevronLeft className="w-6 h-6" />
@@ -78,7 +95,7 @@ export default function Recharge() {
           animate={{ opacity: 1, y: 0 }}
           className="bg-white border border-[#e1e1e1] p-8 rounded-sm shadow-sm"
         >
-          <form onSubmit={handleSubmit} className="space-y-8">
+          <div className="space-y-8">
             <div>
               <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Montante (AOA)</label>
               <div className="relative">
@@ -116,26 +133,109 @@ export default function Recharge() {
               </div>
             </div>
 
-            <div className="bg-blue-50/50 border border-blue-100 p-6 rounded-sm space-y-3">
-              <div className="flex items-center space-x-2 text-ms-blue">
-                <Info size={16} />
-                <span className="text-xs font-bold uppercase tracking-wider">Instruções</span>
-              </div>
-              <p className="text-[11px] text-gray-600 leading-relaxed font-medium">
-                Após clicar em "Continuar", você receberá os dados bancários para a transferência. Guarde o comprovativo para validação.
-              </p>
-            </div>
+            {/* Selector de Bancos (Modal Estilo Microsoft) */}
+            <AnimatePresence>
+              {showBankSelector && (
+                <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/40 backdrop-blur-sm">
+                  <motion.div 
+                    initial={{ opacity: 0, y: 100 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 100 }}
+                    className="bg-white w-full max-w-lg rounded-t-xl sm:rounded-sm shadow-2xl overflow-hidden"
+                  >
+                    <div className="p-4 border-b border-gray-100 flex items-center justify-between bg-[#fbfbfb]">
+                      <h3 className="text-xs font-bold uppercase tracking-widest text-gray-500">Selecionar Instituição</h3>
+                      <button 
+                        onClick={() => setShowBankSelector(false)} 
+                        className="p-2 text-gray-400 hover:text-gray-600"
+                        title="Fechar seletor"
+                        aria-label="Fechar seletor de bancos"
+                      >
+                        <X size={20} />
+                      </button>
+                    </div>
+                    
+                    <div className="max-h-[60vh] overflow-y-auto p-2 custom-scrollbar">
+                      {banks.map(bank => (
+                        <div 
+                          key={bank.id}
+                          onClick={() => {
+                            setSelectedBank(bank);
+                            setShowBankSelector(false);
+                          }}
+                          className={cn(
+                            "p-5 rounded-sm cursor-pointer transition-all flex items-center justify-between mb-1 group",
+                            selectedBank?.id === bank.id 
+                              ? "bg-blue-50/50 border border-ms-blue/20" 
+                              : "hover:bg-gray-50 border border-transparent"
+                          )}
+                        >
+                          <div className="flex items-center space-x-4">
+                            <div className={cn(
+                              "w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-xs shadow-sm",
+                              selectedBank?.id === bank.id ? "bg-ms-blue" : "bg-gray-200"
+                            )}>
+                              {bank.nome_banco.charAt(0)}
+                            </div>
+                            <div>
+                              <p className="text-[13px] font-bold text-gray-800 uppercase tracking-tight">{bank.nome_banco}</p>
+                              <p className="text-[10px] text-gray-400 font-medium">Oficial Microsoft Node</p>
+                            </div>
+                          </div>
+                          {selectedBank?.id === bank.id && (
+                            <CheckCircle2 className="text-ms-blue w-5 h-5" />
+                          )}
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="p-4 bg-gray-50 border-t border-gray-100">
+                      <p className="text-[10px] text-center text-gray-400 font-bold uppercase tracking-widest">Escolha o banco para depósito</p>
+                    </div>
+                  </motion.div>
+                </div>
+              )}
+            </AnimatePresence>
 
             <div className="pt-4 space-y-4">
-              <Button type="submit" className="w-full h-14" isLoading={isSubmitting}>
-                Continuar para Pagamento
-              </Button>
+              {/* Campo que abre o seletor */}
+              <div className="space-y-1">
+                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest">Instituição de Depósito</label>
+                <button 
+                  type="button"
+                  onClick={() => setShowBankSelector(true)}
+                  className="w-full h-14 bg-[#fbfbfb] border border-[#e1e1e1] rounded-sm px-4 flex items-center justify-between text-left hover:border-ms-blue transition-colors group"
+                >
+                  <div className="flex items-center space-x-3">
+                    <Landmark size={18} className={selectedBank ? "text-ms-blue" : "text-gray-300"} />
+                    <span className={cn(
+                      "text-sm font-medium",
+                      selectedBank ? "text-gray-800" : "text-gray-400"
+                    )}>
+                      {selectedBank ? selectedBank.nome_banco : "Selecionar Instituição"}
+                    </span>
+                  </div>
+                  <ChevronDown size={18} className="text-gray-300 group-hover:text-ms-blue" />
+                </button>
+              </div>
+
+              <div className="pt-4">
+                <Button 
+                  onClick={handleSubmit} 
+                  className="w-full h-14" 
+                  isLoading={isSubmitting}
+                  disabled={!selectedBank || !amount}
+                >
+                  Continuar para Pagamento
+                </Button>
+              </div>
+              
               <div className="flex items-center justify-center space-x-2 text-[10px] text-gray-400 font-bold uppercase tracking-widest">
                 <ShieldCheck size={14} className="text-green-600" />
                 <span>Transação Segura Microsoft</span>
               </div>
             </div>
-          </form>
+          </div>
         </motion.div>
       </div>
     </div>
