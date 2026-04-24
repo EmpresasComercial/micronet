@@ -20,6 +20,7 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({
   recharge,
   profit,
   withdrawn,
+  teamCommission,
   currency,
   setCurrency,
   onRecharge,
@@ -68,9 +69,9 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({
             <span className="text-[10px] text-gray-400 uppercase font-bold tracking-tight mb-0.5">{t('profile.total_withdrawn')}</span>
             <span className="font-bold text-green-600">{formatCurrency(withdrawn, currency)}</span>
           </div>
-          <div className="flex flex-col text-sm opacity-40">
-            <span className="text-[10px] text-gray-400 uppercase font-bold tracking-tight mb-0.5 italic">Status Verificado</span>
-            <span className="text-[11px] font-bold text-gray-600">Conectado</span>
+          <div className="flex flex-col text-sm">
+            <span className="text-[10px] text-gray-400 uppercase font-bold tracking-tight mb-0.5">Comissões de Equipe</span>
+            <span className="font-bold text-[#e81123]">{formatCurrency(teamCommission, currency)}</span>
           </div>
         </div>
         

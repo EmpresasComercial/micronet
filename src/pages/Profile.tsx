@@ -25,13 +25,24 @@ import { useEffect } from 'react';
 export default function Profile() {
   const navigate = useNavigate();
   const { t } = useLanguage();
-  const [currency, setCurrency] = useState<CurrencyType>('KZ');
+  
+  // Persistência de Moeda
+  const [currency, setCurrencyState] = useState<CurrencyType>(() => {
+    const saved = localStorage.getItem('app_currency') as CurrencyType;
+    return (saved === 'KZ' || saved === 'USDT') ? saved : 'KZ';
+  });
+
+  const setCurrency = (c: CurrencyType) => {
+    setCurrencyState(c);
+    localStorage.setItem('app_currency', c);
+  };
 
   const [accountData, setAccountData] = useState({
     saldo_disponivel: 0,
     lucro_acumulado: 0,
     total_recarregado: 0,
     total_retirado: 0,
+    total_comissao_equipe: 0,
     telefone: ''
   });
 
@@ -88,8 +99,8 @@ export default function Profile() {
     { name: t('profile.history'), icon: ScrollText, path: '/historico-atividades' },
     { name: t('profile.coupons'), icon: Ticket, path: '/resgate' },
     { name: t('profile.about'), icon: Globe, path: '/sobre-microsoft' },
-    { name: t('nav.home'), icon: Home, path: '/home' },
     { name: t('profile.settings'), icon: Settings2, path: '/configuracoes-conta' },
+    { name: t('nav.home'), icon: Home, path: '/home' }, // Mover para o fim
   ];
 
   return (
@@ -109,6 +120,7 @@ export default function Profile() {
         recharge={accountData.total_recarregado}
         profit={accountData.lucro_acumulado}
         withdrawn={accountData.total_retirado}
+        teamCommission={accountData.total_comissao_equipe}
         currency={currency}
         setCurrency={setCurrency}
         onRecharge={() => navigate('/recarregar')}

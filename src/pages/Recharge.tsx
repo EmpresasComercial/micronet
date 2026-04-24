@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, Landmark, Info, ShieldCheck, CreditCard } from 'lucide-react';
+import { ChevronLeft, Landmark, Info, ShieldCheck, CreditCard, CheckCircle2 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useToast } from '../components/Toast';
 import { Button } from '../components/Button';
 import { useLanguage } from '../contexts/LanguageContext';
 import { supabase } from '../lib/supabase';
+import { cn } from '../lib/utils';
 
 export default function Recharge() {
   const navigate = useNavigate();
@@ -97,9 +98,19 @@ export default function Recharge() {
                     key={val}
                     type="button"
                     onClick={() => setAmount(val.toString())}
-                    className="p-3 border border-gray-200 rounded-sm text-xs font-bold hover:bg-gray-50 transition-colors"
+                    className={cn(
+                      "p-3 border rounded-sm text-xs font-bold transition-all relative flex items-center justify-center",
+                      amount === val.toString() 
+                        ? "border-[#e81123] bg-red-50/30 text-[#e81123]" 
+                        : "border-gray-200 text-gray-700 hover:bg-gray-50"
+                    )}
                   >
-                    {val.toLocaleString()} Kz
+                    {val.toLocaleString()}
+                    {amount === val.toString() && (
+                      <div className="absolute top-0 right-0 bg-[#e81123] text-white p-0.5 rounded-bl-sm">
+                        <CheckCircle2 size={8} />
+                      </div>
+                    )}
                   </button>
                 ))}
               </div>

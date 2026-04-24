@@ -22,8 +22,17 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index, onBuy 
       className="ms-card p-6 flex flex-col h-full hover:shadow-lg hover:border-ms-blue/30 transition-all active:scale-[0.99]"
     >
       <div className="flex items-start justify-between mb-4">
-        <div className="bg-ms-bg p-4 rounded-lg">
-          {product.icon}
+        <div className="bg-ms-bg w-20 h-20 shrink-0 overflow-hidden border border-black/5 flex items-center justify-center">
+          {product.imagem_url ? (
+            <img 
+              src={product.imagem_url} 
+              alt={t(`${product.key}.name`)} 
+              className="w-full h-full object-cover mix-blend-multiply opacity-90"
+              referrerPolicy="no-referrer"
+            />
+          ) : (
+            product.icon
+          )}
         </div>
         <div className="text-right">
           <span className="product-badge">{t('products.active_badge')}</span>

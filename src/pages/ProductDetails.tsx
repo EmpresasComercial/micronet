@@ -122,16 +122,25 @@ export default function ProductDetails() {
 
       <main className="max-w-4xl mx-auto px-4 mt-6">
         <div className="flex flex-col md:flex-row gap-6 items-start">
-          {/* Left: Product Icon (Smaller & Sharp) */}
-          <div className="w-full md:w-56 flex-shrink-0">
+          {/* Left: Product Image (Reduced Size) */}
+          <div className="w-full md:w-48 flex-shrink-0">
             <motion.div 
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="aspect-square border border-black/10 bg-white shadow-[0_1px_3px_rgba(0,0,0,0.05)] flex items-center justify-center mb-4"
+              className="aspect-square border border-black/10 bg-white shadow-[0_1px_3px_rgba(0,0,0,0.05)] flex items-center justify-center mb-4 overflow-hidden"
             >
-              <div className="transform scale-125">
-                {getIcon(product.key)}
-              </div>
+              {product.imagem_url ? (
+                <img 
+                  src={product.imagem_url} 
+                  alt={product.nome} 
+                  className="w-full h-full object-cover mix-blend-multiply opacity-90"
+                  referrerPolicy="no-referrer"
+                />
+              ) : (
+                <div className="transform scale-110">
+                  {getIcon(product.key)}
+                </div>
+              )}
             </motion.div>
 
             <div className="bg-[#f2f2f2] p-3 text-[11px] space-y-3">
@@ -139,13 +148,9 @@ export default function ProductDetails() {
                 <p className="text-gray-400 font-bold uppercase mb-0.5">{t('products.os_version')}</p>
                 <p className="text-gray-800 font-semibold">{t(`${product.key}.version`)}</p>
               </div>
-              <div className="border-b border-gray-300 pb-2">
-                <p className="text-gray-400 font-bold uppercase mb-0.5">{t('products.cloud_space')}</p>
-                <p className="text-gray-800 font-semibold">{product.size}</p>
-              </div>
               <div>
-                <p className="text-gray-400 font-bold uppercase mb-0.5">{t('products.product_id')}</p>
-                <p className="text-gray-800 font-semibold">MS-{product.id}-CLOUD</p>
+                <p className="text-gray-400 font-bold uppercase mb-0.5">{t('products.cloud_space')}</p>
+                <p className="text-gray-800 font-semibold">{product.storage_size || product.size}</p>
               </div>
             </div>
           </div>
