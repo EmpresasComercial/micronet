@@ -100,16 +100,22 @@ export default function PurchaseHistory() {
 
                 <div className="flex items-center space-x-4">
                   <button 
-                    onClick={() => alert(`${t('history.manage_server')}: ${item.produto_nome}`)}
+                    onClick={() => {
+                      if (item.url_download_setup) {
+                        window.open(item.url_download_setup, '_blank');
+                      } else {
+                        alert('Link de download não disponível para esta licença.');
+                      }
+                    }}
                     className="text-ms-blue text-[10px] font-bold uppercase tracking-wider hover:underline flex items-center"
                   >
-                    <ExternalLink className="w-3 h-3 mr-1" />
+                    <Download className="w-3 h-3 mr-1" />
                     {t('history.manage_server')}
                   </button>
                   <span className="text-gray-200">|</span>
                   <div className="flex items-center text-gray-400 text-[10px] font-bold uppercase tracking-wider">
-                    <Download className="w-3 h-3 mr-1" />
-                    {5 + (idx % 3)} {t('history.backup_iso')}
+                    <div className="w-1 h-1 rounded-full bg-gray-300 mr-1.5" />
+                    {item.storage_size || '---'} {t('history.backup_iso')}
                   </div>
                 </div>
               </div>
