@@ -88,33 +88,45 @@ export default function Home() {
           </div>
           
           {/* Automatic Carousel */}
-          <div className="relative h-[200px] w-full overflow-hidden rounded-sm border border-[#e1e1e1] bg-[#f2f2f2]">
+          <div className="relative h-[240px] w-full overflow-hidden rounded-sm border border-[#e1e1e1] bg-[#f2f2f2]">
             <AnimatePresence mode="wait">
-              <motion.img
+              <motion.div
                 key={currentIndex}
-                src={CAROUSEL_IMAGES[currentIndex]}
-                initial={{ x: 300, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                exit={{ x: -300, opacity: 0 }}
-                transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-                className="absolute inset-0 h-full w-full object-contain"
-                referrerPolicy="no-referrer"
-                alt={`Slide ${currentIndex + 1}`}
-              />
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="absolute inset-0 w-full h-full"
+              >
+                {/* Blurred Background to fill empty area */}
+                <img 
+                  src={CAROUSEL_IMAGES[currentIndex]} 
+                  className="absolute inset-0 w-full h-full object-cover blur-xl opacity-30 scale-110" 
+                  alt=""
+                />
+                
+                {/* Main Uncropped Image */}
+                <motion.img
+                  src={CAROUSEL_IMAGES[currentIndex]}
+                  initial={{ x: 50, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  exit={{ x: -50, opacity: 0 }}
+                  transition={{ type: 'spring', stiffness: 100, damping: 20 }}
+                  className="relative z-10 h-full w-full object-contain"
+                  referrerPolicy="no-referrer"
+                  alt={`Slide ${currentIndex + 1}`}
+                />
+              </motion.div>
             </AnimatePresence>
             
             {/* Dots Indicator */}
-            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex space-x-1.5 z-10">
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex space-x-1.5 z-20">
               {CAROUSEL_IMAGES.map((_, i) => (
                 <div 
                   key={i} 
-                  className={`h-1 rounded-full transition-all ${i === currentIndex ? 'w-4 bg-white' : 'w-1 bg-white/50'}`}
+                  className={`h-1 rounded-full transition-all ${i === currentIndex ? 'w-4 bg-white shadow-sm' : 'w-1 bg-white/50'}`}
                 />
               ))}
             </div>
-            
-            {/* Overlay Gradient */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
           </div>
         </div>
 
