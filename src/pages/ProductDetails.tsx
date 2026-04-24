@@ -102,42 +102,35 @@ export default function ProductDetails() {
 
   return (
     <div className="min-h-screen bg-white pb-10">
-      {/* Header / Sub-nav */}
-      <div className="border-b border-gray-200">
-        <div className="max-w-4xl mx-auto px-4 h-11 flex items-center justify-between text-[11px] font-bold text-gray-500 uppercase tracking-tight">
-          <div className="flex items-center space-x-6">
-            <button onClick={() => navigate('/produtos')} className="flex items-center hover:text-ms-blue transition-colors">
-              <ChevronLeft className="w-4 h-4 mr-1" />
-              Microsoft Cloud platform Net
-            </button>
-            <span className="text-gray-900 border-b-2 border-ms-blue h-11 flex items-center">{t('products.overview')}</span>
-            <span className="text-gray-400 cursor-pointer h-11 flex items-center">{t('products.specs')}</span>
-          </div>
-          <div className="hidden sm:flex items-center space-x-4">
-            <Globe className="w-3 h-3" />
-            <span>{language === 'pt' ? 'Português' : language === 'en' ? 'English' : 'Français'}</span>
-          </div>
-        </div>
-      </div>
+      <header className="bg-white p-4 flex items-center border-b border-[#e1e1e1] sticky top-0 z-50">
+        <button 
+          onClick={() => navigate('/produtos')} 
+          className="p-2 -ml-2 text-[#616161]"
+          aria-label="Voltar"
+          title="Voltar"
+        >
+          <ChevronLeft className="w-6 h-6" />
+        </button>
+        <h1 className="text-sm font-semibold ml-2 text-[#2b2b2b]">Detalhes do Produto</h1>
+      </header>
 
-      <main className="max-w-4xl mx-auto px-4 mt-6">
+      <main className="max-w-4xl mx-auto px-4 mt-2">
         <div className="flex flex-col md:flex-row gap-6 items-start">
-          {/* Left: Product Image (Reduced Size) */}
-          <div className="w-full md:w-48 flex-shrink-0">
+          <div className="w-full md:w-48 flex-shrink-0 -mx-4 md:mx-0">
             <motion.div 
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="h-32 md:h-48 border border-black/10 bg-white shadow-[0_1px_3px_rgba(0,0,0,0.05)] flex items-center justify-center overflow-hidden rounded-sm"
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="h-40 md:h-48 bg-white border-b md:border border-gray-100 flex items-center justify-center overflow-hidden"
             >
               {product.imagem_url ? (
                 <img 
                   src={product.imagem_url} 
                   alt={product.nome} 
-                  className="w-full h-full object-contain mix-blend-multiply opacity-90 p-2"
+                  className="w-full h-full object-contain mix-blend-multiply opacity-90 p-4"
                   referrerPolicy="no-referrer"
                 />
               ) : (
-                <div className="transform scale-110">
+                <div className="transform scale-[2]">
                   {getIcon(product.key)}
                 </div>
               )}
@@ -207,10 +200,6 @@ export default function ProductDetails() {
                 >
                   {t('products.btn_buy')}
                 </Button>
-                <p className="text-[9px] text-center text-gray-400 leading-tight">
-                  {t('products.secure_payment')} <br />
-                  {t('products.tech_support_24h')}
-                </p>
               </div>
             </div>
           </div>

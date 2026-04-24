@@ -219,10 +219,6 @@ export default function Recharge() {
               >
                 {selectedBankId ? "Avançar" : "Continuar para pagamento"}
               </Button>
-              <div className="flex items-center justify-center space-x-2 text-[10px] text-gray-400 font-bold uppercase tracking-widest">
-                <ShieldCheck size={14} className="text-green-600" />
-                <span>Transação Segura Microsoft</span>
-              </div>
             </div>
           </div>
         </motion.div>

@@ -76,7 +76,7 @@ export default function AccountSettings() {
             
             <div className="flex-1 text-center sm:text-left">
               <h3 className="text-2xl font-semibold text-[#2b2b2b] mb-1">
-                {loading ? t('common.loading') : `${t('profile.user_cloud')} ${profile?.phone || ''}`}
+                {loading ? t('common.loading') : t('profile.user_cloud')}
               </h3>
               
               <div className="flex flex-col space-y-1 mb-6">

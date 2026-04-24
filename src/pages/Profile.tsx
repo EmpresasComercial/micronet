@@ -100,7 +100,6 @@ export default function Profile() {
     { name: t('profile.coupons'), icon: Ticket, path: '/resgate' },
     { name: t('profile.about'), icon: Globe, path: '/sobre-microsoft' },
     { name: t('profile.settings'), icon: Settings2, path: '/configuracoes-conta' },
-    { name: t('nav.home'), icon: Home, path: '/home' }, // Mover para o fim
   ];
 
   return (

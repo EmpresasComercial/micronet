@@ -150,10 +150,6 @@ export default function Withdraw() {
               <Button type="submit" className="w-full h-14 text-base" isLoading={isSubmitting}>
                 Solicitar Levantamento
               </Button>
-              <div className="flex items-center justify-center space-x-2 text-[10px] text-gray-400 font-bold uppercase tracking-widest">
-                <ShieldCheck size={14} className="text-ms-blue" />
-                <span>Processamento em até 24h</span>
-              </div>
             </div>
           </form>
         </motion.div>

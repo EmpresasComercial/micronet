@@ -163,11 +163,11 @@ export default function RechargeUSDT() {
                     </p>
                   </div>
 
-                  <div className="bg-blue-50/50 border border-blue-100 p-5 rounded-sm">
-                    <p className="text-[11px] text-gray-600 leading-relaxed font-medium">
-                      <span className="text-ms-blue font-bold">Câmbio Atual:</span> 1 USDT = {usdtConfig.rate.toLocaleString()} Kz
+                  <div className="bg-[#f3f2f1] border border-[#e1e1e1] p-5 rounded-sm">
+                    <p className="text-[11px] text-[#323130] leading-relaxed font-medium">
+                      <span className="text-[#0067b8] font-bold">Câmbio Atual:</span> 1 USDT = 1.100 Kz
                       <br />
-                      <span className="text-ms-blue font-bold">Total em Kz:</span> {(parseFloat(amount || '0') * usdtConfig.rate).toLocaleString()},00 Kz
+                      <span className="text-[#0067b8] font-bold">Total em Kz:</span> {(parseFloat(amount || '0') * 1100).toLocaleString('pt-BR')},00 Kz
                     </p>
                   </div>
 
