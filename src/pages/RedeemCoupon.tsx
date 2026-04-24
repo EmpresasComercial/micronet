@@ -91,23 +91,12 @@ export default function RedeemCoupon() {
                   <Ticket className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-300" size={16} />
                 </div>
               </div>
-
-              <div className="bg-purple-50/50 border border-purple-100 p-6 rounded-sm flex items-start space-x-4">
-                <Sparkles className="text-purple-600 shrink-0" size={20} />
-                <p className="text-[11px] text-purple-900 font-medium leading-relaxed">
-                  Cada código pode ser usado apenas uma vez por conta. Verifique a validade com o suporte oficial.
-                </p>
-              </div>
             </div>
 
-            <div className="pt-4 space-y-4">
+            <div className="pt-4">
               <Button type="submit" className="w-full h-[45px]" isLoading={isSubmitting}>
                 Resgatar Agora
               </Button>
-              <div className="flex items-center justify-center space-x-2 text-[10px] text-gray-400 font-bold uppercase tracking-widest">
-                <ShieldCheck size={14} className="text-ms-blue" />
-                <span>Validação em Tempo Real</span>
-              </div>
             </div>
           </form>
         </motion.div>
