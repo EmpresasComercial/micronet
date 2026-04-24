@@ -5,6 +5,8 @@ import { motion } from 'motion/react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { supabase } from '../lib/supabase';
 import { Monitor, ShieldCheck, Zap } from 'lucide-react';
+import { useToast } from '../components/Toast';
+import { Button } from '../components/Button';
 
 export default function ProductDetails() {
   const { id } = useParams<{ id: string }>();

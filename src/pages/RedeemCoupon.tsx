@@ -24,7 +24,7 @@ export default function RedeemCoupon() {
     e.preventDefault();
     
     if (!coupon || coupon.length < 5) {
-      showToast('Por favor, insira um código de cupom válido.', 'error');
+      showToast(t('coupons.error_invalid'), 'error');
       return;
     }
 
@@ -44,7 +44,7 @@ export default function RedeemCoupon() {
         showToast(data.message, 'error');
       }
     } catch (err: any) {
-      showToast(err.message || 'Erro ao resgatar cupom.', 'error');
+      showToast(err.message || t('common.error'), 'error');
     } finally {
       setIsSubmitting(false);
     }
@@ -56,18 +56,18 @@ export default function RedeemCoupon() {
         <button 
           onClick={() => navigate('/perfil')} 
           className="p-2 -ml-2 text-gray-600 hover:text-ms-blue transition-colors"
-          aria-label="Voltar para o perfil"
-          title="Voltar"
+          aria-label={t('common.back')}
+          title={t('common.back')}
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
-        <h1 className="text-sm font-semibold ml-2 text-[#2b2b2b]">Resgate de Cupom</h1>
+        <h1 className="text-sm font-semibold ml-2 text-[#2b2b2b]">{t('coupons.title')}</h1>
       </header>
 
       <div className="p-6 max-w-lg mx-auto">
         <div className="mb-10 text-left">
-          <h2 className="text-3xl font-light text-[#2b2b2b] mb-3">Ativar Bônus</h2>
-          <p className="text-sm text-[#616161]">Insira o código promocional fornecido pelo seu gerente ou nos grupos oficiais.</p>
+          <h2 className="text-3xl font-light text-[#2b2b2b] mb-3">{t('coupons.hero_title')}</h2>
+          <p className="text-sm text-[#616161]">{t('coupons.hero_sub')}</p>
         </div>
 
         <motion.div 
@@ -78,12 +78,12 @@ export default function RedeemCoupon() {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-4">
               <div>
-                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Código do Cupom</label>
+                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">{t('coupons.label')}</label>
                 <div className="relative">
                   <input
                     type="text"
                     className="input-field pr-10"
-                    placeholder="Introduza o código"
+                    placeholder={t('coupons.placeholder')}
                     value={coupon}
                     onChange={handleCouponChange}
                     maxLength={20}
@@ -95,7 +95,7 @@ export default function RedeemCoupon() {
 
             <div className="pt-4">
               <Button type="submit" className="w-full h-[45px]" isLoading={isSubmitting}>
-                Resgatar Agora
+                {t('coupons.btn')}
               </Button>
             </div>
           </form>

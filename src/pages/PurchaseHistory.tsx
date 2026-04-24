@@ -8,6 +8,7 @@ import { cn } from '../lib/utils';
 
 export default function PurchaseHistory() {
   const navigate = useNavigate();
+  const { t, language } = useLanguage();
   const [purchases, setPurchases] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -27,20 +28,26 @@ export default function PurchaseHistory() {
     fetchPurchases();
   }, []);
 
+  const formatDate = (date: string) => {
+    return new Date(date).toLocaleDateString(
+      language === 'en' ? 'en-US' : language === 'fr' ? 'fr-FR' : 'pt-AO'
+    );
+  };
+
   return (
     <div className="min-h-screen bg-ms-bg pb-20">
       <header className="bg-white p-4 flex items-center border-b border-[#d2d2d2] sticky top-0 z-10">
-        <button onClick={() => navigate('/perfil')} className="p-2 -ml-2 text-gray-600" title="Voltar">
+        <button onClick={() => navigate('/perfil')} className="p-2 -ml-2 text-gray-600" title={t('common.back')}>
           <ChevronLeft className="w-6 h-6" />
         </button>
-        <h1 className="text-xl font-semibold ml-2 text-gray-900">Minhas Licenças</h1>
+        <h1 className="text-xl font-semibold ml-2 text-gray-900">{t('history.title')}</h1>
       </header>
 
       <div className="p-4 max-w-2xl mx-auto space-y-4">
         {loading ? (
-          <div className="text-center py-20 text-gray-400">Sincronizando com os servidores Microsoft...</div>
+          <div className="text-center py-20 text-gray-400">{t('history.loading')}</div>
         ) : purchases.length === 0 ? (
-          <div className="text-center py-20 text-gray-400">Nenhuma licença ativa encontrada.</div>
+          <div className="text-center py-20 text-gray-400">{t('history.empty')}</div>
         ) : purchases.map((item, idx) => (
           <motion.div 
             key={item.id}
@@ -51,8 +58,8 @@ export default function PurchaseHistory() {
           >
             {/* Microsoft Header Style for each item */}
             <div className="bg-[#f2f2f2] px-4 py-2 flex justify-between items-center border-b border-[#e1e1e1] text-[10px] font-bold text-gray-500 uppercase tracking-tight">
-              <span>Licença ID: {item.id.toString().substring(0, 8).toUpperCase()}</span>
-              <span>Ativada em: {new Date(item.data_inicio).toLocaleDateString('pt-AO')}</span>
+              <span>{t('history.license_id')}: {item.id.toString().substring(0, 8).toUpperCase()}</span>
+              <span>{t('history.activated_at')}: {formatDate(item.data_inicio)}</span>
             </div>
 
             <div className="p-4 flex space-x-6 items-start">
@@ -72,36 +79,36 @@ export default function PurchaseHistory() {
                 
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-y-3 gap-x-6 mb-4">
                   <div className="space-y-0.5">
-                    <p className="text-[10px] text-gray-400 font-bold uppercase tracking-tight">Investimento</p>
+                    <p className="text-[10px] text-gray-400 font-bold uppercase tracking-tight">{t('history.investment')}</p>
                     <p className="text-xs font-bold text-gray-900 leading-none">{Number(item.preco_pago).toLocaleString()},00 Kz</p>
                   </div>
                   <div className="space-y-0.5">
-                    <p className="text-[10px] text-gray-400 font-bold uppercase tracking-tight">Status</p>
+                    <p className="text-[10px] text-gray-400 font-bold uppercase tracking-tight">{t('history.status')}</p>
                     <p className={cn(
                       "text-xs font-bold leading-none",
                       item.ativo ? "text-green-600" : "text-red-500"
                     )}>
-                      {item.ativo ? "Ativo e Rendendo" : "Expirado"}
+                      {item.ativo ? t('history.status_active') : t('history.status_expired')}
                     </p>
                   </div>
                   <div className="space-y-0.5">
-                    <p className="text-[10px] text-gray-400 font-bold uppercase tracking-tight">Duração Restante</p>
-                    <p className="text-xs font-bold text-ms-blue leading-none">{item.dias_restantes} Dias</p>
+                    <p className="text-[10px] text-gray-400 font-bold uppercase tracking-tight">{t('history.remaining')}</p>
+                    <p className="text-xs font-bold text-ms-blue leading-none">{item.dias_restantes} {item.dias_restantes === 1 ? t('product.unit.day') : t('product.unit.days')}</p>
                   </div>
                 </div>
 
                 <div className="flex items-center space-x-4">
                   <button 
-                    onClick={() => alert(`Acessando terminal remoto: ${item.produto_nome}`)}
+                    onClick={() => alert(`${t('history.manage_server')}: ${item.produto_nome}`)}
                     className="text-ms-blue text-[10px] font-bold uppercase tracking-wider hover:underline flex items-center"
                   >
                     <ExternalLink className="w-3 h-3 mr-1" />
-                    Gerenciar Servidor
+                    {t('history.manage_server')}
                   </button>
                   <span className="text-gray-200">|</span>
                   <div className="flex items-center text-gray-400 text-[10px] font-bold uppercase tracking-wider">
                     <Download className="w-3 h-3 mr-1" />
-                    Backup ISO
+                    {t('history.backup_iso')}
                   </div>
                 </div>
               </div>

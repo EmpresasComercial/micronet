@@ -35,7 +35,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
         
         if (event === 'SIGNED_IN') {
-          navigate('/home', { replace: true });
+          // Só redireciona para home se o usuário estiver na tela de login ou cadastro
+          const isAuthPage = window.location.pathname === '/login' || window.location.pathname === '/cadastro';
+          if (isAuthPage) {
+            navigate('/home', { replace: true });
+          }
         }
       }
     );

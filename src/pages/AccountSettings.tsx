@@ -54,18 +54,18 @@ export default function AccountSettings() {
         <button 
           onClick={() => navigate('/perfil')} 
           className="p-2 -ml-2 text-[#616161]"
-          aria-label="Voltar para o perfil"
-          title="Voltar"
+          aria-label={t('common.back')}
+          title={t('common.back')}
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
-        <h1 className="text-sm font-semibold ml-2 text-[#2b2b2b]">Minha Conta</h1>
+        <h1 className="text-sm font-semibold ml-2 text-[#2b2b2b]">{t('settings.title')}</h1>
       </header>
 
       <div className="p-6 max-w-4xl mx-auto space-y-8">
         <div className="pt-4">
           <h2 className="text-4xl font-light text-[#2b2b2b] mb-2 tracking-tight">{t('settings.title')}</h2>
-          <p className="text-sm text-[#616161] max-w-md">Gerencie suas credenciais e preferências de segurança.</p>
+          <p className="text-sm text-[#616161] max-w-md">{t('settings.hero_sub')}</p>
         </div>
 
         <section className="bg-white border border-[#e1e1e1] rounded-sm shadow-sm overflow-hidden">
@@ -76,7 +76,7 @@ export default function AccountSettings() {
             
             <div className="flex-1 text-center sm:text-left">
               <h3 className="text-2xl font-semibold text-[#2b2b2b] mb-1">
-                {loading ? 'Carregando...' : `Usuário ${profile?.phone || ''}`}
+                {loading ? t('common.loading') : `${t('profile.user_cloud')} ${profile?.phone || ''}`}
               </h3>
               
               <div className="flex flex-col space-y-1 mb-6">
@@ -87,7 +87,7 @@ export default function AccountSettings() {
 
                 <div className="flex items-center justify-center sm:justify-start space-x-2 mt-2">
                   <p className="text-[11px] font-bold text-gray-400 tracking-widest uppercase">
-                    CÓDIGO: {profile?.invite_code || '---'}
+                    {t('settings.invite_code')}: {profile?.invite_code || '---'}
                   </p>
                   <button 
                     onClick={() => copyToClipboard(profile?.invite_code)}
@@ -103,7 +103,7 @@ export default function AccountSettings() {
 
         <div className="grid grid-cols-1 gap-8">
           <div className="space-y-4">
-            <h4 className="text-xs font-bold text-gray-400 uppercase tracking-[0.2em] px-1">Segurança e Idioma</h4>
+            <h4 className="text-xs font-bold text-gray-400 uppercase tracking-[0.2em] px-1">{t('settings.security_personalization')}</h4>
             <div className="bg-white border border-[#e1e1e1] rounded-sm overflow-hidden divide-y divide-[#f3f3f3]">
               <div className="relative group">
                 <div className="w-full flex items-center justify-between p-5 group-hover:bg-[#f9f9f9] transition-colors">
@@ -127,8 +127,8 @@ export default function AccountSettings() {
                 <div className="flex items-center space-x-5 text-left">
                   <Key size={24} className="text-[#616161] group-hover:text-ms-blue" strokeWidth={1.5} />
                   <div>
-                    <p className="text-sm font-bold text-[#2b2b2b]">Alterar Senha</p>
-                    <p className="text-[11px] text-[#616161]">Atualize sua credencial de acesso.</p>
+                    <p className="text-sm font-bold text-[#2b2b2b]">{t('settings.change_password')}</p>
+                    <p className="text-[11px] text-[#616161]">{t('settings.update_credentials')}</p>
                   </div>
                 </div>
               </button>
@@ -140,8 +140,8 @@ export default function AccountSettings() {
                 <div className="flex items-center space-x-5 text-left">
                   <ShieldCheck size={24} className="text-[#616161] group-hover:text-ms-blue" strokeWidth={1.5} />
                   <div>
-                    <p className="text-sm font-bold text-[#2b2b2b]">Autenticação de Identidade</p>
-                    <p className="text-[11px] text-[#616161]">Confirme sua identidade para saques maiores.</p>
+                    <p className="text-sm font-bold text-[#2b2b2b]">{t('settings.authenticate')}</p>
+                    <p className="text-[11px] text-[#616161]">{t('settings.identity_confirm')}</p>
                   </div>
                 </div>
               </button>
@@ -154,7 +154,7 @@ export default function AccountSettings() {
             onClick={handleLogout}
             className="w-full py-4 bg-white border border-red-100 text-red-600 text-xs font-bold uppercase tracking-[0.2em] hover:bg-red-50 transition-colors"
           >
-            Sair da conta
+            {t('settings.logout')}
           </button>
         </div>
 

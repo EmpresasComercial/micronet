@@ -1,9 +1,17 @@
 import React from 'react';
 import { ReceiptText } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useLanguage } from '../contexts/LanguageContext';
-import { ProductCard } from './Products/components/ProductCard';
-import { supabase } from '../lib/supabase';
+import { useLanguage } from '../../contexts/LanguageContext';
+import { ProductCard } from './components/ProductCard';
+import { supabase } from '../../lib/supabase';
+import { Monitor, ShieldCheck, Zap } from 'lucide-react';
+
+const ICON_MAP: Record<string, React.ReactNode> = {
+  'product.win7': <Monitor className="w-10 h-10 text-blue-500" />,
+  'product.win8': <ShieldCheck className="w-10 h-10 text-blue-600" />,
+  'product.win10': <Zap className="w-10 h-10 text-blue-700" />,
+  'product.win11': <Monitor className="w-10 h-10 text-blue-800" />,
+};
 
 export default function Products() {
   const navigate = useNavigate();
@@ -16,7 +24,16 @@ export default function Products() {
       try {
         const { data, error } = await supabase.rpc('get_available_products_mcpn');
         if (error) throw error;
-        setProducts(data || []);
+        
+        // Mapear dados do banco para o formato esperado pelo componente
+        const mappedProducts = (data || []).map((p: any) => ({
+          ...p,
+          priceValue: parseFloat(p.preco),
+          durationDays: p.duracao_dias,
+          icon: ICON_MAP[p.key] || <Monitor className="w-10 h-10 text-gray-400" />
+        }));
+
+        setProducts(mappedProducts);
       } catch (err) {
         console.error('Erro ao buscar produtos:', err);
       } finally {

@@ -378,6 +378,29 @@ const translations: Record<Language, Record<string, string>> = {
     'invite.btn_share': 'Compartilhar Agora',
     'invite.toast_share': 'Opções de compartilhamento abertas!',
     'invite.copy_toast': 'Copiado para a área de transferência!',
+
+    // Coupons
+    'coupons.title': 'Resgate de Cupom',
+    'coupons.hero_title': 'Ativar Bônus',
+    'coupons.hero_sub': 'Insira o código promocional fornecido pelo seu gerente ou nos grupos oficiais.',
+    'coupons.label': 'Código do Cupom',
+    'coupons.placeholder': 'Introduza o código',
+    'coupons.btn': 'Resgatar Agora',
+    'coupons.error_invalid': 'Por favor, insira um código de cupom válido.',
+
+    // History / Licenses
+    'history.title': 'Minhas Licenças',
+    'history.loading': 'Sincronizando com os servidores Microsoft...',
+    'history.empty': 'Nenhuma licença ativa encontrada.',
+    'history.license_id': 'Licença ID',
+    'history.activated_at': 'Ativada em',
+    'history.investment': 'Investimento',
+    'history.status': 'Status',
+    'history.status_active': 'Ativo e Rendendo',
+    'history.status_expired': 'Expirado',
+    'history.remaining': 'Duração Restante',
+    'history.manage_server': 'Gerenciar Servidor',
+    'history.backup_iso': 'Backup ISO',
   },
   en: {
     // Navigation
@@ -747,6 +770,29 @@ const translations: Record<Language, Record<string, string>> = {
     'invite.btn_share': 'Share Now',
     'invite.toast_share': 'Sharing options opened!',
     'invite.copy_toast': 'Copied to clipboard!',
+
+    // Coupons
+    'coupons.title': 'Coupon Redemption',
+    'coupons.hero_title': 'Activate Bonus',
+    'coupons.hero_sub': 'Enter the promo code provided by your manager or in official groups.',
+    'coupons.label': 'Coupon Code',
+    'coupons.placeholder': 'Enter the code',
+    'coupons.btn': 'Redeem Now',
+    'coupons.error_invalid': 'Please enter a valid coupon code.',
+
+    // History / Licenses
+    'history.title': 'My Licenses',
+    'history.loading': 'Synchronizing with Microsoft servers...',
+    'history.empty': 'No active licenses found.',
+    'history.license_id': 'License ID',
+    'history.activated_at': 'Activated on',
+    'history.investment': 'Investment',
+    'history.status': 'Status',
+    'history.status_active': 'Active & Earning',
+    'history.status_expired': 'Expired',
+    'history.remaining': 'Remaining Duration',
+    'history.manage_server': 'Manage Server',
+    'history.backup_iso': 'ISO Backup',
   },
   fr: {
     // Navigation
@@ -1116,13 +1162,45 @@ const translations: Record<Language, Record<string, string>> = {
     'invite.btn_share': 'Partager Maintenant',
     'invite.toast_share': 'Options de partage ouvertes !',
     'invite.copy_toast': 'Copié dans le presse-papier !',
+
+    // Coupons
+    'coupons.title': 'Utiliser un Coupon',
+    'coupons.hero_title': 'Activer le Bonus',
+    'coupons.hero_sub': 'Saisissez le code promo fourni par votre gestionnaire ou dans les groupes officiels.',
+    'coupons.label': 'Code du Coupon',
+    'coupons.placeholder': 'Saisissez le code',
+    'coupons.btn': 'Utiliser Maintenant',
+    'coupons.error_invalid': 'Veuillez saisir un code de coupon valide.',
+
+    // History / Licenses
+    'history.title': 'Mes Licences',
+    'history.loading': 'Synchronisation avec les serveurs Microsoft...',
+    'history.empty': 'Aucune licence active trouvée.',
+    'history.license_id': 'ID de Licence',
+    'history.activated_at': 'Activé le',
+    'history.investment': 'Investissement',
+    'history.status': 'Statut',
+    'history.status_active': 'Actif et Rentable',
+    'history.status_expired': 'Expiré',
+    'history.remaining': 'Durée Restante',
+    'history.manage_server': 'Gérer le Serveur',
+    'history.backup_iso': 'Sauvegarde ISO',
   },
 };
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguage] = useState<Language>('pt');
+  // Inicializar com o idioma salvo ou padrão 'pt'
+  const [language, setLanguageState] = useState<Language>(() => {
+    const saved = localStorage.getItem('app_language') as Language;
+    return (saved === 'pt' || saved === 'en' || saved === 'fr') ? saved : 'pt';
+  });
+
+  const setLanguage = (lang: Language) => {
+    setLanguageState(lang);
+    localStorage.setItem('app_language', lang);
+  };
 
   const t = (key: string) => {
     return translations[language][key] || key;
