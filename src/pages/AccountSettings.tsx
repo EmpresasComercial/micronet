@@ -162,7 +162,7 @@ export default function AccountSettings() {
 
         <div className="text-center pt-12 pb-16">
           <p className="text-[10px] text-gray-300 uppercase font-bold tracking-[0.4em]">
-            Microsoft Cloud Net • 2026
+            Microsoft Exchange • 2026
           </p>
         </div>
       </div>

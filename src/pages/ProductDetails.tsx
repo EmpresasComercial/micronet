@@ -191,7 +191,7 @@ export default function ProductDetails() {
             </div>
             <div className="pt-2 flex items-center space-x-2 text-[10px] text-gray-500 bg-blue-50/50 p-2 rounded-sm border border-blue-100/50">
               <ShieldCheck className="w-3.5 h-3.5 text-ms-blue" />
-              <span>Proteção Microsoft Cloud Garantida</span>
+              <span>Proteção Microsoft Exchange Garantida</span>
             </div>
           </div>
         </div>

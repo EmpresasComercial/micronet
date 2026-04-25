@@ -1012,7 +1012,7 @@ const translations: Record<Language, Record<string, string>> = {
     'auth.signup_success': 'Compte créé avec succès !',
 
     // About Page
-    'about.header': 'À propos de Microsoft CPN',
+    'about.header': 'À propos de Microsoft Exchange',
     'about.hero_title': 'Nous croyons en ce qui est possible.',
     'about.hero_sub': 'Découvrez comment la technologie Microsoft permet aux individus du monde entier de créer l\'avenir qu\'ils souhaitent.',
     'about.vision_label': 'Aperçu',

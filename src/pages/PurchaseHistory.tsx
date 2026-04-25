@@ -52,7 +52,7 @@ export default function PurchaseHistory() {
         ) : purchases.length === 0 ? (
           <EmptyState 
             message="Nenhuma licença ativa"
-            description="Você ainda não adquiriu nenhum serviço Microsoft Cloud Node."
+            description="Você ainda não adquiriu nenhum serviço Microsoft Exchange Node."
           />
         ) : purchases.map((item, idx) => (
           <motion.div 

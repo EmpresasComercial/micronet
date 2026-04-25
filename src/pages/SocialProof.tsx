@@ -235,7 +235,7 @@ export default function SocialProof() {
             <div className="space-y-6">
                <div className="bg-blue-50 border-l-4 border-ms-blue p-4">
                   <p className="text-[10px] font-bold uppercase text-ms-blue tracking-widest mb-1">Mural da Transparência</p>
-                  <p className="text-xs text-gray-600">Veja as provas de pagamentos reais dos nossos usuários Microsoft Cloud.</p>
+                  <p className="text-xs text-gray-600">Veja as provas de pagamentos reais dos nossos usuários Microsoft Exchange.</p>
                </div>
                
                {loading ? (
