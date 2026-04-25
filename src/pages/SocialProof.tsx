@@ -219,13 +219,13 @@ export default function SocialProof() {
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-bold text-[#666] uppercase tracking-wider mb-1">{t('social.received_value')}</label>
-                  <input type="text" placeholder="Ex: 15000" className="input-field" value={amount} onChange={handleAmountChange} />
+                  <label htmlFor="received_amount" className="block text-[11px] font-bold text-[#666] uppercase tracking-wider mb-1">{t('social.received_value')}</label>
+                  <input id="received_amount" type="text" placeholder="Ex: 15000" className="input-field" value={amount} onChange={handleAmountChange} />
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-bold text-[#666] uppercase tracking-wider mb-1">{t('social.your_comment')}</label>
-                  <textarea placeholder="" className="input-field min-h-[100px] py-3 resize-none" value={comment} onChange={handleCommentChange} />
+                  <label htmlFor="proof_comment" className="block text-[11px] font-bold text-[#666] uppercase tracking-wider mb-1">{t('social.your_comment')}</label>
+                  <textarea id="proof_comment" placeholder="Escreva seu comentário..." className="input-field min-h-[100px] py-3 resize-none" value={comment} onChange={handleCommentChange} />
                 </div>
 
                 <Button type="submit" isLoading={isSubmitting} className="w-full h-14">
