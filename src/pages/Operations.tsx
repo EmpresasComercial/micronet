@@ -23,61 +23,22 @@ export default function Operations() {
   useEffect(() => {
     async function checkStatus() {
       try {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) return;
+        const { data, error } = await supabase.rpc('get_daily_ops_status_mcpn');
 
-        // Buscar produtos do usuário
-        const { data: userProds, error: pError } = await supabase
-          .from('user_produtos')
-          .select('*')
-          .eq('user_id', user.id);
-
-        if (pError) throw pError;
+        if (error) throw error;
         
-        if (userProds && userProds.length > 0) {
-          // Filtrar os ativos (considerando null como ativo se não houver coluna)
-          const activeProds = userProds.filter((p: any) => {
-            const hasDays = (p.dias_restantes === null || p.dias_restantes === undefined || Number(p.dias_restantes) > 0);
-            const isActive = (p.ativo === null || p.ativo === undefined || p.ativo === true || p.ativo === 'true');
-            return hasDays && isActive;
-          });
+        if (data?.success) {
+          setEstimatedIncome(Number(data.estimated_income || 0));
+          setHasServers(data.has_servers || false);
           
-          if (activeProds.length > 0) {
-            let total = 0;
-            activeProds.forEach((up: any) => {
-              // Buscar o produto base pelo ID (convertendo para string para garantir o match)
-              const baseProd = products.find(p => p.id === String(up.produto_id));
-              if (baseProd) {
-                // A renda diária é 5% do valor do produto
-                total += (baseProd.priceValue * 0.05);
-              }
-            });
-            
-            setEstimatedIncome(total);
-            setHasServers(true);
+          if (data.is_collected_today) {
+            setIsCompleted(true);
+            setProgress(100);
           }
-        }
-
-        // Check if already collected today (Luanda Time)
-        // We compare against the date string in Africa/Luanda timezone
-        const now = new Date();
-        const todayStr = now.toLocaleDateString('sv-SE', { timeZone: 'Africa/Luanda' }); // YYYY-MM-DD
-        
-        const { data: collected, error: cError } = await supabase
-          .from('renda_diaria_mcpn')
-          .select('id')
-          .eq('user_id', user.id)
-          .gte('created_at', `${todayStr}T00:00:00Z`)
-          .lte('created_at', `${todayStr}T23:59:59Z`)
-          .limit(1);
-
-        if (cError) throw cError;
-        if (collected && collected.length > 0) {
-          setIsCompleted(true);
-          setProgress(100);
         }
       } catch (err: any) {
         console.error('Erro ao checar status:', err.message);
+        showToast('Falha ao sincronizar com o servidor.', 'error');
       } finally {
         setLoading(false);
       }
@@ -94,8 +55,7 @@ export default function Operations() {
     setIsOperating(true);
     setProgress(0);
 
-    // Simulação visual de sincronização com o nó Microsoft
-    const duration = 2500;
+    const duration = 3000;
     const interval = 50;
     const steps = duration / interval;
     const increment = 100 / steps;
@@ -107,7 +67,6 @@ export default function Operations() {
         setProgress(100);
         clearInterval(timer);
         
-        // Chamada real ao banco após animação
         try {
           const { data, error } = await supabase.rpc('collect_daily_earnings');
           
@@ -120,7 +79,7 @@ export default function Operations() {
           } else {
             setIsOperating(false);
             setProgress(0);
-            showToast(data?.message || 'Erro ao coletar rendimentos.', 'error');
+            showToast(data?.message || 'Já coletado ou erro no processamento.', 'error');
           }
         } catch (err: any) {
           setIsOperating(false);
@@ -142,8 +101,18 @@ export default function Operations() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f2f2f2] pb-20 font-sans">
-      <header className="bg-white p-4 flex items-center border-b border-[#e1e1e1] sticky top-0 z-50">
+    <div className="min-h-screen relative pb-20 font-sans overflow-hidden bg-[#f3f3f3]">
+      {/* Premium Windows Background */}
+      <div className="absolute inset-0 z-0">
+        <img 
+          src="/Introduccion-a-Microsoft-Windows.webp" 
+          className="w-full h-full object-cover opacity-15 mix-blend-overlay scale-110 blur-[2px]" 
+          alt="background" 
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#f3f3f3]/80 via-transparent to-[#f3f3f3]" />
+      </div>
+
+      <header className="bg-white/80 backdrop-blur-md p-4 flex items-center border-b border-[#e1e1e1] sticky top-0 z-50">
         <button 
           onClick={() => navigate('/perfil')} 
           className="p-2 -ml-2 text-[#616161] hover:text-[#0067b8] transition-colors"
@@ -154,78 +123,89 @@ export default function Operations() {
         <h1 className="text-sm font-semibold ml-2 text-[#2b2b2b]">Iniciar Operações</h1>
       </header>
 
-      <main className="p-6 max-w-lg mx-auto flex flex-col items-center">
-        {/* Central Icon */}
-        <div className="mb-8 mt-4">
+      <main className="relative z-10 p-6 max-w-lg mx-auto flex flex-col items-center">
+        {/* Central Icon - More Flat */}
+        <div className="mb-10 mt-6">
           <div className={cn(
-            "w-24 h-24 rounded-full bg-white border border-[#e1e1e1] flex items-center justify-center relative transition-all duration-1000",
-            isOperating ? "scale-105 border-[#0067b8] shadow-[0_0_20px_rgba(0,103,184,0.1)]" : ""
+            "w-28 h-28 bg-white border border-[#e5e5e5] flex items-center justify-center relative transition-all duration-700",
+            isOperating ? "border-[#0067b8]" : ""
           )}>
             <div className={cn(
-              "absolute inset-0 rounded-full border-2 border-transparent border-t-[#0067b8] animate-spin transition-opacity duration-300",
-              isOperating ? "opacity-100" : "opacity-0"
+              "absolute -inset-1 border border-[#0067b8]/20 transition-opacity duration-300",
+              isOperating ? "opacity-100 animate-pulse" : "opacity-0"
             )} />
+            
             {isCompleted ? (
-              <CheckCircle2 className="w-10 h-10 text-[#107c10]" />
+              <CheckCircle2 className="w-12 h-12 text-[#107c10]" />
             ) : (
-              <Cpu className={cn(
-                "w-10 h-10 text-[#0067b8]",
-                isOperating ? "animate-pulse" : ""
-              )} />
+              <div className="relative">
+                <Cpu className={cn(
+                  "w-12 h-12 text-[#0067b8] transition-transform duration-500",
+                  isOperating ? "scale-90" : ""
+                )} />
+                {isOperating && (
+                  <motion.div 
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                    className="absolute -inset-2 border-t-2 border-ms-blue rounded-full"
+                  />
+                )}
+              </div>
             )}
           </div>
         </div>
 
-        <div className="text-center mb-10">
-          <h2 className="text-lg font-bold text-[#2b2b2b] tracking-tight mb-1">Coleta de Rendimentos</h2>
-          <p className="text-xs text-[#616161]">Ative seus servidores para obter lucros diários.</p>
+        <div className="text-center mb-10 space-y-1">
+          <h2 className="text-xl font-bold text-[#1b1b1b] tracking-tight">{t('ops.collect')}</h2>
+          <p className="text-[11px] text-[#616161] font-medium max-w-[200px] mx-auto leading-tight">{t('ops.collect_sub')}</p>
         </div>
 
-        {/* Flat Card Container */}
-        <div className="w-full bg-white border border-[#e1e1e1] p-8 space-y-8 rounded-sm">
-          {/* Status Section */}
+        {/* Flat Microsoft Card */}
+        <div className="w-full bg-white/90 backdrop-blur-sm border border-[#e5e5e5] p-8 space-y-8 relative overflow-hidden shadow-sm">
+          {/* Status Label */}
           <div className="space-y-4">
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center border-b border-[#f3f3f3] pb-3">
               <div className="flex items-center space-x-2">
                 <Activity size={14} className="text-[#0067b8]" />
-                <span className="text-[10px] font-bold text-[#616161] uppercase tracking-widest">Status do Sistema</span>
+                <span className="text-[10px] font-bold text-[#616161] uppercase tracking-widest">{t('ops.system_status')}</span>
               </div>
               <span className={cn(
-                "text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-sm",
-                isOperating ? "bg-[#f3f2f1] text-[#0067b8]" : 
-                isCompleted ? "bg-[#dff6dd] text-[#107c10]" : "bg-[#f3f2f1] text-[#616161]"
+                "text-[9px] font-bold uppercase tracking-widest px-2.5 py-1",
+                isOperating ? "bg-[#0067b8] text-white" : 
+                isCompleted ? "bg-[#107c10] text-white" : "bg-[#f3f2f1] text-[#616161]"
               )}>
-                {isOperating ? "Processando" : isCompleted ? "Concluído" : "Aguardando"}
+                {isOperating ? t('ops.processing') : isCompleted ? t('ops.completed') : t('ops.waiting')}
               </span>
             </div>
 
-            {/* Flat Progress Bar */}
-            <div className="relative h-2 bg-[#f3f2f1] overflow-hidden rounded-full">
-              <motion.div 
-                initial={{ width: 0 }}
-                animate={{ width: `${progress}%` }}
-                className={cn(
-                  "h-full transition-all duration-300",
-                  isCompleted ? "bg-[#107c10]" : "bg-[#0067b8]"
-                )}
-              />
-            </div>
-            
-            <div className="flex justify-between text-[9px] font-bold text-[#616161] uppercase tracking-widest">
-              <span>{isOperating ? "Sincronizando..." : "0% Sincronizado"}</span>
-              <span>{progress}% Concluído</span>
+            {/* Flat Progress */}
+            <div className="space-y-2">
+              <div className="h-1 bg-[#f3f2f1] overflow-hidden">
+                <motion.div 
+                  initial={{ width: 0 }}
+                  animate={{ width: `${progress}%` }}
+                  className={cn(
+                    "h-full transition-all duration-300 ease-out",
+                    isCompleted ? "bg-[#107c10]" : "bg-[#0067b8]"
+                  )}
+                />
+              </div>
+              <div className="flex justify-between text-[9px] font-bold text-[#616161] uppercase tracking-[0.1em]">
+                <span>{isOperating ? t('ops.synchronized') : "LINK OFFLINE"}</span>
+                <span className={isCompleted ? "text-[#107c10]" : "text-[#0067b8]"}>{progress}%</span>
+              </div>
             </div>
           </div>
 
-          {/* Stats Grid */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="bg-[#fcfcfc] p-4 border border-[#f3f3f3] text-left">
-              <p className="text-[9px] text-[#616161] font-bold uppercase tracking-widest mb-1">Rendimento Estimado</p>
-              <p className="text-sm font-bold text-[#2b2b2b]">{estimatedIncome.toLocaleString('pt-BR')},00 Kz</p>
+          {/* Clean Stats Grid */}
+          <div className="grid grid-cols-2 border-t border-[#f3f3f3]">
+            <div className="p-4 border-r border-[#f3f3f3]">
+              <p className="text-[9px] text-[#616161] font-bold uppercase tracking-widest mb-1">{t('ops.estimated')}</p>
+              <p className="text-sm font-bold text-[#1b1b1b]">{estimatedIncome.toLocaleString('pt-BR')},00 Kz</p>
             </div>
-            <div className="bg-[#fcfcfc] p-4 border border-[#f3f3f3] text-left">
-              <p className="text-[9px] text-[#616161] font-bold uppercase tracking-widest mb-1">Tarefas Restantes</p>
-              <p className="text-sm font-bold text-[#2b2b2b]">{isCompleted ? "0 / 1" : (hasServers ? "1 / 1" : "0 / 1")}</p>
+            <div className="p-4">
+              <p className="text-[9px] text-[#616161] font-bold uppercase tracking-widest mb-1">{t('ops.tasks_left')}</p>
+              <p className="text-sm font-bold text-[#1b1b1b]">{isCompleted ? "0 / 1" : (hasServers ? "1 / 1" : "0 / 1")}</p>
             </div>
           </div>
 
@@ -233,25 +213,25 @@ export default function Operations() {
             onClick={startTask}
             isLoading={isOperating}
             className={cn(
-              "w-full py-4 text-xs font-bold uppercase tracking-[0.2em] h-14",
-              isCompleted ? "bg-[#107c10] hover:bg-[#107c10] cursor-default" : "bg-[#0067b8] hover:bg-[#005a9e]"
+              "w-full py-4 text-xs font-bold uppercase tracking-[0.2em] h-14 rounded-none transition-all",
+              isCompleted ? "bg-[#107c10] hover:bg-[#107c10] opacity-80" : "bg-[#0067b8] hover:bg-[#005a9e] active:scale-[0.98]"
             )}
             disabled={isCompleted || loading}
           >
             {isCompleted ? <CheckCircle2 size={18} className="mr-2" /> : <Zap size={18} className="mr-2" />}
-            {isCompleted ? "Rendimentos Coletados" : "Iniciar Operações"}
+            {isCompleted ? t('ops.btn_finished') : t('ops.btn_start')}
           </Button>
         </div>
 
         {/* Microsoft Footer Node */}
         <div className="mt-12 text-center opacity-40">
-           <div className="flex items-center justify-center space-x-1 mb-3">
-             <div className="w-2 h-2 bg-[#f25022]" />
-             <div className="w-2 h-2 bg-[#7fba00]" />
-             <div className="w-2 h-2 bg-[#00a4ef]" />
-             <div className="w-2 h-2 bg-[#ffb900]" />
+           <div className="flex items-center justify-center space-x-1 mb-4">
+             <div className="w-1.5 h-1.5 bg-[#f25022]" />
+             <div className="w-1.5 h-1.5 bg-[#7fba00]" />
+             <div className="w-1.5 h-1.5 bg-[#00a4ef]" />
+             <div className="w-1.5 h-1.5 bg-[#ffb900]" />
            </div>
-           <p className="text-[9px] text-[#616161] font-bold uppercase tracking-[0.3em]">
+           <p className="text-[9px] text-[#616161] font-bold uppercase tracking-[0.4em]">
              Microsoft Partner Network Official Node
            </p>
         </div>
