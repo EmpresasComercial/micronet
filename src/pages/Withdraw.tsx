@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, Wallet, Landmark, Info, ShieldCheck, AlertCircle, ReceiptText } from 'lucide-react';
+import { ChevronLeft, Wallet, Landmark, Info, ShieldCheck, AlertCircle, ReceiptText, Clock } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useToast } from '../components/Toast';
 import { Button } from '../components/Button';
@@ -47,7 +47,7 @@ export default function Withdraw() {
 
   const calculateNet = () => {
     const val = parseInt(amount) || 0;
-    const tax = val * 0.14; 
+    const tax = val * 0.14; // Taxa atual de 14% mantida como "lógica"
     return val - tax;
   };
 
@@ -110,7 +110,7 @@ export default function Withdraw() {
         <button 
           onClick={() => navigate('/perfil')} 
           className="p-2 -ml-2 text-gray-600 hover:text-ms-blue transition-colors"
-          aria-label="Voltar para o perfil"
+          aria-label="Voltar"
           title="Voltar"
         >
           <ChevronLeft className="w-6 h-6" />
@@ -146,8 +146,8 @@ export default function Withdraw() {
           >
             <ShieldCheck className="text-amber-600 shrink-0" size={18} />
             <div>
-              <p className="text-[11px] text-amber-900 font-bold uppercase tracking-tight">Verificação Necessária</p>
-              <p className="text-[10px] text-amber-800 mt-0.5">Sua conta precisa estar verificada (BI Aprovado) para realizar saques.</p>
+              <p className="text-[11px] text-amber-900 font-bold uppercase">Verificação Necessária</p>
+              <p className="text-[10px] text-amber-800 mt-0.5">Sua conta precisa estar verificada (BI Aprovado) para saques.</p>
             </div>
           </motion.div>
         )}
@@ -160,52 +160,74 @@ export default function Withdraw() {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Valor do Saque (Kz)</label>
-              <div className="relative">
+              <div className="relative border-b-2 border-ms-blue">
                 <input
                   type="text"
-                  className="input-field text-2xl font-light h-16"
+                  className="w-full bg-transparent text-2xl font-light h-16 focus:outline-none"
                   placeholder="0.00"
                   value={amount}
                   onChange={handleAmountChange}
                   disabled={!isVerified}
                 />
-                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-300 font-bold">AOA</span>
+                <span className="absolute right-0 top-1/2 -translate-y-1/2 text-gray-300 font-bold">AOA</span>
               </div>
-              <div className="mt-4 flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-gray-400 border-t border-gray-50 pt-4">
-                 <span>Líquido: <span className="text-ms-blue">{formatCurrency(calculateNet(), 'KZ')}</span></span>
-                 <span>Taxa: <span className="text-red-500">14%</span></span>
+              
+              <div className="mt-4 grid grid-cols-2 gap-4 border-t border-gray-100 pt-4">
+                <div>
+                  <p className="text-[9px] text-gray-400 font-bold uppercase tracking-wider">Taxa (14%)</p>
+                  <p className="text-xs font-medium text-red-600">-{formatCurrency(parseInt(amount || '0') * 0.14, 'KZ')}</p>
+                </div>
+                <div>
+                  <p className="text-[9px] text-gray-400 font-bold uppercase tracking-wider">Líquido</p>
+                  <p className="text-xs font-bold text-ms-blue">{formatCurrency(calculateNet(), 'KZ')}</p>
+                </div>
               </div>
+
               <p className="text-[9px] text-gray-400 mt-4 font-bold uppercase tracking-wider flex items-center">
-                <Info size={10} className="mr-1" /> Mínimo: 3.000 Kz | Saques: Seg-Sex
+                <Info size={10} className="mr-1" /> Mínimo: 3.000 Kz | Saques: Seg-Sex (10h-16h)
               </p>
             </div>
 
             <div className="bg-[#f9f9f9] p-4 rounded-sm border border-gray-100">
-               <div className="flex items-center justify-between mb-1">
-                  <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest flex items-center">
-                     <Landmark size={12} className="mr-2" /> Banco de Recebimento
-                  </p>
-               </div>
-               {hasBank ? (
-                  <p className="text-xs font-bold text-gray-700">{bankName}</p>
-               ) : (
-                  <button type="button" onClick={() => navigate('/adicionar-banco')} className="text-xs font-bold text-red-500 underline">Vincular Conta</button>
-               )}
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center">
+                  <Landmark size={12} className="mr-2" /> Conta Destino
+                </p>
+                {hasBank && (
+                  <button type="button" onClick={() => navigate('/adicionar-banco')} className="text-[10px] font-bold text-ms-blue uppercase underline">
+                    Trocar
+                  </button>
+                )}
+              </div>
+              {hasBank ? (
+                <p className="text-xs font-medium text-gray-700">{bankName}</p>
+              ) : (
+                <button 
+                  type="button"
+                  onClick={() => navigate('/adicionar-banco')}
+                  className="flex items-center text-xs font-bold text-red-500 py-1"
+                >
+                  <AlertCircle size={14} className="mr-2" /> Vincular Conta Bancária
+                </button>
+              )}
             </div>
 
-            <div className="pt-4 space-y-4">
+            <div className="pt-4">
               <Button 
                 type="submit" 
-                className="w-full h-14 text-base font-bold uppercase tracking-widest" 
+                className="w-full h-14 text-sm font-bold uppercase tracking-widest" 
                 isLoading={isSubmitting}
                 disabled={!isVerified || !hasBank || parseInt(amount || '0') < 3000}
               >
-                Solicitar Levantamento
+                Confirmar Levantamento
               </Button>
-              <div className="flex items-center justify-center space-x-2 text-[10px] text-gray-400 font-bold uppercase tracking-widest">
-                <ShieldCheck size={14} className="text-ms-blue" />
-                <span>Processamento Seguro Microsoft</span>
-              </div>
+            </div>
+
+            <div className="bg-blue-50/50 p-3 flex items-start space-x-3 border border-blue-100/50">
+              <ShieldCheck size={16} className="text-ms-blue shrink-0 mt-0.5" />
+              <p className="text-[9px] text-ms-blue/70 leading-relaxed font-medium uppercase tracking-tight">
+                Processamento Seguro Microsoft Cloud. O prazo de compensação bancária varia de 30min a 24h úteis.
+              </p>
             </div>
           </form>
         </motion.div>
