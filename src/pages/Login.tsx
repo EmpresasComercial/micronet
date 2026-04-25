@@ -74,7 +74,7 @@ export default function Login() {
             className="h-6 mb-10"
           />
           <h1 className="text-2xl font-semibold tracking-tight">Entrar</h1>
-          <p className="text-sm text-gray-500 mt-2">Use sua conta Microsoft Cloud para continuar.</p>
+          <p className="text-sm text-gray-500 mt-2">Use sua conta Microsoft Exchange para continuar.</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">

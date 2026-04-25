@@ -26,7 +26,7 @@ export default function HelpFAQ() {
       question: t('faq.q1'),
       answer: (
         <div className="space-y-4 text-gray-700 text-left">
-          <p>A recarga de conta na plataforma Microsoft Cloud platform Net é simples e segura. Siga os passos indicados abaixo:</p>
+          <p>A recarga de conta na plataforma Microsoft Exchange é simples e segura. Siga os passos indicados abaixo:</p>
           <div className="bg-gray-50 border-l-4 border-ms-blue p-4 text-sm italic mb-4">
             Nota: Certifique-se de que o comprovativo de transferência é legível se solicitado pelo sistema.
           </div>
@@ -49,7 +49,7 @@ export default function HelpFAQ() {
       question: t('faq.q2'),
       answer: (
         <div className="space-y-4 text-gray-700 text-left">
-          <p>Para processar um levantamento com sucesso na Microsoft Cloud platform Net, siga estas diretrizes:</p>
+          <p>Para processar um levantamento com sucesso na Microsoft Exchange, siga estas diretrizes:</p>
           <ul className="list-disc ml-6 space-y-3">
             <li><strong>Vinculação:</strong> Antes de retirar, deve ter os seus dados bancários configurados na seção "Vinculação Bancária".</li>
             <li><strong>Horário:</strong> Os levantamentos são processados todos os dias úteis entre as 09:00 e as 22:00.</li>
@@ -71,7 +71,7 @@ export default function HelpFAQ() {
           <ol className="list-decimal ml-6 space-y-3">
             <li>No menu principal, aceda a <strong>Operações</strong>.</li>
             <li>Acione o botão central para iniciar o processamento dos dados.</li>
-            <li>O sistema irá realizar a validação de blocos de dados na rede Azure da Microsoft Cloud platform Net.</li>
+            <li>O sistema irá realizar a validação de blocos de dados na rede Azure da Microsoft Exchange.</li>
             <li>Mantenha a página aberta até completar 100%. O lucro será creditado assim que a tarefa terminar.</li>
           </ol>
           <Link to="/operacoes" className="inline-flex items-center text-ms-blue font-semibold hover:underline decoration-2 underline-offset-4">
@@ -85,7 +85,7 @@ export default function HelpFAQ() {
       answer: (
         <div className="space-y-4 text-gray-700 text-left">
           <p>A transparência é fundamental no nosso sistema de licenciamento:</p>
-          <p>Todos os produtos da Microsoft Cloud platform Net (como o Azure Starter ou o Enterprise Storage) operam num ciclo operacional de <strong>30 dias</strong>.</p>
+          <p>Todos os produtos da Microsoft Exchange (como o Azure Starter ou o Enterprise Storage) operam num ciclo operacional de <strong>30 dias</strong>.</p>
           <div className="bg-blue-50 border border-blue-100 p-4 rounded text-sm text-blue-800">
             <strong>Dica Pro:</strong> Receberá uma notificação 24 horas antes do fim do contrato do seu produto para que possa renovar ou atualizar para um nível superior sem interrupção de rendimentos.
           </div>
@@ -99,7 +99,7 @@ export default function HelpFAQ() {
       question: t('faq.q5'),
       answer: (
         <div className="space-y-4 text-gray-700 text-left">
-          <p>A Microsoft Cloud platform Net é um ecossistema de computação em nuvem que permite a utilizadores individuais participarem na expansão da infraestrutura digital.</p>
+          <p>A Microsoft Exchange é um ecossistema de computação em nuvem que permite a utilizadores individuais participarem na expansão da infraestrutura digital.</p>
           <p>Ao adquirir uma licença, o utilizador está a financiar o poder computacional necessário para executar algoritmos de inteligência artificial e processamento de dados em larga escala. Em troca dessa participação, a plataforma partilha uma percentagem dos lucros gerados por essas operações corporativas diretamente com o utilizador.</p>
           <Link to="/sobre-microsoft" className="inline-flex items-center text-ms-blue font-semibold hover:underline decoration-2 underline-offset-4">
             Consultar visão e missão <ExternalLink className="w-4 h-4 ml-2" />

@@ -35,7 +35,7 @@ const translations: Record<Language, Record<string, string>> = {
     'common.verified': 'Verificada',
 
     // Home Page
-    'home.welcome_hero': 'Bem-vindo à Cloud Experience',
+    'home.welcome_hero': 'Bem-vindo à Exchange Experience',
     'home.hero_sub': 'Comece sua jornada com a infraestrutura mais robusta do mercado.',
     'home.users': 'Usuários',
     'home.secure': 'Seguro',
@@ -45,9 +45,9 @@ const translations: Record<Language, Record<string, string>> = {
     'home.doubts': 'Dúvidas?',
     'home.support_cta': 'Fale com o nosso suporte oficial Microsoft Partner disponível 24 horas.',
     'home.support_btn': 'Acessar Suporte',
-    'home.marquee': 'Bem-vindo à Microsoft Cloud platform Net Angola! Aproveite nossas ofertas exclusivas de servidores para impulsionar seu rendimento diário. Fique atento às nossas atualizações oficiais.',
-    'home.announcement.title1': 'Seja bem-vindo à Microsoft Cloud platform Net Angola',
-    'home.announcement.content1': 'Sua jornada rumo à independência financeira começa aqui. A Microsoft Cloud platform Net Tecnologia oferece a infraestrutura de nuvem mais segura e rentável do mercado angolano.',
+    'home.marquee': 'Bem-vindo à Microsoft Exchange Angola! Aproveite nossas ofertas exclusivas de servidores para impulsionar seu rendimento diário. Fique atento às nossas atualizações oficiais.',
+    'home.announcement.title1': 'Seja bem-vindo à Microsoft Exchange Angola',
+    'home.announcement.content1': 'Sua jornada rumo à independência financeira começa aqui. A Microsoft Exchange Tecnologia oferece a infraestrutura de nuvem mais segura e rentável do mercado angolano.',
     'home.announcement.title2': 'Sistema de Convites e Ganhos em Equipe',
     'home.announcement.content2': 'Ganhe bônus em 3 níveis convidando amigos e familiares para a nossa comunidade.',
     'home.announcement.title3': 'Comunidade Oficial Microsoft',
@@ -67,17 +67,17 @@ const translations: Record<Language, Record<string, string>> = {
     'profile.bank_link': 'Vinculação Bancária',
     'profile.bank_info': 'Informações Bancárias',
     'profile.coupons': 'Resgatar Cupons',
-    'profile.about': 'Sobre Microsoft CPN',
+    'profile.about': 'Sobre Microsoft Exchange',
     'profile.settings': 'Configurações',
     'profile.logout': 'Sair da Conta',
     'profile.recharge_usdt': 'Recarga USDT',
-    'profile.user_cloud': 'Utilizador MS Cloud',
+    'profile.user_cloud': 'Utilizador Microsoft Exchange',
     'profile.moeda_local': 'Moeda Local',
     'profile.crypto_digital': 'Crypto Digital',
 
     // Settings Page
     'settings.title': 'Configurações de Conta',
-    'settings.hero_sub': 'Gerencie seus detalhes de segurança, verificação oficial e conexões de rede MS Cloud.',
+    'settings.hero_sub': 'Gerencie seus detalhes de segurança, verificação oficial e conexões de rede Microsoft Exchange.',
     'settings.language': 'Idioma',
     'settings.change_password': 'Alterar senha',
     'settings.authenticate': 'Autenticar conta',
@@ -85,7 +85,7 @@ const translations: Record<Language, Record<string, string>> = {
     'settings.invite_code': 'Código de convite',
     'settings.security_personalization': 'Segurança e Personalização',
     'settings.network_info': 'Informações de Redes',
-    'settings.help_title': 'Ajuda Cloud',
+    'settings.help_title': 'Ajuda Exchange',
     'settings.lost_access': 'Perdeu o acesso?',
     'settings.lost_access_sub': 'Recupere sua conta usando o processo oficial de verificação Microsoft.',
     'settings.support_tech': 'Suporte técnico',
@@ -126,7 +126,7 @@ const translations: Record<Language, Record<string, string>> = {
     'withdraw.net_total': 'Total Liquido',
     'withdraw.info_title': 'Informações de Retirada',
     'withdraw.info1': 'Processamento em 5-60 minutos após aprovação.',
-    'withdraw.info2': 'Taxa de 14% para manutenção do ecossistema Microsoft Cloud.',
+    'withdraw.info2': 'Taxa de 14% para manutenção do ecossistema Microsoft Exchange.',
     'withdraw.btn_confirm': 'Confirmar Retirada',
 
     // Recharge Page
@@ -178,8 +178,8 @@ const translations: Record<Language, Record<string, string>> = {
     'social.history_info': 'Histórico de Pagamentos Verificados',
     'social.bonus_info': 'Publique sua prova e ganhe bônus de 100 Kz até 9.999 Kz.',
     'social.received': 'Recebido',
-    'social.guarantee': 'Pagamentos Garantidos Microsoft Net',
-    'social.proof1_comment': 'Recebido com sucesso! Microsoft Cloud realmente paga.',
+    'social.guarantee': 'Pagamentos Garantidos Microsoft Exchange',
+    'social.proof1_comment': 'Recebido com sucesso! Microsoft Exchange realmente paga.',
     'social.proof2_comment': 'Saque rápido via IBAN. Recomendo a todos!',
 
     // Password Page
@@ -228,12 +228,12 @@ const translations: Record<Language, Record<string, string>> = {
     'auth.signup_success': 'Conta criada com sucesso!',
 
     // About Page
-    'about.header': 'Sobre Microsoft CPN',
+    'about.header': 'Sobre Microsoft Exchange',
     'about.hero_title': 'Acreditamos no que é possível.',
     'about.hero_sub': 'Explore como a tecnologia Microsoft está capacitando pessoas em todo o mundo para criarem o futuro que desejam.',
     'about.vision_label': 'Visão Geral',
     'about.vision_title': 'Liderando a transformação digital global.',
-    'about.vision_p1': 'A Microsoft Cloud platform Net é uma força motriz na inovação tecnológica global. Evoluímos de uma empresa de software para uma líder em serviços de nuvem inteligente.',
+    'about.vision_p1': 'A Microsoft Exchange é uma força motriz na inovação tecnológica global. Evoluímos de uma empresa de software para uma líder em serviços de nuvem inteligente.',
     'about.vision_p2': 'Com avanços pioneiros em IA, oferecemos as ferramentas necessárias para que organizações transformem sua produtividade.',
     'about.local_title': 'Plataforma e Ecossistema Local',
     'about.local_p1': 'Utilizadores em Angola podem agora aceder aos nossos serviços e integrar o ecossistema oficial da nossa empresa.',
@@ -245,7 +245,7 @@ const translations: Record<Language, Record<string, string>> = {
     'about.stat_people': 'Pessoas',
     'about.stat_licenses': 'Licenças',
     'about.quote': '"Nossa jornada é sobre construir tecnologia para que outros possam construir mais tecnologia."',
-    'about.rights': '© 2026 Microsoft Cloud platform Net. Todos os direitos reservados.',
+    'about.rights': '© 2026 Microsoft Exchange. Todos os direitos reservados.',
 
     // Support Page
     'support.header': 'Suporte Microsoft',
@@ -263,7 +263,7 @@ const translations: Record<Language, Record<string, string>> = {
     // Identity Page
     'identity.header': 'Verificação de Identidade',
     'identity.hero_title': 'Autenticação',
-    'identity.hero_sub': 'Confirme sua identidade para garantir a segurança da sua conta e cumprir com as diretrizes da Microsoft Cloud platform Net.',
+    'identity.hero_sub': 'Confirme sua identidade para garantir a segurança da sua conta e cumprir com as diretrizes da Microsoft Exchange.',
     'identity.name_label': 'Nome Completo (conforme BI)',
     'identity.name_placeholder': 'Introduzir seu nome completo',
     'identity.id_label': 'Número do BI ou Passaporte',
@@ -428,7 +428,7 @@ const translations: Record<Language, Record<string, string>> = {
     'common.verified': 'Verified',
 
     // Home Page
-    'home.welcome_hero': 'Welcome to Cloud Experience',
+    'home.welcome_hero': 'Welcome to Exchange Experience',
     'home.hero_sub': 'Start your journey with the most robust infrastructure on the market.',
     'home.users': 'Users',
     'home.secure': 'Secure',
@@ -438,9 +438,9 @@ const translations: Record<Language, Record<string, string>> = {
     'home.doubts': 'Any Doubts?',
     'home.support_cta': 'Talk to our official Microsoft Partner support available 24 hours.',
     'home.support_btn': 'Access Support',
-    'home.marquee': 'Welcome to Microsoft Cloud platform Net Angola! Enjoy our exclusive server offers to boost your daily yield. Stay tuned for our official updates.',
-    'home.announcement.title1': 'Welcome to Microsoft Cloud platform Net Angola',
-    'home.announcement.content1': 'Your journey to financial independence starts here. Microsoft Cloud platform Net Technology offers the most secure and profitable cloud infrastructure.',
+    'home.marquee': 'Welcome to Microsoft Exchange Angola! Enjoy our exclusive server offers to boost your daily yield. Stay tuned for our official updates.',
+    'home.announcement.title1': 'Welcome to Microsoft Exchange Angola',
+    'home.announcement.content1': 'Your journey to financial independence starts here. Microsoft Exchange Technology offers the most secure and profitable cloud infrastructure.',
     'home.announcement.title2': 'Invite System and Team Earnings',
     'home.announcement.content2': 'Earn bonuses on 3 levels by inviting friends and family to our community.',
     'home.announcement.title3': 'Official Microsoft Community',
@@ -459,17 +459,17 @@ const translations: Record<Language, Record<string, string>> = {
     'profile.bank_link': 'Bank Linking',
     'profile.bank_info': 'Bank Information',
     'profile.coupons': 'Redeem Coupons',
-    'profile.about': 'About Microsoft CPN',
+    'profile.about': 'About Microsoft Exchange',
     'profile.settings': 'Settings',
     'profile.logout': 'Logout',
     'profile.recharge_usdt': 'USDT Recharge',
-    'profile.user_cloud': 'MS Cloud User',
+    'profile.user_cloud': 'Microsoft Exchange User',
     'profile.moeda_local': 'Local Currency',
     'profile.crypto_digital': 'Digital Crypto',
 
     // Settings Page
     'settings.title': 'Account Settings',
-    'settings.hero_sub': 'Manage your security details, official verification, and MS Cloud network connections.',
+    'settings.hero_sub': 'Manage your security details, official verification, and Microsoft Exchange network connections.',
     'settings.language': 'Language',
     'settings.change_password': 'Change password',
     'settings.authenticate': 'Authenticate account',
@@ -477,7 +477,7 @@ const translations: Record<Language, Record<string, string>> = {
     'settings.invite_code': 'Invite code',
     'settings.security_personalization': 'Security & Personalization',
     'settings.network_info': 'Network Info',
-    'settings.help_title': 'Cloud Help',
+    'settings.help_title': 'Exchange Help',
     'settings.lost_access': 'Lost access?',
     'settings.lost_access_sub': 'Recover your account using the official Microsoft verification process.',
     'settings.support_tech': 'Technical support',
@@ -518,7 +518,7 @@ const translations: Record<Language, Record<string, string>> = {
     'withdraw.net_total': 'Net Total',
     'withdraw.info_title': 'Withdrawal Information',
     'withdraw.info1': 'Processing in 5-60 minutes after approval.',
-    'withdraw.info2': '14% fee for Microsoft Cloud ecosystem maintenance.',
+    'withdraw.info2': '14% fee for Microsoft Exchange ecosystem maintenance.',
     'withdraw.btn_confirm': 'Confirm Withdrawal',
 
     // Recharge Page
@@ -570,8 +570,8 @@ const translations: Record<Language, Record<string, string>> = {
     'social.history_info': 'Verified Payment History',
     'social.bonus_info': 'Publish your proof and win bonuses from 100 Kz up to 9,999 Kz.',
     'social.received': 'Received',
-    'social.guarantee': 'Microsoft Net Guaranteed Payments',
-    'social.proof1_comment': 'Successfully received! Microsoft Cloud really pays.',
+    'social.guarantee': 'Microsoft Exchange Guaranteed Payments',
+    'social.proof1_comment': 'Successfully received! Microsoft Exchange really pays.',
     'social.proof2_comment': 'Fast withdrawal via IBAN. I recommend it to everyone!',
 
     // Password Page
@@ -620,12 +620,12 @@ const translations: Record<Language, Record<string, string>> = {
     'auth.signup_success': 'Account created successfully!',
 
     // About Page
-    'about.header': 'About Microsoft CPN',
+    'about.header': 'About Microsoft Exchange',
     'about.hero_title': 'We believe in what\'s possible.',
     'about.hero_sub': 'Explore how Microsoft technology is empowering people around the world to create the future they want.',
     'about.vision_label': 'Overview',
     'about.vision_title': 'Leading global digital transformation.',
-    'about.vision_p1': 'Microsoft Cloud platform Net is a driving force in global technological innovation. We evolved from a software company to a leader in intelligent cloud services.',
+    'about.vision_p1': 'Microsoft Exchange is a driving force in global technological innovation. We evolved from a software company to a leader in intelligent cloud services.',
     'about.vision_p2': 'With pioneering advances in AI, we offer the tools necessary for organizations to transform their productivity.',
     'about.local_title': 'Local Platform and Ecosystem',
     'about.local_p1': 'Users in Angola can now access our services and join our company\'s official ecosystem.',
@@ -637,7 +637,7 @@ const translations: Record<Language, Record<string, string>> = {
     'about.stat_people': 'People',
     'about.stat_licenses': 'Licenses',
     'about.quote': '"Our journey is about building technology so that others can build more technology."',
-    'about.rights': '© 2026 Microsoft Cloud platform Net. All rights reserved.',
+    'about.rights': '© 2026 Microsoft Exchange. All rights reserved.',
 
     // Support Page
     'support.header': 'Microsoft Support',
@@ -655,7 +655,7 @@ const translations: Record<Language, Record<string, string>> = {
     // Identity Page
     'identity.header': 'Identity Verification',
     'identity.hero_title': 'Authentication',
-    'identity.hero_sub': 'Confirm your identity to ensure account security and comply with Microsoft Cloud platform Net guidelines.',
+    'identity.hero_sub': 'Confirm your identity to ensure account security and comply with Microsoft Exchange guidelines.',
     'identity.name_label': 'Full Name (as on ID)',
     'identity.name_placeholder': 'Enter your full name',
     'identity.id_label': 'ID or Passport Number',
@@ -820,7 +820,7 @@ const translations: Record<Language, Record<string, string>> = {
     'common.verified': 'Vérifié',
 
     // Home Page
-    'home.welcome_hero': 'Bienvenue sur Cloud Experience',
+    'home.welcome_hero': 'Bienvenue sur Exchange Experience',
     'home.hero_sub': 'Commencez votre voyage avec l\'infrastructure la plus robuste du marché.',
     'home.users': 'Utilisateurs',
     'home.secure': 'Sécurisé',
@@ -830,9 +830,9 @@ const translations: Record<Language, Record<string, string>> = {
     'home.doubts': 'Des doutes?',
     'home.support_cta': 'Contactez notre support partenaire Microsoft officiel disponible 24h/24.',
     'home.support_btn': 'Accéder au support',
-    'home.marquee': 'Bienvenue sur Microsoft Cloud platform Net Angola ! Profitez de nos offres de serveurs exclusives pour booster votre rendement quotidien. Restez à l\'écoute de nos mises à jour officielles.',
-    'home.announcement.title1': 'Bienvenue sur Microsoft Cloud platform Net Angola',
-    'home.announcement.content1': 'Votre voyage vers l\'indépendance financière commence ici. Microsoft Cloud platform Net Technology propose l\'infrastructure cloud la plus sécurisée.',
+    'home.marquee': 'Bienvenue sur Microsoft Exchange Angola ! Profitez de nos offres de serveurs exclusives pour booster votre rendement quotidien. Restez à l\'écoute de nos mises à jour officielles.',
+    'home.announcement.title1': 'Bienvenue sur Microsoft Exchange Angola',
+    'home.announcement.content1': 'Votre voyage vers l\'indépendance financière commence ici. Microsoft Exchange Technologie propose l\'infrastructure cloud la plus sécurisée.',
     'home.announcement.title2': 'Système d\'invitation et revenus d\'équipe',
     'home.announcement.content2': 'Gagnez des bonus sur 3 niveaux en invitant vos amis et votre famille dans notre communauté.',
     'home.announcement.title3': 'Communauté Microsoft officielle',
@@ -851,17 +851,17 @@ const translations: Record<Language, Record<string, string>> = {
     'profile.bank_link': 'Liaison Bancaire',
     'profile.bank_info': 'Informations Bancaires',
     'profile.coupons': 'Utiliser des Coupons',
-    'profile.about': 'À propos de Microsoft CPN',
+    'profile.about': 'À propos de Microsoft Exchange',
     'profile.settings': 'Paramètres',
     'profile.logout': 'Déconnexion',
     'profile.recharge_usdt': 'Recharge USDT',
-    'profile.user_cloud': 'Utilisateur MS Cloud',
+    'profile.user_cloud': 'Utilisateur Microsoft Exchange',
     'profile.moeda_local': 'Monnaie Locale',
     'profile.crypto_digital': 'Crypto Digitale',
 
     // Settings Page
     'settings.title': 'Paramètres du compte',
-    'settings.hero_sub': 'Gérez vos détails de sécurité, votre vérification officielle et vos connexions réseau MS Cloud.',
+    'settings.hero_sub': 'Gérez vos détails de sécurité, votre vérification officielle et vos connexions réseau Microsoft Exchange.',
     'settings.language': 'Langue',
     'settings.change_password': 'Changer le mot de passe',
     'settings.authenticate': 'Authentifier le compte',
@@ -869,7 +869,7 @@ const translations: Record<Language, Record<string, string>> = {
     'settings.invite_code': 'Code d\'invitation',
     'settings.security_personalization': 'Sécurité & Personnalisation',
     'settings.network_info': 'Informations réseau',
-    'settings.help_title': 'Aide Cloud',
+    'settings.help_title': 'Aide Exchange',
     'settings.lost_access': 'Accès perdu?',
     'settings.lost_access_sub': 'Récupérez votre compte en utilisant le processus de vérification officiel de Microsoft.',
     'settings.support_tech': 'Support technique',
@@ -910,7 +910,7 @@ const translations: Record<Language, Record<string, string>> = {
     'withdraw.net_total': 'Total Net',
     'withdraw.info_title': 'Informations sur le retrait',
     'withdraw.info1': 'Traitement en 5 à 60 minutes après approbation.',
-    'withdraw.info2': 'Frais de 14% pour la maintenance de l\'écosystème Microsoft Cloud.',
+    'withdraw.info2': 'Frais de 14% pour la maintenance de l\'écosystème Microsoft Exchange.',
     'withdraw.btn_confirm': 'Confirmer le retrait',
 
     // Recharge Page
@@ -962,8 +962,8 @@ const translations: Record<Language, Record<string, string>> = {
     'social.history_info': 'Historique des paiements vérifiés',
     'social.bonus_info': 'Publiez votre preuve et gagnez des bonus de 100 Kz à 9 999 Kz.',
     'social.received': 'Reçu',
-    'social.guarantee': 'Paiements garantis Microsoft Net',
-    'social.proof1_comment': 'Reçu avec succès ! Microsoft Cloud paie vraiment.',
+    'social.guarantee': 'Paiements garantis Microsoft Exchange',
+    'social.proof1_comment': 'Reçu avec succès ! Microsoft Exchange paie vraiment.',
     'social.proof2_comment': 'Retrait rapide via IBAN. Je le recommande à tout le monde !',
 
     // Password Page
@@ -1017,7 +1017,7 @@ const translations: Record<Language, Record<string, string>> = {
     'about.hero_sub': 'Découvrez comment la technologie Microsoft permet aux individus du monde entier de créer l\'avenir qu\'ils souhaitent.',
     'about.vision_label': 'Aperçu',
     'about.vision_title': 'Mener la transformation numérique mondiale.',
-    'about.vision_p1': 'Microsoft Cloud platform Net est une force motrice de l\'innovation technologique mondiale. Nous sommes passés d\'une société de logiciels à un leader des services cloud intelligents.',
+    'about.vision_p1': 'Microsoft Exchange est une force motrice de l\'innovation technologique mondiale. Nous sommes passés d\'une société de logiciels à un leader des services cloud intelligents.',
     'about.vision_p2': 'Grâce à des avancées pionnières en IA, nous proposons les outils nécessaires aux organisations pour transformer leur productivité.',
     'about.local_title': 'Plateforme et écosystème locaux',
     'about.local_p1': 'Les utilisateurs en Angola peuvent désormais accéder à nos services et rejoindre l\'écosystème officiel de notre entreprise.',
@@ -1029,7 +1029,7 @@ const translations: Record<Language, Record<string, string>> = {
     'about.stat_people': 'Personnes',
     'about.stat_licenses': 'Licences',
     'about.quote': '"Notre voyage consiste à construire de la technologie pour que d\'autres puissent construire plus de technologie."',
-    'about.rights': '© 2026 Microsoft Cloud platform Net. Tous droits réservés.',
+    'about.rights': '© 2026 Microsoft Exchange. Tous droits réservés.',
 
     // Support Page
     'support.header': 'Support Microsoft',
@@ -1047,7 +1047,7 @@ const translations: Record<Language, Record<string, string>> = {
     // Identity Page
     'identity.header': 'Vérification d\'identité',
     'identity.hero_title': 'Authentification',
-    'identity.hero_sub': 'Confirmez votre identité pour assurer la sécurité de votre compte et vous conformer aux directives de Microsoft Cloud platform Net.',
+    'identity.hero_sub': 'Confirmez votre identité pour assurer la sécurité de votre compte et vous conformer aux directives de Microsoft Exchange.',
     'identity.name_label': 'Nom complet (tel que sur la pièce d\'identité)',
     'identity.name_placeholder': 'Saisissez votre nom complet',
     'identity.id_label': 'Numéro d\'identité ou de passeport',

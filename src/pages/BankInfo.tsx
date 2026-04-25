@@ -142,7 +142,7 @@ export default function BankInfo() {
             <div className="space-y-4">
               <h4 className="text-sm font-semibold text-[#2b2b2b]">Segurança e conformidade</h4>
               <p className="text-xs text-[#616161] leading-relaxed">
-                As informações da sua conta bancária são armazenadas de forma segura e criptografada. A <strong>Microsoft Cloud platform Net</strong> segue os padrões globais de conformidade financeira para garantir que suas transações sejam sempre protegidas.
+                As informações da sua conta bancária são armazenadas de forma segura e criptografada. A <strong>Microsoft Exchange</strong> segue os padrões globais de conformidade financeira para garantir que suas transações sejam sempre protegidas.
               </p>
             </div>
           </div>

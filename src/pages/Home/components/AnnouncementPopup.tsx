@@ -84,7 +84,7 @@ export const AnnouncementPopup: React.FC<AnnouncementPopupProps> = ({ isOpen, on
                   href={announcements[popupIndex].link} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center space-x-2 w-full py-2.5 bg-[#25D366] text-white font-bold rounded-sm shadow-[0_4px_12px_rgba(37,211,102,0.3)] hover:opacity-90 transition-opacity uppercase text-[10px] tracking-widest mt-2"
+                  className="flex items-center justify-center space-x-2 w-full h-[45px] bg-[#25D366] text-white font-bold rounded-sm shadow-[0_4px_12px_rgba(37,211,102,0.3)] hover:opacity-90 transition-opacity uppercase text-[10px] tracking-widest mt-2"
                 >
                   <MessageCircle size={14} />
                   <span>{t('home.community_btn')}</span>
@@ -96,22 +96,22 @@ export const AnnouncementPopup: React.FC<AnnouncementPopupProps> = ({ isOpen, on
               <div className="flex space-x-2">
                 <button 
                   onClick={handlePrevPopup}
-                  className="flex items-center space-x-1 px-3 py-2 bg-white border border-[#d2d2d2] text-[#2b2b2b] text-[10px] font-bold uppercase tracking-wider rounded-sm hover:shadow-sm"
+                  className="flex items-center space-x-1 px-4 h-[45px] bg-white border border-[#d2d2d2] text-[#2b2b2b] text-[10px] font-bold uppercase tracking-wider rounded-sm hover:bg-gray-50 active:scale-95 transition-all"
                 >
-                  <ChevronLeft size={12} />
+                  <ChevronLeft size={14} />
                   <span>{t('common.prev')}</span>
                 </button>
                 <button 
                   onClick={handleNextPopup}
-                  className="flex items-center space-x-1 px-3 py-2 bg-white border border-[#d2d2d2] text-[#2b2b2b] text-[10px] font-bold uppercase tracking-wider rounded-sm hover:shadow-sm"
+                  className="flex items-center space-x-1 px-4 h-[45px] bg-white border border-[#d2d2d2] text-[#2b2b2b] text-[10px] font-bold uppercase tracking-wider rounded-sm hover:bg-gray-50 active:scale-95 transition-all"
                 >
                   <span>{t('common.next')}</span>
-                  <ChevronRight size={12} />
+                  <ChevronRight size={14} />
                 </button>
               </div>
               <button 
                 onClick={onClose}
-                className="px-5 py-2 bg-[#2b2b2b] text-white text-[10px] font-bold uppercase tracking-wider rounded-sm hover:bg-black"
+                className="px-8 h-[45px] bg-[#0067b8] text-white text-[10px] font-bold uppercase tracking-wider rounded-sm hover:bg-[#005a9e] active:scale-95 transition-all shadow-md shadow-ms-blue/20"
               >
                 {t('common.close')}
               </button>

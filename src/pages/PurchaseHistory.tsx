@@ -7,6 +7,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { useEffect, useState } from 'react';
 import { cn } from '../lib/utils';
 import { EmptyState } from '../components/EmptyState';
+import { SmartImage } from '../components/SmartImage';
 
 export default function PurchaseHistory() {
   const navigate = useNavigate();
@@ -67,12 +68,11 @@ export default function PurchaseHistory() {
             </div>
 
             <div className="p-4 flex space-x-6 items-start">
-              <div className="w-20 h-20 shrink-0 overflow-hidden border border-[#f2f2f2] bg-[#fbfbfb] flex items-center justify-center">
-                <img 
+              <div className="w-20 h-20 shrink-0 overflow-hidden border border-[#f2f2f2] bg-[#fbfbfb]">
+                <SmartImage 
                   src={item.produto_imagem} 
-                  className="w-full h-full object-contain mix-blend-multiply opacity-80" 
+                  className="w-full h-full mix-blend-multiply opacity-80" 
                   alt={item.produto_nome}
-                  referrerPolicy="no-referrer"
                 />
               </div>
 

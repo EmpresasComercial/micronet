@@ -142,7 +142,7 @@ export default function Profile() {
       </button>
 
       <div className="text-center py-8 text-gray-300">
-        <p className="text-[10px] uppercase font-bold tracking-[0.2em]">Microsoft Cloud platform Net © 2026</p>
+        <p className="text-[10px] uppercase font-bold tracking-[0.2em]">Microsoft Exchange © 2026</p>
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ import { useToast } from '../components/Toast';
 import { Button } from '../components/Button';
 import { supabase } from '../lib/supabase';
 import { EmptyState } from '../components/EmptyState';
+import { SmartImage } from '../components/SmartImage';
 
 interface Proof {
   id: string;
@@ -201,7 +202,7 @@ export default function SocialProof() {
                     </button>
                   ) : (
                     <div className="relative border border-gray-200 rounded-sm overflow-hidden">
-                      <img src={image} alt="Preview" className="w-full h-auto" />
+                      <SmartImage src={image} alt="Preview" className="w-full aspect-video" />
                       <button 
                         type="button" 
                         onClick={() => setImage(null)} 
@@ -260,7 +261,11 @@ export default function SocialProof() {
                              <p className="text-xs font-bold text-green-600">+{proof.amount}</p>
                           </div>
                        </div>
-                       <img src={proof.image} alt="Comprovativo" className="w-full h-auto grayscale-[0.3] hover:grayscale-0 transition-all" />
+                        <SmartImage 
+                          src={proof.image} 
+                          alt="Comprovativo" 
+                          className="w-full aspect-video grayscale-[0.3] hover:grayscale-0 transition-all cursor-pointer" 
+                        />
                        <div className="p-4 flex items-start space-x-2">
                           <MessageCircle size={14} className="text-ms-blue shrink-0 mt-0.5" />
                           <p className="text-xs text-gray-600 italic font-medium">"{proof.comment}"</p>

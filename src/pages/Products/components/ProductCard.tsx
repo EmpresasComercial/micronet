@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { Button } from '../../../components/Button';
 import { useLanguage } from '../../../contexts/LanguageContext';
 import { formatCurrency } from '../../../lib/currency';
+import { SmartImage } from '../../../components/SmartImage';
 
 export interface Product {
   id: string;
@@ -33,11 +34,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index, onBuy 
       <div className="-mx-4 -mt-4 mb-4 bg-white border-b border-gray-100 overflow-hidden">
         <div className="h-32 w-full flex items-center justify-center">
           {product.imagem_url ? (
-            <img 
+            <SmartImage 
               src={product.imagem_url} 
               alt={t(`${product.key}.name`)} 
-              className="w-full h-full object-contain mix-blend-multiply opacity-90"
-              referrerPolicy="no-referrer"
+              className="w-full h-full mix-blend-multiply opacity-90"
             />
           ) : (
             <div className="transform scale-150">

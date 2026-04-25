@@ -193,7 +193,7 @@ export default function Signup() {
               
               <div className="flex items-center justify-center space-x-2 text-[10px] text-gray-400 font-bold uppercase tracking-widest">
                 <ShieldCheck size={14} className="text-green-600" />
-                <span>Proteção Microsoft Cloud</span>
+                <span>Proteção Microsoft Exchange</span>
               </div>
 
               <div className="text-center pt-4 border-t border-gray-100">

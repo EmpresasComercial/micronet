@@ -6,6 +6,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { supabase } from '../lib/supabase';
 import { useToast } from '../components/Toast';
 import { Button } from '../components/Button';
+import { SmartImage } from '../components/SmartImage';
 
 export default function ProductDetails() {
   const { id } = useParams<{ id: string }>();
@@ -121,11 +122,10 @@ export default function ProductDetails() {
           >
             <div className="bg-[#f3f3f3] rounded-sm aspect-video flex items-center justify-center overflow-hidden mb-6 group">
               {product.imagem_url ? (
-                <img 
+                <SmartImage 
                   src={product.imagem_url} 
                   alt={product.nome} 
-                  className="w-full h-full object-contain p-8 group-hover:scale-105 transition-transform duration-500"
-                  referrerPolicy="no-referrer"
+                  className="w-full h-full p-8 group-hover:scale-105 transition-transform duration-500"
                 />
               ) : (
                 <div className="transform scale-[2.5] opacity-20">
