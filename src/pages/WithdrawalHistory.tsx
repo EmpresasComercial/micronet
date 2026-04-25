@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, ReceiptText, Clock, CreditCard, Banknote, ShieldCheck } from 'lucide-react';
+import { ChevronLeft, ReceiptText, Clock, Banknote, ShieldCheck } from 'lucide-react';
 import { motion } from 'motion/react';
 import { supabase } from '../lib/supabase';
 import { cn } from '../lib/utils';
@@ -82,7 +82,6 @@ export default function WithdrawalHistory() {
             className="bg-white border border-[#e1e1e1] shadow-sm rounded-sm overflow-hidden"
           >
             <div className="p-5 space-y-4">
-              {/* Header: Bank & Amount */}
               <div className="flex justify-between items-start border-b border-[#f3f3f3] pb-4">
                 <div className="flex items-center space-x-3">
                   <div className="p-2 bg-[#f2f2f2] rounded text-[#616161]">
@@ -104,7 +103,6 @@ export default function WithdrawalHistory() {
                 </div>
               </div>
 
-              {/* Details List */}
               <div className="space-y-4">
                 <div className="grid grid-cols-1 gap-y-3">
                   <div className="grid grid-cols-2 gap-4">

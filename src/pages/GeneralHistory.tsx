@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronDown, History, ArrowUpRight, ArrowDownLeft, TrendingUp, Users, Award, Ticket, Filter, LayoutGrid } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 import { cn } from '../lib/utils';
 import { supabase } from '../lib/supabase';
 import { useToast } from '../components/Toast';
@@ -101,7 +101,6 @@ export default function GeneralHistory() {
           <p className="text-sm text-[#616161] mt-2">Registro completo de suas operações financeiras na nuvem.</p>
         </div>
 
-        {/* Filtro Estilizado Microsoft */}
         <div className="bg-white border border-[#e1e1e1] p-6 shadow-sm rounded-sm">
           <div className="flex items-center space-x-2 mb-4">
             <Filter size={14} className="text-ms-blue" />
@@ -195,7 +194,6 @@ export default function GeneralHistory() {
           </div>
         </div>
 
-        {/* MS Footer */}
         <div className="pt-12 flex flex-col items-center opacity-20 pointer-events-none">
           <img 
             src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" 

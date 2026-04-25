@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, Cpu, Activity, Zap, CheckCircle2, Cloud } from 'lucide-react';
+import { ChevronLeft, Cpu, Activity, Zap, CheckCircle2 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { cn } from '@/src/lib/utils';
 import { Button } from '../components/Button';
 import { useToast } from '../components/Toast';
 import { useLanguage } from '../contexts/LanguageContext';
 import { supabase } from '../lib/supabase';
-import { products } from '../constants/products';
 
 export default function Operations() {
   const navigate = useNavigate();
@@ -102,7 +101,6 @@ export default function Operations() {
 
   return (
     <div className="min-h-screen relative pb-20 font-sans overflow-hidden bg-[#f3f3f3]">
-      {/* Premium Windows Background */}
       <div className="absolute inset-0 z-0">
         <img 
           src="/Introduccion-a-Microsoft-Windows.webp" 
@@ -124,7 +122,6 @@ export default function Operations() {
       </header>
 
       <main className="relative z-10 p-6 max-w-lg mx-auto flex flex-col items-center">
-        {/* Central Icon - More Flat */}
         <div className="mb-10 mt-6">
           <div className={cn(
             "w-28 h-28 bg-white border border-[#e5e5e5] flex items-center justify-center relative transition-all duration-700",
@@ -160,9 +157,7 @@ export default function Operations() {
           <p className="text-[11px] text-[#616161] font-medium max-w-[200px] mx-auto leading-tight">{t('ops.collect_sub')}</p>
         </div>
 
-        {/* Flat Microsoft Card */}
         <div className="w-full bg-white/90 backdrop-blur-sm border border-[#e5e5e5] p-8 space-y-8 relative overflow-hidden shadow-sm">
-          {/* Status Label */}
           <div className="space-y-4">
             <div className="flex justify-between items-center border-b border-[#f3f3f3] pb-3">
               <div className="flex items-center space-x-2">
@@ -178,7 +173,6 @@ export default function Operations() {
               </span>
             </div>
 
-            {/* Flat Progress */}
             <div className="space-y-2">
               <div className="h-1 bg-[#f3f2f1] overflow-hidden">
                 <motion.div 
@@ -197,7 +191,6 @@ export default function Operations() {
             </div>
           </div>
 
-          {/* Clean Stats Grid */}
           <div className="grid grid-cols-2 border-t border-[#f3f3f3]">
             <div className="p-4 border-r border-[#f3f3f3]">
               <p className="text-[9px] text-[#616161] font-bold uppercase tracking-widest mb-1">{t('ops.estimated')}</p>
@@ -223,7 +216,6 @@ export default function Operations() {
           </Button>
         </div>
 
-        {/* Microsoft Footer Node */}
         <div className="mt-12 text-center opacity-40">
            <div className="flex items-center justify-center space-x-1 mb-4">
              <div className="w-1.5 h-1.5 bg-[#f25022]" />

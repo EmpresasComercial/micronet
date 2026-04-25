@@ -15,7 +15,6 @@ export default function RechargeUSDT() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [usdtConfig, setUsdtConfig] = useState({ address: '', rate: 1000 });
 
-  // Carregar configuração de USDT do banco
   useEffect(() => {
     async function fetchConfig() {
       const { data, error } = await supabase

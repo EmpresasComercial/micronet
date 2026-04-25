@@ -36,9 +36,7 @@ export default function Home() {
 
       <StatsGrid />
 
-      {/* Content */}
       <div className="px-4 space-y-6 pb-8">
-        {/* Scrolling Notification Banner */}
         <div className="flex items-center space-x-3 bg-[#fff8f0] border border-[#ffebcc] p-2 rounded-sm overflow-hidden">
           <div className="bg-[#a66d00] p-1.5 rounded-sm text-white shrink-0 z-10">
             <Megaphone size={14} className="rotate-12" />
@@ -50,7 +48,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Quick Action Buttons */}
         <div className="space-y-3">
           <div className="grid grid-cols-2 gap-3">
             <button 
@@ -87,7 +84,6 @@ export default function Home() {
             </Link>
           </div>
           
-          {/* Automatic Carousel */}
           <div className="relative h-[240px] w-full overflow-hidden rounded-sm border border-[#e1e1e1] bg-[#f2f2f2]">
             <AnimatePresence mode="wait">
               <motion.div
@@ -97,14 +93,12 @@ export default function Home() {
                 exit={{ opacity: 0 }}
                 className="absolute inset-0 w-full h-full"
               >
-                {/* Blurred Background to fill empty area */}
                 <img 
                   src={CAROUSEL_IMAGES[currentIndex]} 
                   className="absolute inset-0 w-full h-full object-cover blur-xl opacity-30 scale-110" 
                   alt=""
                 />
                 
-                {/* Main Uncropped Image */}
                 <motion.img
                   src={CAROUSEL_IMAGES[currentIndex]}
                   initial={{ x: 50, opacity: 0 }}
@@ -118,7 +112,6 @@ export default function Home() {
               </motion.div>
             </AnimatePresence>
             
-            {/* Dots Indicator */}
             <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex space-x-1.5 z-20">
               {CAROUSEL_IMAGES.map((_, i) => (
                 <div 

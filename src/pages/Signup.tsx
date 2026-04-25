@@ -4,7 +4,6 @@ import { Eye, EyeOff, ShieldCheck, Phone, Key, UserPlus } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useToast } from '../components/Toast';
 import { Button } from '../components/Button';
-import { useLanguage } from '../contexts/LanguageContext';
 import { LanguageSelector } from '../components/LanguageSelector';
 import { supabase } from '../lib/supabase';
 import { cn } from '@/src/lib/utils';
@@ -13,7 +12,6 @@ export default function Signup() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { showToast } = useToast();
-  const { t } = useLanguage();
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -25,7 +23,6 @@ export default function Signup() {
     confirmPassword: ''
   });
 
-  // 1. Captura do Convite (Marketing Viral)
   useEffect(() => {
     const code = searchParams.get('join');
     if (code) {
@@ -65,7 +62,6 @@ export default function Signup() {
     setIsSubmitting(true);
     
     try {
-      // Cadastro via e-mail fake (usando o telefone como identificador) para evitar custos de SMS/Twilio
       const { data, error } = await supabase.auth.signUp({
         email: `${formData.phone}@user.com`,
         password: formData.password,
@@ -81,8 +77,6 @@ export default function Signup() {
       if (error) throw error;
 
       if (data.user) {
-        // O redirecionamento será feito automaticamente pelo AuthContext.tsx via SIGNED_IN
-        // se o auto-confirm estiver ativo no Supabase.
       }
     } catch (err: any) {
       showToast(err.message || 'Falha ao processar registo.', 'error');

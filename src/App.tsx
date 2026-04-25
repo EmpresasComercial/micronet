@@ -8,10 +8,9 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
 import { ToastProvider } from './components/Toast';
 import { LanguageProvider } from './contexts/LanguageContext';
-import { AuthProvider } from './contexts/AuthContext'; // Contexto Global de Auth
+import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 
-// Páginas
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
@@ -48,14 +47,12 @@ export default function App() {
     <LanguageProvider>
       <BrowserRouter>
         <ToastProvider>
-          <AuthProvider> {/* O Escudo Invisível envolve tudo */}
+          <AuthProvider>
             <ConnectivityOverlay />
             <Routes>
-              {/* 🔓 Rotas Públicas */}
               <Route path="/login" element={<Login />} />
               <Route path="/cadastro" element={<Signup />} />
 
-              {/* 🔒 Rotas Protegidas (Exigem Login) */}
               <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
                 <Route index element={<Navigate to="/home" replace />} />
                 <Route path="home" element={<Home />} />
@@ -87,7 +84,6 @@ export default function App() {
                 <Route path="confirmar-recarga" element={<ConfirmarRecarga />} />
               </Route>
 
-              {/* Redirecionamento Global */}
               <Route path="*" element={<Navigate to="/login" replace />} />
             </Routes>
           </AuthProvider>

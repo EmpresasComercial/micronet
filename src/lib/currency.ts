@@ -1,6 +1,6 @@
 export type CurrencyType = 'KZ' | 'USDT';
 
-const USDT_RATE = 950; // 1 USDT = 950 KZ
+const USDT_RATE = 1100; // 1 USDT = 1100 KZ
 
 export const formatCurrency = (val: number, currency: CurrencyType) => {
   if (currency === 'KZ') {

@@ -55,12 +55,10 @@ export const AnnouncementPopup: React.FC<AnnouncementPopupProps> = ({ isOpen, on
             exit={{ opacity: 0, scale: 0.9, y: 30 }}
             className="bg-white w-full max-w-sm rounded-sm shadow-[0_20px_60px_rgba(0,0,0,0.5)] border border-[#e1e1e1] relative"
           >
-            {/* Hanging Icon (Top-Left) */}
             <div className="absolute -top-6 -left-6 z-20 bg-[#0067b8] text-white p-4 rounded-sm shadow-[0_10px_20px_rgba(0,103,184,0.4)] rotate-[-12deg]">
               <Megaphone size={32} />
             </div>
 
-            {/* Popup Header (Minimalist) */}
             <div className="p-2 flex items-center justify-end">
               <button 
                 onClick={onClose} 
@@ -71,7 +69,6 @@ export const AnnouncementPopup: React.FC<AnnouncementPopupProps> = ({ isOpen, on
               </button>
             </div>
 
-            {/* Popup Body (Scrollable) */}
             <div className="px-6 pb-2 space-y-3 relative z-10">
               <div className="space-y-2 max-h-[220px] overflow-y-auto pr-2 custom-scrollbar">
                 <h3 className="text-xl font-bold text-[#2b2b2b] leading-tight pr-4">
@@ -95,7 +92,6 @@ export const AnnouncementPopup: React.FC<AnnouncementPopupProps> = ({ isOpen, on
               )}
             </div>
 
-            {/* Popup Footer Controls */}
             <div className="bg-[#f9f9f9] px-6 py-4 border-t border-[#e1e1e1] flex items-center justify-between mt-2">
               <div className="flex space-x-2">
                 <button 
@@ -121,7 +117,6 @@ export const AnnouncementPopup: React.FC<AnnouncementPopupProps> = ({ isOpen, on
               </button>
             </div>
             
-            {/* Progress Bar (indicator) */}
             <motion.div 
               key={`progress-${isOpen}-${popupIndex}`}
               initial={{ width: "100%" }}

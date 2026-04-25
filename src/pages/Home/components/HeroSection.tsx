@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Cloud, Laptop } from 'lucide-react';
+import { Cloud } from 'lucide-react';
 import { useLanguage } from '../../../contexts/LanguageContext';
 
 export const HeroSection: React.FC = () => {
@@ -19,7 +19,6 @@ export const HeroSection: React.FC = () => {
         </motion.div>
       </div>
       
-      {/* Background Accent */}
       <div className="absolute right-[-10%] top-0 bottom-0 w-[60%] opacity-20 overflow-hidden pointer-events-none">
           <img 
             src="/micro-carrocel.webp" 

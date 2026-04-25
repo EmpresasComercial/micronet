@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, ReceiptText, Laptop, Server, Cpu, ExternalLink, Download } from 'lucide-react';
+import { ChevronLeft, Download } from 'lucide-react';
 import { motion } from 'motion/react';
 import { supabase } from '../lib/supabase';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -57,14 +57,12 @@ export default function PurchaseHistory() {
             transition={{ delay: idx * 0.1 }}
             className="ms-card p-0 overflow-hidden bg-white border border-[#e1e1e1] shadow-sm flex flex-col"
           >
-            {/* Microsoft Header Style for each item */}
             <div className="bg-[#f2f2f2] px-4 py-2 flex justify-between items-center border-b border-[#e1e1e1] text-[10px] font-bold text-gray-500 uppercase tracking-tight">
               <span>{t('history.license_id')}: {item.id.toString().substring(0, 8).toUpperCase()}</span>
               <span>{t('history.activated_at')}: {formatDate(item.data_inicio)}</span>
             </div>
 
             <div className="p-4 flex space-x-6 items-start">
-              {/* Product Image */}
               <div className="w-20 h-20 shrink-0 overflow-hidden border border-[#f2f2f2] bg-[#fbfbfb] flex items-center justify-center">
                 <img 
                   src={item.produto_imagem} 
@@ -74,7 +72,6 @@ export default function PurchaseHistory() {
                 />
               </div>
 
-              {/* Product Info */}
               <div className="flex-1 min-w-0">
                 <h3 className="text-base font-bold text-gray-900 mb-1">{item.produto_nome}</h3>
                 

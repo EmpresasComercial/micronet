@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, Landmark, Info, ShieldCheck, CreditCard, CheckCircle2, ChevronDown, AlertCircle, ReceiptText } from 'lucide-react';
+import { ChevronLeft, Landmark, CheckCircle2, ChevronDown, AlertCircle, ReceiptText } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useToast } from '../components/Toast';
 import { Button } from '../components/Button';
@@ -120,7 +120,6 @@ export default function Recharge() {
           className="bg-white border border-[#e1e1e1] p-8 rounded-sm shadow-sm"
         >
           <div className="space-y-8">
-            {/* Campo de Valor */}
             <div>
               <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Montante (AOA)</label>
               <div className="relative">
@@ -178,7 +177,6 @@ export default function Recharge() {
               </div>
             </div>
 
-            {/* Seleção de Banco (Surge Progressivamente) */}
             <AnimatePresence>
               {showBankField && (
                 <motion.div 
@@ -210,7 +208,6 @@ export default function Recharge() {
               )}
             </AnimatePresence>
 
-            {/* Botão de Ação Dinâmico */}
             <div className="pt-4 space-y-4">
               <Button 
                 onClick={handleMainAction} 

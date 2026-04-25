@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { ChevronLeft, Camera, ShieldCheck, Landmark, Info, CheckCircle2, Copy, Check, Loader2, Sparkles } from 'lucide-react';
+import { ChevronLeft, Camera, ShieldCheck, CheckCircle2, Copy, Check, Loader2, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { supabase } from '../lib/supabase';
 import { useToast } from '../components/Toast';
@@ -147,7 +147,6 @@ export default function ConfirmarRecarga() {
       if (uploadError) throw uploadError;
       setUploadProgress(60);
 
-      // 2. Confirmar no Banco via RPC
       const { data, error: rpcError } = await supabase.rpc('confirm_recharge_mcpn', {
         p_recharge_id: rechargeId,
         p_bank_name: bankDetails?.nome_banco || 'Depósito Bancário',
@@ -158,7 +157,7 @@ export default function ConfirmarRecarga() {
       setUploadProgress(100);
 
       if (data.success) {
-        showToast('Comprovativo enviado com sucesso!', 'success');
+        showToast(data.message || 'Comprovativo enviado com sucesso!', 'success');
         setTimeout(() => navigate('/registro-recarga'), 1500);
       } else {
         showToast(data.message, 'error');
@@ -185,7 +184,6 @@ export default function ConfirmarRecarga() {
           animate={{ opacity: 1, y: 0 }}
           className="bg-white border border-[#e1e1e1] shadow-sm p-8 rounded-sm text-left space-y-8 relative overflow-hidden"
         >
-          {/* Barra de Progresso de Upload */}
           <AnimatePresence>
             {isSubmitting && (
               <motion.div 
@@ -201,7 +199,6 @@ export default function ConfirmarRecarga() {
             )}
           </AnimatePresence>
 
-          {/* Valor e Dados Bancários */}
           <div className="space-y-6">
             <div className="text-center space-y-2 pb-6 border-b border-gray-100">
               <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">Montante a Transferir</p>

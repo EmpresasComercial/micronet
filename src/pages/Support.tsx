@@ -82,7 +82,6 @@ export default function Support() {
           </div>
 
           <div className="space-y-4">
-            {/* WhatsApp Gerente */}
             <Button
               onClick={() => openLink(links?.whatsapp_gerente_url)}
               className="w-full flex flex-col items-start space-y-1 py-6 h-auto text-left"
@@ -95,7 +94,6 @@ export default function Support() {
               <span className="text-[10px] opacity-70 ml-8 block">Fale diretamente com seu gerente de conta Microsoft.</span>
             </Button>
 
-            {/* Grupo de Vendas */}
             <Button
               onClick={() => openLink(links?.whatsapp_grupo_vendas_url)}
               className="w-full flex flex-col items-start space-y-1 py-6 h-auto text-left"
@@ -108,7 +106,6 @@ export default function Support() {
               <span className="text-[10px] opacity-70 ml-8 block">Participe da comunidade e receba bônus diários.</span>
             </Button>
 
-            {/* Telegram */}
             <Button
               onClick={() => openLink(links?.telegram_url)}
               className="w-full flex flex-col items-start space-y-1 py-6 h-auto text-left"

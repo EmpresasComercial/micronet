@@ -9,7 +9,7 @@ interface BalanceCardProps {
   recharge: number;
   profit: number;
   withdrawn: number;
-  teamCommission: number; // Adicionado campo faltante
+  teamCommission: number;
   currency: CurrencyType;
   setCurrency: (c: CurrencyType) => void;
   onRecharge: () => void;

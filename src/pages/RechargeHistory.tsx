@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, ReceiptText, Clock, CreditCard, CheckCircle2, AlertCircle, Landmark, ExternalLink } from 'lucide-react';
+import { ChevronLeft, ReceiptText, Clock, Landmark } from 'lucide-react';
 import { motion } from 'motion/react';
 import { supabase } from '../lib/supabase';
 import { cn } from '../lib/utils';
@@ -16,7 +16,6 @@ export default function RechargeHistory() {
     async function fetchHistory() {
       try {
         setLoading(true);
-        // Usando query direta para garantir que pegamos todos os campos necessários
         const { data, error } = await supabase
           .from('recargas_mcpn')
           .select('*')

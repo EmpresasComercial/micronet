@@ -4,7 +4,6 @@ import { ChevronLeft, ShieldCheck, Info, User, CreditCard, ChevronDown, Camera, 
 import { motion } from 'motion/react';
 import { useToast } from '../components/Toast';
 import { Button } from '../components/Button';
-import { useLanguage } from '../contexts/LanguageContext';
 import { supabase } from '../lib/supabase';
 import { cn } from '../lib/utils';
 
@@ -18,7 +17,6 @@ const PROVINCES = [
 export default function IdentityAuth() {
   const navigate = useNavigate();
   const { showToast } = useToast();
-  const { t } = useLanguage();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentStatus, setCurrentStatus] = useState<string | null>(null);
@@ -33,7 +31,6 @@ export default function IdentityAuth() {
     province: '',
   });
 
-  // Carregar status atual da verificação
   useEffect(() => {
     async function fetchStatus() {
       try {
@@ -112,7 +109,6 @@ export default function IdentityAuth() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Não autenticado');
 
-      // Upload das imagens
       const timestamp = Date.now();
       const frentePath = await uploadFile(frenteFile, `${user.id}/frente_${timestamp}.jpg`);
       const versoPath = await uploadFile(versoFile, `${user.id}/verso_${timestamp}.jpg`);

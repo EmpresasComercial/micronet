@@ -79,7 +79,6 @@ export default function RechargeHistoryUSDT() {
 
   return (
     <div className="min-h-screen bg-[#f2f2f2]">
-      {/* Header Microsoft Style */}
       <header className="bg-white p-4 flex items-center border-b border-[#d2d2d2] sticky top-0 z-50">
         <button onClick={() => navigate('/recharge-usdt')} className="p-2 -ml-2 text-gray-600 hover:text-ms-blue transition-colors" title="Voltar">
           <ChevronLeft className="w-6 h-6" />
@@ -96,7 +95,6 @@ export default function RechargeHistoryUSDT() {
       </header>
 
       <div className="p-6 max-w-2xl mx-auto space-y-4">
-        {/* Summary Info */}
         <div className="bg-white border-b-2 border-ms-blue p-6 shadow-sm mb-8 flex items-center justify-between">
           <div>
             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Total Recarregado (USDT)</p>
@@ -143,14 +141,12 @@ export default function RechargeHistoryUSDT() {
                 <MoreHorizontal size={20} />
               </button>
               
-              {/* Microsoft-style accent hover */}
               <div className="absolute left-0 top-0 bottom-0 w-1 bg-ms-blue translate-x-[-100%] group-hover:translate-x-0 transition-transform" />
             </motion.div>
           ))
         )}
         </div>
 
-        {/* Empty State / Footer */}
         <div className="text-center py-12 space-y-4">
           <p className="text-xs text-gray-400 font-medium italic">Mostrando os últimos 3 registros de nó seguro Microsoft</p>
           <div className="flex justify-center flex-col items-center opacity-30 mt-10">

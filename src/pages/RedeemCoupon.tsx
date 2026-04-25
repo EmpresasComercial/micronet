@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, Ticket, ShieldCheck, Sparkles } from 'lucide-react';
+import { ChevronLeft, Ticket } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useToast } from '../components/Toast';
 import { Button } from '../components/Button';
@@ -15,7 +15,6 @@ export default function RedeemCoupon() {
   const [coupon, setCoupon] = useState('');
 
   const handleCouponChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Sanitização: Apenas letras e números, tudo em maiúsculas
     const val = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
     setCoupon(val);
   };

@@ -111,6 +111,8 @@ export default function Withdraw() {
         <button 
           onClick={() => navigate('/perfil')} 
           className="p-2 -ml-2 text-ms-text-muted hover:text-ms-blue transition-colors"
+          title="Voltar ao perfil"
+          aria-label="Voltar ao perfil"
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
@@ -118,13 +120,14 @@ export default function Withdraw() {
         <button 
           onClick={() => navigate('/registro-retirada')}
           className="ml-auto p-2 text-ms-text-muted hover:text-ms-blue"
+          title="Histórico de Retiradas"
+          aria-label="Histórico de Retiradas"
         >
           <ReceiptText className="w-6 h-6" strokeWidth={1.5} />
         </button>
       </header>
 
       <div className="p-4 max-w-lg mx-auto pb-20">
-        {/* Card de Saldo Flat */}
         <motion.div 
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -137,7 +140,6 @@ export default function Withdraw() {
           <Wallet className="absolute right-[-10px] bottom-[-10px] w-32 h-32 text-white opacity-10 rotate-12" />
         </motion.div>
 
-        {/* Verificação de BI */}
         {!isVerified && (
           <motion.div 
             initial={{ opacity: 0, y: 10 }}
@@ -160,7 +162,6 @@ export default function Withdraw() {
 
         <div className="bg-white border border-ms-border p-6 rounded-sm">
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Input de Valor */}
             <div>
               <label className="block text-[10px] font-bold text-ms-text-muted uppercase tracking-widest mb-2">Quanto deseja retirar?</label>
               <div className="relative">
@@ -187,7 +188,6 @@ export default function Withdraw() {
               </div>
             </div>
 
-            {/* Informações Bancárias */}
             <div className="bg-ms-gray p-4 rounded-sm">
               <div className="flex items-center justify-between mb-2">
                 <p className="text-[10px] font-bold text-ms-text-muted uppercase tracking-widest flex items-center">
@@ -212,7 +212,6 @@ export default function Withdraw() {
               )}
             </div>
 
-            {/* Horário de Saque */}
             <div className="flex items-center text-[10px] text-ms-text-muted font-bold uppercase tracking-wider">
               <Clock size={12} className="mr-2 text-ms-blue" />
               Saques: Segunda a Sexta | 10:00 - 16:00

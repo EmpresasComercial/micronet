@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, ShieldCheck, Phone, Key } from 'lucide-react';
+import { Eye, EyeOff, ShieldCheck, Phone } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useToast } from '../components/Toast';
 import { Button } from '../components/Button';
@@ -11,7 +11,6 @@ import { supabase } from '../lib/supabase';
 export default function Login() {
   const navigate = useNavigate();
   const { showToast } = useToast();
-  const { t } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   
@@ -22,7 +21,6 @@ export default function Login() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    // Sanitização: Apenas números para telefone, remove espaços para senha
     const sanitized = name === 'phone' 
       ? value.replace(/\D/g, '').slice(0, 9) 
       : value.trim();
@@ -51,7 +49,6 @@ export default function Login() {
       });
 
       if (error) throw error;
-      // O redirecionamento será feito automaticamente pelo AuthContext.tsx via SIGNED_IN
     } catch (err: any) {
       showToast('Telefone ou senha incorretos.', 'error');
     } finally {
@@ -113,6 +110,8 @@ export default function Login() {
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
+                  title={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                  aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
                 >
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>

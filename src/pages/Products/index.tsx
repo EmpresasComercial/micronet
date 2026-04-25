@@ -1,10 +1,9 @@
 import React from 'react';
-import { ReceiptText } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { ProductCard } from './components/ProductCard';
 import { supabase } from '../../lib/supabase';
-import { Monitor, ShieldCheck, Zap } from 'lucide-react';
+import { ReceiptText, Monitor, ShieldCheck, Zap } from 'lucide-react';
 
 const ICON_MAP: Record<string, React.ReactNode> = {
   'product.win7': <Monitor className="w-10 h-10 text-blue-500" />,
@@ -25,7 +24,6 @@ export default function Products() {
         const { data, error } = await supabase.rpc('get_available_products_mcpn');
         if (error) throw error;
         
-        // Mapear dados do banco para o formato esperado pelo componente
         const mappedProducts = (data || []).map((p: any) => ({
           ...p,
           priceValue: parseFloat(p.preco),

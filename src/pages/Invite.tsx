@@ -55,7 +55,12 @@ export default function Invite() {
               <label className="text-xs font-bold text-gray-500 uppercase">{t('invite.link_label')}</label>
               <div className="flex items-center border-b border-gray-400 py-2">
                 <span className="text-sm text-ms-blue flex-grow truncate">{inviteLink}</span>
-                <button onClick={() => copyToClipboard(inviteLink)} className="ml-2 text-gray-400 hover:text-ms-blue transition-colors">
+                <button 
+                  onClick={() => copyToClipboard(inviteLink)} 
+                  className="ml-2 text-gray-400 hover:text-ms-blue transition-colors"
+                  title={t('invite.copy', { defaultValue: 'Copiar link' })}
+                  aria-label={t('invite.copy', { defaultValue: 'Copiar link' })}
+                >
                   <Copy className="w-4 h-4" />
                 </button>
               </div>
@@ -66,7 +71,12 @@ export default function Invite() {
               <label className="text-xs font-bold text-gray-500 uppercase">{t('invite.code_label')}</label>
               <div className="flex items-center border-b border-gray-400 py-2">
                 <span className="text-xl font-mono flex-grow">{inviteCode}</span>
-                <button onClick={() => copyToClipboard(inviteCode)} className="ml-2 text-gray-400 hover:text-ms-blue transition-colors">
+                <button 
+                  onClick={() => copyToClipboard(inviteCode)} 
+                  className="ml-2 text-gray-400 hover:text-ms-blue transition-colors"
+                  title={t('invite.copy', { defaultValue: 'Copiar código' })}
+                  aria-label={t('invite.copy', { defaultValue: 'Copiar código' })}
+                >
                   <Copy className="w-4 h-4" />
                 </button>
               </div>

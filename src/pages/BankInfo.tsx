@@ -40,7 +40,6 @@ export default function BankInfo() {
   };
 
   const handleDelete = async (id: string) => {
-    console.log('Deletando banco:', id);
     try {
       const { data, error } = await supabase.rpc('remove_bank_account_mcpn', {
         p_id: id
@@ -116,7 +115,6 @@ export default function BankInfo() {
                   <div className="pt-4 flex flex-col space-y-3">
                     <button 
                       onClick={() => {
-                        console.log('Abrindo diálogo para:', bank.id);
                         setDeleteDialog({ isOpen: true, id: bank.id });
                       }}
                       className="text-sm text-[#a4262c] font-semibold hover:underline flex items-center justify-start"
@@ -140,7 +138,6 @@ export default function BankInfo() {
             + Adicionar um novo método de pagamento
           </motion.button>
 
-          {/* Microsoft Standard Terms/Info Section */}
           <div className="mt-16 pt-10 border-t border-[#e1e1e1] space-y-6">
             <div className="space-y-4">
               <h4 className="text-sm font-semibold text-[#2b2b2b]">Segurança e conformidade</h4>

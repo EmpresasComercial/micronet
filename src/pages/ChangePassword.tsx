@@ -4,13 +4,11 @@ import { ChevronLeft, Key, ShieldCheck, Eye, EyeOff } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useToast } from '../components/Toast';
 import { Button } from '../components/Button';
-import { useLanguage } from '../contexts/LanguageContext';
 import { supabase } from '../lib/supabase';
 
 export default function ChangePassword() {
   const navigate = useNavigate();
   const { showToast } = useToast();
-  const { t } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPass, setShowPass] = useState(false);
   
@@ -21,7 +19,6 @@ export default function ChangePassword() {
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Sanitização: Remove espaços em branco em tempo real
     const val = e.target.value.replace(/\s/g, '');
     setFormData({ ...formData, [e.target.name]: val });
   };
@@ -110,7 +107,13 @@ export default function ChangePassword() {
                     value={formData.newPassword}
                     onChange={handleChange}
                   />
-                  <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
+                  <button 
+                    type="button" 
+                    onClick={() => setShowPass(!showPass)} 
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
+                    title={showPass ? "Ocultar senha" : "Mostrar senha"}
+                    aria-label={showPass ? "Ocultar senha" : "Mostrar senha"}
+                  >
                     {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
                 </div>

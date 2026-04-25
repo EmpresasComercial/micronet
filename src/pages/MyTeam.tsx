@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, Users, Phone, Calendar, Wallet, UserCircle, Briefcase, Trophy, BarChart3, Search } from 'lucide-react';
+import { ChevronLeft, Users, Phone, UserCircle, Briefcase, Trophy, BarChart3, Search } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '@/src/lib/utils';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -62,7 +62,6 @@ export default function MyTeam() {
 
   return (
     <div className="min-h-screen bg-[#f3f2f1] pb-20">
-      {/* MS Corporate Header */}
       <header className="bg-white p-4 flex items-center justify-between border-b border-[#edebe9] sticky top-0 z-50">
         <div className="flex items-center">
           <button onClick={() => navigate('/convite')} className="p-2 -ml-2 text-gray-600 hover:text-ms-blue transition-colors" title="Voltar">
@@ -76,7 +75,6 @@ export default function MyTeam() {
       </header>
 
       <div className="p-5 max-w-2xl mx-auto space-y-5">
-        {/* Statistics Banner */}
         <motion.div 
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -106,7 +104,6 @@ export default function MyTeam() {
           <Users className="absolute right-[-20px] top-[-20px] w-40 h-40 text-ms-blue opacity-[0.03]" />
         </motion.div>
 
-        {/* Level Tabs - Microsoft FluentUI style */}
         <div className="flex border-b border-[#edebe9] bg-white rounded-t-sm">
           {levels.map((lvl) => (
             <button
@@ -127,7 +124,6 @@ export default function MyTeam() {
           ))}
         </div>
 
-        {/* Search simulation bar */}
         <div className="relative">
           <input 
             type="text" 
@@ -137,7 +133,6 @@ export default function MyTeam() {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
         </div>
 
-        {/* Members List */}
         <div className="space-y-2">
           <AnimatePresence mode="wait">
             <motion.div

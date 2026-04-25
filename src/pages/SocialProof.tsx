@@ -1,10 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, Edit3, Camera, X, Send, ShieldCheck, CheckCircle2, MessageCircle, Users } from 'lucide-react';
+import { ChevronLeft, Edit3, Camera, X, MessageCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useToast } from '../components/Toast';
 import { Button } from '../components/Button';
-import { useLanguage } from '../contexts/LanguageContext';
 import { supabase } from '../lib/supabase';
 
 interface Proof {
@@ -19,7 +18,6 @@ interface Proof {
 export default function SocialProof() {
   const navigate = useNavigate();
   const { showToast } = useToast();
-  const { t } = useLanguage();
 
   const [proofs, setProofs] = useState<Proof[]>([]);
   const [loading, setLoading] = useState(true);
@@ -58,13 +56,11 @@ export default function SocialProof() {
   }, []);
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Sanitização: Apenas números
     const val = e.target.value.replace(/\D/g, '');
     setAmount(val);
   };
 
   const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    // Sanitização: Impede scripts básicos
     const val = e.target.value.replace(/[<>]/g, '').slice(0, 200);
     setComment(val);
   };

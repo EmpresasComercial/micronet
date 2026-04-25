@@ -1,21 +1,18 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, MessageSquare, Send, ShieldCheck } from 'lucide-react';
+import { ChevronLeft, ShieldCheck } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useToast } from '../components/Toast';
 import { Button } from '../components/Button';
-import { useLanguage } from '../contexts/LanguageContext';
 import { supabase } from '../lib/supabase';
 
 export default function SupportFeedback() {
   const navigate = useNavigate();
   const { showToast } = useToast();
-  const { t } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedback, setFeedback] = useState('');
 
   const handleFeedbackChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    // Sanitização: Impede scripts básicos e limita tamanho
     const val = e.target.value.replace(/[<>]/g, '').slice(0, 500);
     setFeedback(val);
   };

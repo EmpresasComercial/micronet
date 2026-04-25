@@ -21,7 +21,6 @@ export default function AboutMicrosoft() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Clean Header */}
       <header className="bg-white p-4 flex items-center sticky top-0 z-50 border-b border-[#e1e1e1]">
         <button 
           onClick={() => navigate('/perfil')} 
@@ -35,7 +34,6 @@ export default function AboutMicrosoft() {
       </header>
 
       <div className="max-w-4xl mx-auto px-6 py-20 space-y-24">
-        {/* Brand Presence */}
         <section className="space-y-12">
           <motion.img 
             initial={{ opacity: 0 }}
@@ -56,7 +54,6 @@ export default function AboutMicrosoft() {
           </div>
         </section>
 
-        {/* Core Content Layer */}
         <section className="grid grid-cols-1 md:grid-cols-12 gap-16 items-start text-left">
           <div className="md:col-span-4 space-y-6 sticky top-24">
             <h2 className="text-sm font-bold text-ms-blue uppercase tracking-[0.3em]">{t('about.vision_label')}</h2>
@@ -68,7 +65,6 @@ export default function AboutMicrosoft() {
           </div>
         </section>
 
-        {/* Platform Operation in Angola */}
         <section className="bg-[#f2f2f2] -mx-6 md:-mx-20 px-6 md:px-20 py-24 space-y-16 text-left">
           <div className="max-w-3xl mx-auto space-y-12">
             <div className="space-y-4">
@@ -85,7 +81,6 @@ export default function AboutMicrosoft() {
           </div>
         </section>
 
-        {/* Text-Centric Values */}
         <section className="space-y-16 border-t border-[#e1e1e1] pt-24 text-left">
           <div className="max-w-3xl">
             <h2 className="text-3xl font-light text-[#2b2b2b] mb-12">{t('about.commitments')}</h2>
@@ -106,7 +101,6 @@ export default function AboutMicrosoft() {
           </div>
         </section>
 
-        {/* Stats Row */}
         <section className="pt-10 border-t border-gray-100 grid grid-cols-2 md:grid-cols-4 gap-8">
           <div className="text-center group">
             <p className="text-4xl font-light text-ms-blue mb-1">1975</p>
@@ -126,7 +120,6 @@ export default function AboutMicrosoft() {
           </div>
         </section>
 
-        {/* CEO Quote */}
         <section className="py-20 text-center max-w-3xl mx-auto space-y-6">
           <p className="text-2xl font-light text-gray-500 italic leading-snug">
             {t('about.quote')}

@@ -18,13 +18,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const { showToast } = useToast();
 
   useEffect(() => {
-    // 1) Verifica sessão inicial em background (sem bloquear UI)
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session);
       setReady(true);
     });
 
-    // 2) Ouve eventos de auth (login/logout, expiração, refresh)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, currentSession) => {
         setSession(currentSession);
@@ -35,7 +33,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
         
         if (event === 'SIGNED_IN') {
-          // Só redireciona para home se o usuário estiver na tela de login ou cadastro
           const isAuthPage = window.location.pathname === '/login' || window.location.pathname === '/cadastro';
           if (isAuthPage) {
             navigate('/home', { replace: true });
@@ -44,7 +41,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     );
 
-    // Limpeza ao desmontar
     return () => subscription.unsubscribe();
   }, [navigate]);
 

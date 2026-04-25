@@ -2,8 +2,17 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Button } from '../../../components/Button';
 import { useLanguage } from '../../../contexts/LanguageContext';
-import { Product } from '../../../constants/products';
 import { formatCurrency } from '../../../lib/currency';
+
+export interface Product {
+  id: string;
+  key: string;
+  priceValue: number;
+  durationDays: number;
+  size: string;
+  icon: React.ReactNode;
+  imagem_url?: string;
+}
 
 interface ProductCardProps {
   product: Product;

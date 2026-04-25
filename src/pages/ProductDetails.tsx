@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ChevronLeft, Globe, CheckCircle2 } from 'lucide-react';
+import { ChevronLeft, CheckCircle2, Monitor, ShieldCheck, Zap } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { supabase } from '../lib/supabase';
-import { Monitor, ShieldCheck, Zap } from 'lucide-react';
 import { useToast } from '../components/Toast';
 import { Button } from '../components/Button';
 
@@ -137,7 +136,6 @@ export default function ProductDetails() {
             </motion.div>
           </div>
 
-          {/* Right: Info & CTA */}
           <div className="flex-1">
             <h1 className="text-2xl font-bold text-[#1b1b1b] mb-1">{t(`${product.key}.name`)}</h1>
             <p className="text-ms-blue font-semibold text-xs mb-4">{t('products.available_now')}</p>

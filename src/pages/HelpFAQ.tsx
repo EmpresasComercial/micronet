@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { ChevronLeft, ChevronDown, ChevronUp, HelpCircle, ArrowRight, Home, Search, BookOpen, ExternalLink } from 'lucide-react';
+import { ChevronLeft, ChevronDown, ChevronUp, HelpCircle, ArrowRight, Home, BookOpen, ExternalLink } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '@/src/lib/utils';
 import { useToast } from '../components/Toast';
@@ -111,10 +111,14 @@ export default function HelpFAQ() {
 
   return (
     <div className="min-h-screen bg-white pb-20">
-      {/* Microsoft Sticky Header */}
       <header className="bg-white px-4 py-3 flex items-center border-b border-[#e1e1e1] sticky top-0 z-50">
         <div className="flex items-center max-w-5xl mx-auto w-full">
-          <button onClick={() => navigate(-1)} className="p-2 -ml-2 text-gray-600 hover:bg-gray-100 rounded-sm transition-colors">
+          <button 
+            onClick={() => navigate(-1)} 
+            className="p-2 -ml-2 text-gray-600 hover:bg-gray-100 rounded-sm transition-colors"
+            title="Voltar"
+            aria-label="Voltar"
+          >
             <ChevronLeft className="w-5 h-5" />
           </button>
           <div className="ml-4 flex items-center text-xs font-semibold text-gray-500 uppercase tracking-widest space-x-2">
@@ -128,7 +132,6 @@ export default function HelpFAQ() {
       </header>
 
       <main className="max-w-3xl mx-auto px-6 py-12 md:py-20 text-left">
-        {/* Article Style Heading */}
         <section className="mb-16">
           <div className="flex items-center space-x-3 text-ms-blue mb-4">
             <BookOpen size={24} />
@@ -142,7 +145,6 @@ export default function HelpFAQ() {
           </p>
         </section>
 
-        {/* FAQ List - Microsoft Accordion Style */}
         <div className="divide-y divide-[#e1e1e1] border-t border-b border-[#e1e1e1]">
           {faqData.map((item, idx) => (
             <div key={idx} className="bg-white">
@@ -182,7 +184,6 @@ export default function HelpFAQ() {
           ))}
         </div>
 
-        {/* Feedback Section - Native MS style */}
         <div className="mt-20 pt-8 border-t border-[#e1e1e1] flex flex-col md:flex-row items-center justify-between">
           <span className="text-sm font-semibold text-gray-900 mb-4 md:mb-0">{t('faq.feedback_useful')}</span>
           <div className="flex space-x-3">

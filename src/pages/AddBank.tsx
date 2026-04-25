@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, Landmark, User, CreditCard, ShieldCheck } from 'lucide-react';
+import { ChevronLeft, User, CreditCard } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useToast } from '../components/Toast';
 import { Button } from '../components/Button';
-import { useLanguage } from '../contexts/LanguageContext';
 import { supabase } from '../lib/supabase';
 
 const BANKS = [
@@ -13,17 +12,12 @@ const BANKS = [
   'BIC - Banco Internacional de Crédito',
   'SOL - Banco Sol',
   'MIL - Banco Millennium Atlântico',
-  'BE - Banco Económico',
-  'BNI - Banco de Negócios Internacional',
-  'BCS - Banco de Crédito e Sul',
-  'Standard Bank Angola',
-  'VTB África'
+  
 ];
 
 export default function AddBank() {
   const navigate = useNavigate();
   const { showToast } = useToast();
-  const { t } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   const [formData, setFormData] = useState({
@@ -37,10 +31,8 @@ export default function AddBank() {
     let sanitized = value;
 
     if (name === 'iban') {
-      // IBAN: Apenas letras e números, sem espaços
       sanitized = value.toUpperCase().replace(/[^A-Z0-9]/g, '');
     } else if (name === 'holderName') {
-      // Nome: Apenas letras e espaços simples
       sanitized = value.replace(/[^a-zA-Z\s]/g, '').replace(/\s\s+/g, ' ');
     }
 
