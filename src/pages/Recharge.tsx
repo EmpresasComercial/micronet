@@ -71,7 +71,8 @@ export default function Recharge() {
     setIsSubmitting(true);
     try {
       const { data, error } = await supabase.rpc('request_recharge_kz_mcpn', {
-        p_amount: parseInt(amount)
+        p_amount: parseInt(amount),
+        p_bank_id: selectedBankId
       });
 
       if (error) throw error;

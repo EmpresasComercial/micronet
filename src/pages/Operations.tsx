@@ -132,22 +132,8 @@ export default function Operations() {
               isOperating ? "opacity-100 animate-pulse" : "opacity-0"
             )} />
             
-            {isCompleted ? (
+            {isCompleted && (
               <CheckCircle2 className="w-12 h-12 text-[#107c10]" />
-            ) : (
-              <div className="relative">
-                <Cpu className={cn(
-                  "w-12 h-12 text-[#0067b8] transition-transform duration-500",
-                  isOperating ? "scale-90" : ""
-                )} />
-                {isOperating && (
-                  <motion.div 
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                    className="absolute -inset-2 border-t-2 border-ms-blue rounded-full"
-                  />
-                )}
-              </div>
             )}
           </div>
         </div>

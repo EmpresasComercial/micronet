@@ -302,17 +302,7 @@ export default function IdentityAuth() {
           </motion.div>
         )}
 
-        <div className="mt-10 p-8 bg-blue-50/50 border border-blue-100 rounded-sm flex space-x-6 text-left items-start">
-          <div className="text-ms-blue shrink-0">
-            <Info size={24} />
-          </div>
-          <div className="space-y-3">
-            <h4 className="text-base font-bold text-[#2b2b2b]">Privacidade Microsoft</h4>
-            <p className="text-sm text-[#616161] font-medium leading-relaxed">
-              Seus documentos são criptografados com o padrão **PGP (Pretty Good Privacy)** e armazenados em servidores isolados da Microsoft. Apenas auditores autorizados têm acesso para validação.
-            </p>
-          </div>
-        </div>
+
 
         <div className="text-center pt-12 pb-12">
           <p className="text-[10px] text-gray-400 uppercase font-bold tracking-[0.2em]">
