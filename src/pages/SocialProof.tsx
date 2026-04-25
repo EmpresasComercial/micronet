@@ -36,7 +36,7 @@ export default function SocialProof() {
 
         if (error) throw error;
         if (data) {
-          const mapped: Proof[] = data.map(item => ({
+          const mapped: Proof[] = data.map((item: Record<string, any>) => ({
             id: item.id,
             user: `Usuário ***${item.user_id.substring(0, 4)}`,
             amount: `${Number(item.valor).toLocaleString()},00 Kz`,

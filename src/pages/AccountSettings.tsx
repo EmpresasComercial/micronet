@@ -92,8 +92,8 @@ export default function AccountSettings() {
                   <button 
                     onClick={() => copyToClipboard(profile?.invite_code)}
                     className="p-1 text-ms-blue hover:bg-ms-blue/5 rounded-sm transition-colors"
-                    title={t('settings.copy_code', { defaultValue: 'Copiar código' })}
-                    aria-label={t('settings.copy_code', { defaultValue: 'Copiar código' })}
+                    title={t('common.copy')}
+                    aria-label={t('common.copy')}
                   >
                     {copied ? <Check size={12} className="text-[#107c10]" /> : <Copy size={12} />}
                   </button>

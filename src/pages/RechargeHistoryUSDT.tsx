@@ -27,7 +27,7 @@ export default function RechargeHistoryUSDT() {
         if (error) throw error;
 
         if (data) {
-          const mappedData: RechargeRecord[] = data.map(item => ({
+          const mappedData: RechargeRecord[] = data.map((item: Record<string, any>) => ({
             id: item.id,
             amount: Number(item.valor_usdt),
             status: item.status as any,

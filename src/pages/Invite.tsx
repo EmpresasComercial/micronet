@@ -58,8 +58,8 @@ export default function Invite() {
                 <button 
                   onClick={() => copyToClipboard(inviteLink)} 
                   className="ml-2 text-gray-400 hover:text-ms-blue transition-colors"
-                  title={t('invite.copy', { defaultValue: 'Copiar link' })}
-                  aria-label={t('invite.copy', { defaultValue: 'Copiar link' })}
+                  title={t('common.copy')}
+                  aria-label={t('common.copy')}
                 >
                   <Copy className="w-4 h-4" />
                 </button>
@@ -74,8 +74,8 @@ export default function Invite() {
                 <button 
                   onClick={() => copyToClipboard(inviteCode)} 
                   className="ml-2 text-gray-400 hover:text-ms-blue transition-colors"
-                  title={t('invite.copy', { defaultValue: 'Copiar código' })}
-                  aria-label={t('invite.copy', { defaultValue: 'Copiar código' })}
+                  title={t('common.copy')}
+                  aria-label={t('common.copy')}
                 >
                   <Copy className="w-4 h-4" />
                 </button>

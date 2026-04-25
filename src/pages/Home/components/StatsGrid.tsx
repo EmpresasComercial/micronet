@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Users, Lock, Activity } from 'lucide-react';
+import { Wallet, ArrowDownLeft, ArrowUpRight } from 'lucide-react';
 import { useLanguage } from '../../../contexts/LanguageContext';
 import { formatCurrency } from '../../../lib/currency';
 
@@ -15,21 +15,21 @@ export const StatsGrid: React.FC<StatsGridProps> = ({ totalUsdt, totalRecarregad
 
   const stats = [
     {
-      label: t('home.users'),
+      label: 'SALDO USDT',
       value: formatCurrency(totalUsdt, 'USDT'),
-      icon: Users,
+      icon: Wallet,
       color: 'text-ms-blue',
     },
     {
-      label: t('home.secure'),
+      label: 'RECARREGADO',
       value: formatCurrency(totalRecarregado, 'KZ'),
-      icon: Lock,
+      icon: ArrowDownLeft,
       color: 'text-green-500',
     },
     {
-      label: t('home.servers'),
+      label: 'RETIRADA',
       value: formatCurrency(totalRetirado, 'KZ'),
-      icon: Activity,
+      icon: ArrowUpRight,
       color: 'text-orange-500',
     },
   ];
