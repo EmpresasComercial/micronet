@@ -17,6 +17,7 @@ export default function Withdraw() {
   const [showPassword, setShowPassword] = useState(false);
   const [hasBank, setHasBank] = useState(false);
   const [bankName, setBankName] = useState('');
+  const [bankId, setBankId] = useState<string | null>(null);
   const [isVerified, setIsVerified] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -29,6 +30,7 @@ export default function Withdraw() {
           setBalance(Number(data[0].balance));
           setHasBank(data[0].has_bank);
           setBankName(data[0].bank_name || '');
+          setBankId(data[0].bank_id || null);
           setIsVerified(data[0].is_verified);
         }
       } catch (err: any) {
@@ -91,7 +93,7 @@ export default function Withdraw() {
     try {
       const { data, error } = await supabase.rpc('process_withdrawal_request', {
         p_amount: withdrawAmount,
-        p_bank_id: 'default',
+        p_bank_id: bankId,
         p_password: password
       });
 
@@ -158,17 +160,18 @@ export default function Withdraw() {
             </div>
 
             {/* Conta Bancária */}
-            <div>
+            <div onClick={() => !hasBank && navigate('/adicionar-banco')} className="cursor-pointer">
               <label className="block text-[10px] font-black text-gray-500 uppercase tracking-wider mb-2">Conta Bancária</label>
               <div className="relative group">
                 <select 
                   className="w-full py-3 text-sm border-b border-gray-200 focus:border-ms-blue outline-none bg-transparent appearance-none cursor-pointer"
                   disabled={!hasBank}
+                  defaultValue={hasBank ? "default" : "none"}
                 >
                   {hasBank ? (
-                    <option>{bankName}</option>
+                    <option value="default">{bankName}</option>
                   ) : (
-                    <option>Vincular conta bancária</option>
+                    <option value="none">Vincular conta bancária</option>
                   )}
                 </select>
                 <div className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none text-gray-300">
@@ -211,15 +214,10 @@ export default function Withdraw() {
             </div>
 
             <Button type="submit" isLoading={isSubmitting} className="w-full h-12 text-sm font-bold shadow-none">
-              Confirmar Retirada
+              Solicitar
             </Button>
           </form>
         </motion.div>
-
-        <div className="mt-8 flex items-center space-x-2 text-[10px] text-ms-blue font-black uppercase tracking-wider opacity-80">
-          <Info size={14} />
-          <span>Informações de Retirada</span>
-        </div>
       </main>
     </div>
   );
