@@ -47,7 +47,7 @@ export default function Withdraw() {
 
   const calculateNet = () => {
     const val = parseInt(amount) || 0;
-    const tax = val * 0.14;
+    const tax = val * 0.14; // Taxa atual de 14% mantida como "lógica"
     return val - tax;
   };
 
@@ -55,7 +55,7 @@ export default function Withdraw() {
     e.preventDefault();
     
     if (!isVerified) {
-      showToast('Sua conta precisa estar verificada (BI Aprovado) para realizar saques.', 'error');
+      showToast('Sua conta precisa estar verificada para realizar saques.', 'error');
       return;
     }
 
@@ -82,8 +82,7 @@ export default function Withdraw() {
     try {
       const { data, error } = await supabase.rpc('process_withdrawal_request', {
         p_amount: withdrawAmount,
-        p_bank_id: 'default', // ID mantido por compatibilidade
-        p_password: 'N/A'     // Password removido por segurança (auth.uid() é suficiente)
+        p_bank_id: 'default'
       });
 
       if (error) throw error;
@@ -102,95 +101,96 @@ export default function Withdraw() {
   };
 
   if (isLoading) {
-    return <div className="min-h-screen bg-ms-gray flex items-center justify-center">Carregando...</div>;
+    return <div className="min-h-screen bg-[#f2f2f2] flex items-center justify-center italic text-gray-400 uppercase tracking-widest text-[10px]">Carregando...</div>;
   }
 
   return (
-    <div className="min-h-screen bg-ms-gray">
-      <header className="bg-white p-4 flex items-center border-b border-ms-border sticky top-0 z-50">
+    <div className="min-h-screen bg-[#f2f2f2]">
+      <header className="bg-white p-4 flex items-center border-b border-[#e1e1e1] sticky top-0 z-50">
         <button 
           onClick={() => navigate('/perfil')} 
-          className="p-2 -ml-2 text-ms-text-muted hover:text-ms-blue transition-colors"
-          title="Voltar ao perfil"
-          aria-label="Voltar ao perfil"
+          className="p-2 -ml-2 text-gray-600 hover:text-ms-blue transition-colors"
+          aria-label="Voltar"
+          title="Voltar"
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
-        <h1 className="text-sm font-semibold ml-2 text-ms-text">Levantamento de Fundos</h1>
+        <h1 className="text-sm font-semibold ml-2 text-[#2b2b2b]">Levantamento</h1>
         <button 
           onClick={() => navigate('/registro-retirada')}
-          className="ml-auto p-2 text-ms-text-muted hover:text-ms-blue"
-          title="Histórico de Retiradas"
-          aria-label="Histórico de Retiradas"
+          className="ml-auto p-2 text-gray-400 hover:text-ms-blue transition-colors"
+          title="Histórico de Levantamentos"
         >
           <ReceiptText className="w-6 h-6" strokeWidth={1.5} />
         </button>
       </header>
 
-      <div className="p-4 max-w-lg mx-auto pb-20">
+      <div className="p-6 max-w-lg mx-auto">
         <motion.div 
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-ms-blue text-white p-6 rounded-sm mb-4 relative overflow-hidden"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="bg-ms-blue text-white p-8 rounded-sm shadow-lg mb-8 relative overflow-hidden"
         >
           <div className="relative z-10">
-            <p className="text-[10px] font-bold uppercase tracking-[0.2em] opacity-80 mb-1">Disponível para Saque</p>
-            <h2 className="text-3xl font-light tracking-tight">{formatCurrency(balance, 'KZ')}</h2>
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] opacity-80 mb-1">Saldo Disponível</p>
+            <h2 className="text-4xl font-light tracking-tight">{formatCurrency(balance, 'KZ')}</h2>
           </div>
-          <Wallet className="absolute right-[-10px] bottom-[-10px] w-32 h-32 text-white opacity-10 rotate-12" />
+          <Wallet className="absolute right-[-20px] bottom-[-20px] w-40 h-40 text-white opacity-10 rotate-12" />
         </motion.div>
 
         {!isVerified && (
           <motion.div 
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-amber-50 border border-amber-200 p-4 rounded-sm mb-4 flex items-start space-x-3"
+            className="bg-amber-50 border border-amber-100 p-4 rounded-sm mb-6 flex items-start space-x-3"
           >
-            <ShieldCheck className="text-amber-600 shrink-0" size={20} />
+            <ShieldCheck className="text-amber-600 shrink-0" size={18} />
             <div>
-              <p className="text-[12px] text-amber-900 font-bold">Verificação Necessária</p>
-              <p className="text-[11px] text-amber-800 mt-1">Para sua segurança, os saques estão bloqueados até que sua verificação de BI seja aprovada.</p>
-              <button 
-                onClick={() => navigate('/verificacao')}
-                className="mt-3 text-[11px] font-bold text-amber-900 underline uppercase tracking-wider"
-              >
-                Verificar Documentos Agora
-              </button>
+              <p className="text-[11px] text-amber-900 font-bold uppercase">Verificação Necessária</p>
+              <p className="text-[10px] text-amber-800 mt-0.5">Sua conta precisa estar verificada (BI Aprovado) para saques.</p>
             </div>
           </motion.div>
         )}
 
-        <div className="bg-white border border-ms-border p-6 rounded-sm">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white border border-[#e1e1e1] p-8 rounded-sm shadow-sm"
+        >
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-[10px] font-bold text-ms-text-muted uppercase tracking-widest mb-2">Quanto deseja retirar?</label>
-              <div className="relative">
+              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Valor do Saque (Kz)</label>
+              <div className="relative border-b-2 border-ms-blue">
                 <input
                   type="text"
-                  className="w-full bg-ms-gray border-b-2 border-ms-blue text-2xl font-light h-14 px-0 focus:outline-none"
+                  className="w-full bg-transparent text-2xl font-light h-16 focus:outline-none"
                   placeholder="0.00"
                   value={amount}
                   onChange={handleAmountChange}
                   disabled={!isVerified}
                 />
-                <span className="absolute right-0 top-1/2 -translate-y-1/2 text-ms-text-muted text-xs font-bold">KWANZA</span>
+                <span className="absolute right-0 top-1/2 -translate-y-1/2 text-gray-300 font-bold">AOA</span>
               </div>
               
-              <div className="mt-4 grid grid-cols-2 gap-4 border-t border-ms-border pt-4">
+              <div className="mt-4 grid grid-cols-2 gap-4 border-t border-gray-100 pt-4">
                 <div>
-                  <p className="text-[9px] text-ms-text-muted font-bold uppercase tracking-wider">Taxa de Saque (14%)</p>
-                  <p className="text-sm font-medium text-red-600">-{formatCurrency(parseInt(amount || '0') * 0.14, 'KZ')}</p>
+                  <p className="text-[9px] text-gray-400 font-bold uppercase tracking-wider">Taxa (14%)</p>
+                  <p className="text-xs font-medium text-red-600">-{formatCurrency(parseInt(amount || '0') * 0.14, 'KZ')}</p>
                 </div>
                 <div>
-                  <p className="text-[9px] text-ms-text-muted font-bold uppercase tracking-wider">Valor Líquido</p>
-                  <p className="text-sm font-bold text-ms-blue">{formatCurrency(calculateNet(), 'KZ')}</p>
+                  <p className="text-[9px] text-gray-400 font-bold uppercase tracking-wider">Líquido</p>
+                  <p className="text-xs font-bold text-ms-blue">{formatCurrency(calculateNet(), 'KZ')}</p>
                 </div>
               </div>
+
+              <p className="text-[9px] text-gray-400 mt-4 font-bold uppercase tracking-wider flex items-center">
+                <Info size={10} className="mr-1" /> Mínimo: 3.000 Kz | Saques: Seg-Sex (10h-16h)
+              </p>
             </div>
 
-            <div className="bg-ms-gray p-4 rounded-sm">
+            <div className="bg-[#f9f9f9] p-4 rounded-sm border border-gray-100">
               <div className="flex items-center justify-between mb-2">
-                <p className="text-[10px] font-bold text-ms-text-muted uppercase tracking-widest flex items-center">
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center">
                   <Landmark size={12} className="mr-2" /> Conta Destino
                 </p>
                 {hasBank && (
@@ -200,7 +200,7 @@ export default function Withdraw() {
                 )}
               </div>
               {hasBank ? (
-                <p className="text-xs font-medium text-ms-text">{bankName}</p>
+                <p className="text-xs font-medium text-gray-700">{bankName}</p>
               ) : (
                 <button 
                   type="button"
@@ -212,28 +212,25 @@ export default function Withdraw() {
               )}
             </div>
 
-            <div className="flex items-center text-[10px] text-ms-text-muted font-bold uppercase tracking-wider">
-              <Clock size={12} className="mr-2 text-ms-blue" />
-              Saques: Segunda a Sexta | 10:00 - 16:00
+            <div className="pt-4">
+              <Button 
+                type="submit" 
+                className="w-full h-14 text-sm font-bold uppercase tracking-widest" 
+                isLoading={isSubmitting}
+                disabled={!isVerified || !hasBank || parseInt(amount || '0') < 3000}
+              >
+                Confirmar Levantamento
+              </Button>
             </div>
 
-            <Button 
-              type="submit" 
-              className="w-full h-14 text-sm font-bold uppercase tracking-widest rounded-none shadow-none" 
-              isLoading={isSubmitting}
-              disabled={!isVerified || !hasBank || parseInt(amount || '0') < 3000}
-            >
-              Confirmar Levantamento
-            </Button>
-
-            <div className="bg-ms-gray p-3 flex items-start space-x-3">
-              <Info size={16} className="text-ms-blue shrink-0 mt-0.5" />
-              <p className="text-[10px] text-ms-text-muted leading-relaxed">
-                O processamento de levantamentos bancários pode levar de 30 minutos a 24 horas úteis, dependendo do tempo de compensação do banco.
+            <div className="bg-blue-50/50 p-3 flex items-start space-x-3 border border-blue-100/50">
+              <ShieldCheck size={16} className="text-ms-blue shrink-0 mt-0.5" />
+              <p className="text-[9px] text-ms-blue/70 leading-relaxed font-medium uppercase tracking-tight">
+                Processamento Seguro Microsoft Cloud. O prazo de compensação bancária varia de 30min a 24h úteis.
               </p>
             </div>
           </form>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
