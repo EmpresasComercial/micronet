@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Activity, Megaphone, ArrowDownLeft, ArrowUpRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -8,8 +8,7 @@ import { useCarousel } from '../hooks/useCarousel';
 import { usePopup } from '../hooks/usePopup';
 import { CAROUSEL_IMAGES } from '../constants/images';
 import { APP_CONFIG } from '../constants/config';
-
-// Sub-components
+import { supabase } from '../lib/supabase';
 import { HeroSection } from './Home/components/HeroSection';
 import { StatsGrid } from './Home/components/StatsGrid';
 import { AnnouncementPopup } from './Home/components/AnnouncementPopup';
@@ -17,7 +16,19 @@ import { AnnouncementPopup } from './Home/components/AnnouncementPopup';
 export default function Home() {
   const navigate = useNavigate();
   const { t } = useLanguage();
-  
+
+  const [accountData, setAccountData] = useState({
+    saldo_disponivel: 0,
+    total_recarregado: 0,
+    total_retirado: 0,
+  });
+
+  useEffect(() => {
+    supabase.rpc('get_my_account_data').then(({ data }) => {
+      if (data && data.length > 0) setAccountData(data[0]);
+    });
+  }, []);
+
   const { currentIndex } = useCarousel({ 
     itemsCount: CAROUSEL_IMAGES.length, 
     interval: APP_CONFIG.CAROUSEL_INTERVAL 
@@ -34,7 +45,11 @@ export default function Home() {
 
       <HeroSection />
 
-      <StatsGrid />
+      <StatsGrid
+        totalUsdt={accountData.saldo_disponivel}
+        totalRecarregado={accountData.total_recarregado}
+        totalRetirado={accountData.total_retirado}
+      />
 
       <div className="px-4 space-y-6 pb-8">
         <div className="flex items-center space-x-3 bg-[#fff8f0] border border-[#ffebcc] p-2 rounded-sm overflow-hidden">
