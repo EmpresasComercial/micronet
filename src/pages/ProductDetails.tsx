@@ -100,109 +100,119 @@ export default function ProductDetails() {
   ];
 
   return (
-    <div className="min-h-screen bg-white pb-10">
-      <header className="bg-white p-4 flex items-center border-b border-[#e1e1e1] sticky top-0 z-50">
+    <div className="min-h-screen bg-[#f8f8f8] pb-32">
+      <header className="bg-white/80 backdrop-blur-md p-4 flex items-center border-b border-[#e1e1e1] sticky top-0 z-50">
         <button 
           onClick={() => navigate('/produtos')} 
-          className="p-2 -ml-2 text-[#616161]"
+          className="p-2 -ml-2 text-[#616161] hover:text-ms-blue transition-colors"
           aria-label="Voltar"
-          title="Voltar"
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
-        <h1 className="text-sm font-semibold ml-2 text-[#2b2b2b]">Detalhes do Produto</h1>
+        <h1 className="text-sm font-bold ml-2 text-[#2b2b2b]">Detalhes da Licença</h1>
       </header>
 
-      <main className="max-w-4xl mx-auto px-4 mt-2">
-        <div className="flex flex-col md:flex-row gap-6 items-start">
-          <div className="w-full md:w-48 flex-shrink-0 -mx-4 md:mx-0">
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="h-40 md:h-48 bg-white border-b md:border border-gray-100 flex items-center justify-center overflow-hidden"
-            >
+      <main className="max-w-2xl mx-auto">
+        <div className="bg-white">
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="p-6 pb-2"
+          >
+            <div className="bg-[#f3f3f3] rounded-sm aspect-video flex items-center justify-center overflow-hidden mb-6 group">
               {product.imagem_url ? (
                 <img 
                   src={product.imagem_url} 
                   alt={product.nome} 
-                  className="w-full h-full object-contain mix-blend-multiply opacity-90 p-4"
+                  className="w-full h-full object-contain p-8 group-hover:scale-105 transition-transform duration-500"
                   referrerPolicy="no-referrer"
                 />
               ) : (
-                <div className="transform scale-[2]">
+                <div className="transform scale-[2.5] opacity-20">
                   {getIcon(product.key)}
                 </div>
               )}
-            </motion.div>
-          </div>
+            </div>
 
-          <div className="flex-1">
-            <h1 className="text-2xl font-bold text-[#1b1b1b] mb-1">{t(`${product.key}.name`)}</h1>
-            <p className="text-ms-blue font-semibold text-xs mb-4">{t('products.available_now')}</p>
-            
-            <div className="text-sm text-gray-600 mb-6 leading-snug">
-              <p className="mb-4">
+            <div className="space-y-1 mb-6">
+              <div className="flex items-center justify-between">
+                <h1 className="text-2xl font-black text-[#1b1b1b] tracking-tight">{t(`${product.key}.name`)}</h1>
+                <div className="bg-green-50 text-[#00a651] text-[10px] font-bold px-2 py-1 rounded-full border border-green-100 uppercase">
+                  {t('products.active_badge')}
+                </div>
+              </div>
+              <p className="text-ms-blue font-bold text-[11px] uppercase tracking-wider">{t('products.available_now')}</p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 mb-8">
+              <div className="bg-[#f8f8f8] p-4 rounded-sm border border-gray-100">
+                <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">{t('products.daily_income')}</p>
+                <p className="text-lg font-black text-gray-900 leading-none">
+                  {Number(product.renda_diaria).toLocaleString('pt-BR')} <span className="text-[10px] font-medium text-gray-500">Kz</span>
+                </p>
+              </div>
+              <div className="bg-[#f8f8f8] p-4 rounded-sm border border-gray-100">
+                <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">{t('products.duration')}</p>
+                <p className="text-lg font-black text-gray-900 leading-none">
+                  {product.duracao_dias} <span className="text-[10px] font-medium text-gray-500 uppercase">{product.duracao_dias === 1 ? t('product.unit.day') : t('product.unit.days')}</span>
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-4 mb-10">
+              <h2 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest border-b border-gray-100 pb-2">{t('products.overview')}</h2>
+              <p className="text-sm text-[#444] leading-relaxed font-light">
                 {t(`${product.key}.desc`)}
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1.5">
+              <div className="grid grid-cols-1 gap-2.5 pt-2">
                 {features.map((feature, i) => (
-                  <div key={i} className="flex items-center space-x-2">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-[#00a651]" />
-                    <span className="text-[13px]">{feature}</span>
+                  <div key={i} className="flex items-center space-x-3 bg-gray-50/50 p-2.5 rounded-sm">
+                    <CheckCircle2 className="w-4 h-4 text-[#00a651] shrink-0" />
+                    <span className="text-xs text-gray-600 font-medium">{feature}</span>
                   </div>
                 ))}
               </div>
             </div>
+          </motion.div>
+        </div>
 
-            <div className="bg-[#f0f0f0] p-5 border border-gray-200 flex flex-col md:flex-row md:items-center justify-between gap-6">
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-8">
-                  <div>
-                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">{t('products.daily_income')}</p>
-                    <p className="text-xl font-bold text-gray-800">
-                      {Number(product.renda_diaria).toLocaleString('pt-BR')} Kz / {t('product.unit.day')}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">{t('products.duration')}</p>
-                    <p className="text-xl font-bold text-gray-800">
-                      {product.duracao_dias} {product.duracao_dias === 1 ? t('product.unit.day') : t('product.unit.days')}
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="pt-2 border-t border-gray-300">
-                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">{t('products.total_price')}</p>
-                  <p className="text-3xl font-black text-[#1b1b1b]">
-                    {Number(product.preco).toLocaleString('pt-BR')} Kz
-                  </p>
-                </div>
+        <div className="p-6 bg-[#f8f8f8] space-y-6">
+          <div className="bg-white p-5 rounded-sm border border-gray-200 shadow-sm space-y-4">
+            <h2 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest border-b border-gray-100 pb-2">Validade do Contrato</h2>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-1">
+                <p className="text-[10px] text-gray-400 font-bold uppercase">{t('products.activation')}</p>
+                <p className="text-sm font-bold text-gray-700">{today.toLocaleDateString('pt-BR')}</p>
               </div>
-
-              <div className="w-full md:w-64 space-y-3">
-                <div className="text-[10px] font-semibold space-y-1 py-2 border-y border-gray-300/60">
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">{t('products.activation')}:</span>
-                    <span className="text-gray-700">{today.toLocaleDateString(language === 'en' ? 'en-US' : language === 'fr' ? 'fr-FR' : 'pt-BR')}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">{t('products.expiration')}:</span>
-                    <span className="text-red-600 font-bold">{expirationDate.toLocaleDateString(language === 'en' ? 'en-US' : language === 'fr' ? 'fr-FR' : 'pt-BR')}</span>
-                  </div>
-                </div>
-
-                <Button 
-                  onClick={handleBuy}
-                  isLoading={isBuying}
-                  className="w-full py-2.5 text-sm shadow-sm"
-                >
-                  {t('products.btn_buy')}
-                </Button>
+              <div className="space-y-1">
+                <p className="text-[10px] text-gray-400 font-bold uppercase">{t('products.expiration')}</p>
+                <p className="text-sm font-bold text-red-600">{expirationDate.toLocaleDateString('pt-BR')}</p>
               </div>
+            </div>
+            <div className="pt-2 flex items-center space-x-2 text-[10px] text-gray-500 bg-blue-50/50 p-2 rounded-sm border border-blue-100/50">
+              <ShieldCheck className="w-3.5 h-3.5 text-ms-blue" />
+              <span>Proteção Microsoft Cloud Garantida</span>
             </div>
           </div>
         </div>
       </main>
+
+      {/* Botão de Compra Fixo no Rodapé para Mobile */}
+      <div className="fixed bottom-0 left-0 right-0 p-4 bg-white/90 backdrop-blur-lg border-t border-gray-200 z-50 flex items-center justify-between max-w-2xl mx-auto shadow-[0_-8px_30px_rgb(0,0,0,0.04)]">
+        <div className="flex flex-col">
+          <span className="text-[10px] font-bold text-gray-400 uppercase tracking-tight">{t('products.total_price')}</span>
+          <span className="text-xl font-black text-[#1b1b1b]">
+            {Number(product.preco).toLocaleString('pt-BR')}<span className="text-xs font-bold ml-0.5">Kz</span>
+          </span>
+        </div>
+        <Button 
+          onClick={handleBuy}
+          isLoading={isBuying}
+          className="px-8 h-12 text-sm font-bold shadow-md shadow-ms-blue/20"
+        >
+          {t('products.btn_buy')}
+        </Button>
+      </div>
     </div>
   );
 }

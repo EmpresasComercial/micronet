@@ -53,6 +53,36 @@ export default function SocialProof() {
       }
     }
     fetchProofs();
+
+    // Realtime Subscription
+    const channel = supabase
+      .channel('social_proofs_realtime')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'social_proofs_mcpn',
+          filter: 'status=eq.aprovado'
+        },
+        (payload) => {
+          const newItem = payload.new;
+          const mapped: Proof = {
+            id: newItem.id,
+            user: `Usuário ***${newItem.user_id.substring(0, 4)}`,
+            amount: `${Number(newItem.valor).toLocaleString()},00 Kz`,
+            comment: newItem.comentario,
+            image: newItem.imagem_url,
+            timestamp: new Date(newItem.created_at).toLocaleString('pt-AO')
+          };
+          setProofs(prev => [mapped, ...prev]);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
