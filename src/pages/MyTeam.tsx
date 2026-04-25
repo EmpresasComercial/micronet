@@ -6,6 +6,7 @@ import { cn } from '@/src/lib/utils';
 import { useLanguage } from '../contexts/LanguageContext';
 import { supabase } from '../lib/supabase';
 import { useEffect } from 'react';
+import { EmptyState } from '../components/EmptyState';
 
 export default function MyTeam() {
   const navigate = useNavigate();
@@ -177,10 +178,11 @@ export default function MyTeam() {
               ))}
               
               {teamData[activeLevel].length === 0 && !loading && (
-                <div className="text-center py-24 bg-white border border-[#edebe9] rounded-[2px] text-left">
-                  <Users size={40} className="mx-auto text-gray-100 mb-2" />
-                  <p className="text-[10px] font-bold text-gray-300 uppercase tracking-widest text-center">{t('team.empty')}</p>
-                </div>
+                <EmptyState 
+                  icon={<Users size={40} className="text-gray-100" />}
+                  message={t('team.empty')}
+                  description="Ainda não existem parceiros registrados neste nível da sua rede."
+                />
               )}
             </motion.div>
           </AnimatePresence>

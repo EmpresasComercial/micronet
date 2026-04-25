@@ -6,6 +6,7 @@ import { supabase } from '../lib/supabase';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useEffect, useState } from 'react';
 import { cn } from '../lib/utils';
+import { EmptyState } from '../components/EmptyState';
 
 export default function PurchaseHistory() {
   const navigate = useNavigate();
@@ -48,7 +49,10 @@ export default function PurchaseHistory() {
         {loading ? (
           <div className="text-center py-20 text-gray-400">{t('history.loading')}</div>
         ) : purchases.length === 0 ? (
-          <div className="text-center py-20 text-gray-400">{t('history.empty')}</div>
+          <EmptyState 
+            message="Nenhuma licença ativa"
+            description="Você ainda não adquiriu nenhum serviço Microsoft Cloud Node."
+          />
         ) : purchases.map((item, idx) => (
           <motion.div 
             key={item.id}

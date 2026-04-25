@@ -69,72 +69,79 @@ export default function Support() {
         <motion.div 
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="ms-card p-8 space-y-6"
+          className="ms-card p-8 space-y-4"
         >
-          <div className="flex items-center space-x-3 mb-4">
-            <Headphones className="w-10 h-10 text-ms-blue opacity-20" />
+          <div className="flex items-center space-x-3 mb-2">
+            <Headphones className="w-8 h-8 text-ms-blue opacity-20" />
             <img 
               src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" 
               alt="Microsoft" 
-              className="h-5"
+              className="h-4"
               referrerPolicy="no-referrer"
             />
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
+            {/* Atendimento VIP */}
             <Button
               onClick={() => openLink(links?.whatsapp_gerente_url)}
-              className="w-full flex flex-col items-start space-y-1 py-6 h-auto text-left"
+              className="w-full flex items-center justify-between px-6 h-[45px] text-left rounded-sm"
               variant="primary"
             >
-              <div className="flex items-center space-x-3 w-full">
+              <div className="flex items-center space-x-3">
                 <MessageCircle className="w-5 h-5" />
-                <span className="font-bold">Atendimento VIP (WhatsApp)</span>
+                <div className="flex flex-col">
+                  <span className="font-bold text-xs leading-none">Atendimento VIP (WhatsApp)</span>
+                  <span className="text-[9px] opacity-70 mt-0.5 hidden md:block">Fale diretamente com seu gerente.</span>
+                </div>
               </div>
-              <span className="text-[10px] opacity-70 ml-8 block">Fale diretamente com seu gerente de conta Microsoft.</span>
+              <span className="text-[9px] opacity-70 text-right max-w-[120px] hidden md:block">Fale diretamente com seu gerente de conta Microsoft.</span>
             </Button>
 
+            {/* Grupo de Vendas */}
             <Button
               onClick={() => openLink(links?.whatsapp_grupo_vendas_url)}
-              className="w-full flex flex-col items-start space-y-1 py-6 h-auto text-left"
-              variant="outline"
+              className="w-full flex items-center justify-between px-6 h-[45px] text-left border border-gray-200 text-gray-700 bg-white hover:bg-gray-50 rounded-sm"
             >
-              <div className="flex items-center space-x-3 w-full">
-                <Users className="w-5 h-5" />
-                <span className="font-bold">Grupo de Vendas Oficiais</span>
+              <div className="flex items-center space-x-3">
+                <Users className="w-5 h-5 text-gray-400" />
+                <span className="font-bold text-xs">Grupo de Vendas Oficiais</span>
               </div>
-              <span className="text-[10px] opacity-70 ml-8 block">Participe da comunidade e receba bônus diários.</span>
+              <span className="text-[9px] text-gray-400 text-right max-w-[120px] hidden md:block">Participe da comunidade e receba bônus diários.</span>
             </Button>
 
+            {/* Canal Telegram */}
             <Button
               onClick={() => openLink(links?.telegram_url)}
-              className="w-full flex flex-col items-start space-y-1 py-6 h-auto text-left"
-              variant="outline"
+              className="w-full flex items-center justify-between px-6 h-[45px] text-left border border-gray-200 text-gray-700 bg-white hover:bg-gray-50 rounded-sm"
             >
-              <div className="flex items-center space-x-3 w-full">
-                <Send className="w-5 h-5" />
-                <span className="font-bold">Canal Oficial Telegram</span>
+              <div className="flex items-center space-x-3">
+                <Send className="w-5 h-5 text-gray-400" />
+                <span className="font-bold text-xs">Canal Oficial Telegram</span>
               </div>
-              <span className="text-[10px] opacity-70 ml-8 block">Notificações em tempo real sobre o Cloud Node.</span>
+              <span className="text-[9px] text-gray-400 text-right max-w-[120px] hidden md:block">Notificações em tempo real sobre o Cloud Node.</span>
             </Button>
 
-            <div className="grid grid-cols-2 gap-4">
-              <button 
+            {/* Outros Links (App, Facebook, Youtube) */}
+            <div className="grid grid-cols-3 gap-3">
+              <Button 
+                onClick={() => openLink(links?.link_app_atualizado)}
+                className="h-[45px] border border-gray-200 bg-white text-gray-600 hover:bg-gray-50 flex items-center justify-center p-0 rounded-sm"
+              >
+                <img src="/microsoft-icon.png" alt="App" className="w-4 h-4 opacity-50" onError={(e) => e.currentTarget.src = 'https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg'} />
+              </Button>
+              <Button 
                 onClick={() => openLink(links?.facebook_url)}
-                className="flex items-center justify-center p-3 border border-gray-200 rounded hover:bg-gray-50 transition-colors"
-                aria-label="Acesse nossa página no Facebook"
-                title="Facebook"
+                className="h-[45px] border border-gray-200 bg-white text-gray-600 hover:bg-gray-50 flex items-center justify-center p-0 rounded-sm"
               >
                 <Facebook className="w-5 h-5 text-[#1877F2]" />
-              </button>
-              <button 
+              </Button>
+              <Button 
                 onClick={() => openLink(links?.youtube_url)}
-                className="flex items-center justify-center p-3 border border-gray-200 rounded hover:bg-gray-50 transition-colors"
-                aria-label="Acesse nosso canal no YouTube"
-                title="YouTube"
+                className="h-[45px] border border-gray-200 bg-white text-gray-600 hover:bg-gray-50 flex items-center justify-center p-0 rounded-sm"
               >
                 <Video className="w-5 h-5 text-[#FF0000]" />
-              </button>
+              </Button>
             </div>
           </div>
         </motion.div>
@@ -146,7 +153,7 @@ export default function Support() {
           <div>
             <h4 className="font-bold text-gray-900 leading-tight mb-2">Suporte Certificado Microsoft</h4>
             <p className="text-sm text-gray-500 font-medium leading-relaxed">
-              Nossa equipe de suporte está disponível de Segunda a Sábado, das 08h às 18h (Horário de Luanda).
+              Nossa equipe de suporte está disponível de Segunda a Sábado, das 10h às 22h (Horário de Luanda).
             </p>
           </div>
         </div>

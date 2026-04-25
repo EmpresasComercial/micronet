@@ -4,6 +4,7 @@ import { ChevronLeft, ReceiptText, Clock, Banknote, ShieldCheck } from 'lucide-r
 import { motion } from 'motion/react';
 import { supabase } from '../lib/supabase';
 import { cn } from '../lib/utils';
+import { EmptyState } from '../components/EmptyState';
 
 export default function WithdrawalHistory() {
   const navigate = useNavigate();
@@ -142,10 +143,10 @@ export default function WithdrawalHistory() {
         ))}
         
         {history.length === 0 && !loading && (
-          <div className="text-center py-20 bg-white border border-dashed border-gray-200 rounded-sm">
-            <ReceiptText className="mx-auto w-12 h-12 text-gray-200 mb-4" />
-            <p className="text-sm text-gray-400">Nenhum registro de retirada encontrado.</p>
-          </div>
+          <EmptyState 
+            message="Nenhum registro encontrado"
+            description="Você ainda não realizou solicitações de retirada nesta conta."
+          />
         )}
       </div>
     </div>

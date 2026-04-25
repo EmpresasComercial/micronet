@@ -120,12 +120,22 @@ export default function Withdraw() {
     <div className="min-h-screen bg-[#f4f4f4]">
       <header className="bg-white p-4 flex items-center justify-between border-b border-gray-200 sticky top-0 z-50">
         <div className="flex items-center">
-          <button onClick={() => navigate('/perfil')} className="p-1 text-gray-600 hover:text-ms-blue transition-colors">
+          <button 
+            onClick={() => navigate('/perfil')} 
+            className="p-1 text-gray-600 hover:text-ms-blue transition-colors"
+            title="Voltar ao perfil"
+            aria-label="Voltar ao perfil"
+          >
             <ChevronLeft className="w-6 h-6" />
           </button>
           <h1 className="text-sm font-bold ml-4 text-gray-800">Solicitar Retirada</h1>
         </div>
-        <button onClick={() => navigate('/registro-retirada')} className="p-1 text-gray-400 hover:text-ms-blue">
+        <button 
+          onClick={() => navigate('/registro-retirada')} 
+          className="p-1 text-gray-400 hover:text-ms-blue"
+          title="Histórico de retiradas"
+          aria-label="Histórico de retiradas"
+        >
           <ReceiptText className="w-6 h-6" />
         </button>
       </header>
@@ -167,6 +177,8 @@ export default function Withdraw() {
                   className="w-full py-3 text-sm border-b border-gray-200 focus:border-ms-blue outline-none bg-transparent appearance-none cursor-pointer"
                   disabled={!hasBank}
                   defaultValue={hasBank ? "default" : "none"}
+                  title="Selecionar conta bancária"
+                  aria-label="Selecionar conta bancária"
                 >
                   {hasBank ? (
                     <option value="default">{bankName}</option>
@@ -195,6 +207,8 @@ export default function Withdraw() {
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-0 top-1/2 -translate-y-1/2 text-gray-300 hover:text-gray-600"
+                  title={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                  aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
                 >
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>

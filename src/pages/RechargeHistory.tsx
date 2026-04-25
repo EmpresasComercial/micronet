@@ -5,6 +5,7 @@ import { motion } from 'motion/react';
 import { supabase } from '../lib/supabase';
 import { cn } from '../lib/utils';
 import { useToast } from '../components/Toast';
+import { EmptyState } from '../components/EmptyState';
 
 export default function RechargeHistory() {
   const navigate = useNavigate();
@@ -77,20 +78,18 @@ export default function RechargeHistory() {
             <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Sincronizando com Servidor...</p>
           </div>
         ) : history.length === 0 ? (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-center py-20 bg-white border border-dashed border-gray-200 rounded-sm"
-          >
-            <ReceiptText className="mx-auto w-12 h-12 text-gray-100 mb-4" />
-            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Nenhum registro encontrado</p>
+          <div className="flex flex-col items-center">
+            <EmptyState 
+              message="Nenhuma recarga encontrada"
+              description="Você ainda não enviou nenhum comprovativo de depósito bancário."
+            />
             <button 
               onClick={() => navigate('/recarregar')}
-              className="mt-6 text-ms-blue text-sm font-bold hover:underline"
+              className="mt-2 text-ms-blue text-sm font-bold hover:underline uppercase tracking-widest text-[10px]"
             >
               Fazer minha primeira recarga
             </button>
-          </motion.div>
+          </div>
         ) : (
           <div className="space-y-4">
             {history.map((item, idx) => (

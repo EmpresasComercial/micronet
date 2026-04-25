@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useToast } from '../components/Toast';
 import { Button } from '../components/Button';
 import { supabase } from '../lib/supabase';
+import { EmptyState } from '../components/EmptyState';
 
 interface Proof {
   id: string;
@@ -237,7 +238,13 @@ export default function SocialProof() {
                </div>
                
                {loading ? (
-                  <div className="py-20 text-center text-gray-400 italic">Buscando comprovativos...</div>
+                  <div className="py-20 text-center text-gray-400 italic font-medium">Buscando comprovativos...</div>
+               ) : proofs.length === 0 ? (
+                  <EmptyState 
+                    icon={<MessageCircle size={40} className="text-gray-100" />}
+                    message="Nenhum comprovativo ainda"
+                    description="Seja o primeiro a compartilhar seu sucesso e inspirar a comunidade!"
+                  />
                ) : (
                   proofs.map(proof => (
                     <div key={proof.id} className="bg-white border border-[#e1e1e1] overflow-hidden">
