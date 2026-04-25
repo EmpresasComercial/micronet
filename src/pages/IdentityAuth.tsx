@@ -6,6 +6,7 @@ import { useToast } from '../components/Toast';
 import { Button } from '../components/Button';
 import { supabase } from '../lib/supabase';
 import { cn } from '../lib/utils';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const PROVINCES = [
   'Bengo', 'Benguela', 'Bié', 'Cabinda', 'Cuando', 'Cubango', 
@@ -17,6 +18,7 @@ const PROVINCES = [
 export default function IdentityAuth() {
   const navigate = useNavigate();
   const { showToast } = useToast();
+  const { t } = useLanguage();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentStatus, setCurrentStatus] = useState<string | null>(null);
@@ -139,9 +141,9 @@ export default function IdentityAuth() {
     return (
       <div className="min-h-screen bg-[#f2f2f2] flex flex-col items-center justify-center p-6 text-center">
         <CheckCircle2 className="w-20 h-20 text-green-500 mb-4" />
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Conta Verificada</h2>
-        <p className="text-gray-600 max-w-xs mb-8">Sua identidade foi autenticada com sucesso pelos servidores da Microsoft.</p>
-        <Button onClick={() => navigate('/perfil')}>Voltar ao Perfil</Button>
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('identity.status_verified')}</h2>
+        <p className="text-gray-600 max-w-xs mb-8">{t('identity.status_verified_desc')}</p>
+        <Button onClick={() => navigate('/perfil')}>{t('common.back')}</Button>
       </div>
     );
   }
@@ -152,22 +154,22 @@ export default function IdentityAuth() {
         <button 
           onClick={() => navigate('/configuracoes-conta')} 
           className="p-2 -ml-2 text-[#616161]"
-          aria-label="Voltar para configurações"
-          title="Voltar"
+          aria-label={t('common.back')}
+          title={t('common.back')}
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
-        <h1 className="text-sm font-semibold ml-2 text-[#2b2b2b]">Verificação de Identidade</h1>
+        <h1 className="text-sm font-semibold ml-2 text-[#2b2b2b]">{t('identity.title')}</h1>
       </header>
 
       <div className="p-6 max-w-lg mx-auto">
         <div className="mb-8 text-left">
           <div className="flex items-center space-x-2 text-[#107c10] mb-2">
             <ShieldCheck size={16} />
-            <span className="text-[10px] font-bold uppercase tracking-widest">Proteção PGP Ativa</span>
+            <span className="text-[10px] font-bold uppercase tracking-widest">{t('identity.pgp')}</span>
           </div>
-          <h2 className="text-3xl font-light text-[#2b2b2b] mb-3">Autentique sua conta</h2>
-          <p className="text-sm text-[#616161] leading-relaxed">Para garantir a segurança das transações, precisamos validar seus documentos oficiais.</p>
+          <h2 className="text-3xl font-light text-[#2b2b2b] mb-3">{t('identity.auth_account')}</h2>
+          <p className="text-sm text-[#616161] leading-relaxed">{t('identity.auth_desc')}</p>
         </div>
 
         {currentStatus === 'pendente' ? (
@@ -175,9 +177,9 @@ export default function IdentityAuth() {
              <div className="w-16 h-16 bg-blue-50 text-ms-blue rounded-full flex items-center justify-center mx-auto animate-pulse">
                 <ShieldCheck size={32} />
              </div>
-             <h3 className="text-lg font-bold">Verificação em Curso</h3>
-             <p className="text-sm text-gray-500">Seus documentos foram recebidos e estão sendo analisados. Isso pode levar até 24h.</p>
-             <Button className="w-full" onClick={() => navigate('/perfil')}>Entendido</Button>
+             <h3 className="text-lg font-bold">{t('identity.status_pending')}</h3>
+             <p className="text-sm text-gray-500">{t('identity.status_pending_desc')}</p>
+             <Button className="w-full" onClick={() => navigate('/perfil')}>{t('common.confirm')}</Button>
           </div>
         ) : (
           <motion.div 
@@ -187,7 +189,7 @@ export default function IdentityAuth() {
           >
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Nome Completo (Conforme BI)</label>
+                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">{t('identity.full_name')}</label>
                 <div className="relative">
                   <input
                     type="text"
@@ -201,7 +203,7 @@ export default function IdentityAuth() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Número do BI (14 Caracteres)</label>
+                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">{t('identity.id_number')}</label>
                 <div className="relative">
                   <input
                     type="text"
@@ -248,7 +250,7 @@ export default function IdentityAuth() {
                      <Camera className="text-ms-blue w-6 h-6" />
                    )}
                    <span className="text-[9px] font-bold uppercase text-gray-500 relative z-10">
-                     {frentePreview ? 'Trocar Frente' : 'Frente do BI'}
+                     {frentePreview ? t('identity.front') : t('identity.front')}
                    </span>
                 </div>
 
@@ -265,22 +267,22 @@ export default function IdentityAuth() {
                      <Camera className="text-ms-blue w-6 h-6" />
                    )}
                    <span className="text-[9px] font-bold uppercase text-gray-500 relative z-10">
-                     {versoPreview ? 'Trocar Verso' : 'Verso do BI'}
+                     {versoPreview ? t('identity.back') : t('identity.back')}
                    </span>
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Província de Residência</label>
+                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">{t('identity.province')}</label>
                 <div className="relative">
                   <select 
                     className="input-field cursor-pointer py-2 pr-10 appearance-none bg-white font-medium"
                     value={formData.province}
                     onChange={(e) => setFormData({...formData, province: e.target.value})}
-                    aria-label="Selecionar Província"
-                    title="Província"
+                    aria-label={t('identity.province')}
+                    title={t('identity.province')}
                   >
-                    <option value="" disabled>Selecionar Província</option>
+                    <option value="" disabled>{t('identity.province')}</option>
                     {PROVINCES.map((prov) => (
                       <option key={prov} value={prov}>{prov}</option>
                     ))}
@@ -295,7 +297,7 @@ export default function IdentityAuth() {
                   className="w-full"
                   isLoading={isSubmitting}
                 >
-                  Enviar para Verificação
+                  {t('identity.btn_send')}
                 </Button>
               </div>
             </form>

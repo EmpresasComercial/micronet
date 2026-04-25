@@ -6,10 +6,12 @@ import { useToast } from '../components/Toast';
 import { Button } from '../components/Button';
 import { supabase } from '../lib/supabase';
 import { formatCurrency } from '../lib/currency';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export default function Withdraw() {
   const navigate = useNavigate();
   const { showToast } = useToast();
+  const { t } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [balance, setBalance] = useState(0);
   const [amount, setAmount] = useState('');
@@ -128,7 +130,7 @@ export default function Withdraw() {
           >
             <ChevronLeft className="w-6 h-6" />
           </button>
-          <h1 className="text-sm font-bold ml-4 text-gray-800">Solicitar Retirada</h1>
+          <h1 className="text-sm font-bold ml-4 text-gray-800">{t('withdraw.title')}</h1>
         </div>
         <button 
           onClick={() => navigate('/registro-retirada')} 
@@ -159,10 +161,10 @@ export default function Withdraw() {
           <form onSubmit={handleSubmit} className="space-y-8">
             {/* Valor */}
             <div>
-              <label className="block text-[10px] font-black text-gray-500 uppercase tracking-wider mb-2">Valor da Retirada</label>
+              <label className="block text-[10px] font-black text-gray-500 uppercase tracking-wider mb-2">{t('withdraw.amount')}</label>
               <input 
                 type="text" 
-                placeholder="Introduzir valor (Mín. 3.000 Kz)"
+                placeholder={t('withdraw.amount_placeholder')}
                 className="w-full py-3 text-sm border-b border-gray-200 focus:border-ms-blue outline-none transition-colors placeholder:text-gray-300"
                 value={amount}
                 onChange={handleAmountChange}
@@ -171,7 +173,7 @@ export default function Withdraw() {
 
             {/* Conta Bancária */}
             <div onClick={() => !hasBank && navigate('/adicionar-banco')} className="cursor-pointer">
-              <label className="block text-[10px] font-black text-gray-500 uppercase tracking-wider mb-2">Conta Bancária</label>
+              <label className="block text-[10px] font-black text-gray-500 uppercase tracking-wider mb-2">{t('withdraw.bank_acc')}</label>
               <div className="relative group">
                 <select 
                   className="w-full py-3 text-sm border-b border-gray-200 focus:border-ms-blue outline-none bg-transparent appearance-none cursor-pointer"
@@ -194,7 +196,7 @@ export default function Withdraw() {
 
             {/* Senha */}
             <div>
-              <label className="block text-[10px] font-black text-gray-500 uppercase tracking-wider mb-2">Senha de Segurança</label>
+              <label className="block text-[10px] font-black text-gray-500 uppercase tracking-wider mb-2">{t('withdraw.password')}</label>
               <div className="relative">
                 <input 
                   type={showPassword ? "text" : "password"} 
@@ -218,17 +220,17 @@ export default function Withdraw() {
             {/* Resumo */}
             <div className="bg-[#f8f8f8] p-4 rounded-sm space-y-3">
               <div className="flex justify-between items-center text-[11px]">
-                <span className="text-gray-400 font-medium tracking-tight">Taxa de Serviço (14%)</span>
+                <span className="text-gray-400 font-medium tracking-tight">{t('withdraw.tax')}</span>
                 <span className="text-red-500 font-bold">-{formatCurrency(calculateTax(), 'KZ')}</span>
               </div>
               <div className="flex justify-between items-center text-[13px] pt-2 border-t border-gray-100">
-                <span className="text-gray-800 font-black tracking-tight uppercase">Total Líquido</span>
+                <span className="text-gray-800 font-black tracking-tight uppercase">{t('withdraw.total_net')}</span>
                 <span className="text-ms-blue font-black">{formatCurrency(calculateNet(), 'KZ')}</span>
               </div>
             </div>
 
             <Button type="submit" isLoading={isSubmitting} className="w-full h-12 text-sm font-bold shadow-none">
-              Solicitar
+              {t('withdraw.btn_request')}
             </Button>
           </form>
         </motion.div>

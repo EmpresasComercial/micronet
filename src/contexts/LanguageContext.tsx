@@ -513,6 +513,34 @@ const translations: Record<Language, Record<string, string>> = {
     'support.msg_placeholder': 'Descreva seu problema ou sugestão aqui...',
     'support.send_msg': 'Enviar Mensagem',
     'support.encrypted_ticket': 'Ticket de Suporte Criptografado',
+
+    // IdentityAuth
+    'identity.title': 'Verificação de Identidade',
+    'identity.pgp': 'Proteção PGP Ativa',
+    'identity.auth_account': 'Autentique sua conta',
+    'identity.auth_desc': 'Para garantir a segurança das transações, precisamos validar seus documentos oficiais.',
+    'identity.status_pending': 'Verificação em Curso',
+    'identity.status_pending_desc': 'Seus documentos foram recebidos e estão sendo analisados. Isso pode levar até 24h.',
+    'identity.status_verified': 'Conta Verificada',
+    'identity.status_verified_desc': 'Sua identidade foi autenticada com sucesso pelos servidores da Microsoft.',
+    'identity.full_name': 'Nome Completo (Conforme BI)',
+    'identity.id_number': 'Número do BI (14 Caracteres)',
+    'identity.front': 'Frente do BI',
+    'identity.back': 'Verso do BI',
+    'identity.province': 'Província de Residência',
+    'identity.btn_send': 'Enviar para Verificação',
+
+    // Withdraw
+    'withdraw.title': 'Solicitar Retirada',
+    'withdraw.min_amount': 'O valor mínimo de saque é 3.000 Kz',
+    'withdraw.insufficient': 'Saldo insuficiente.',
+    'withdraw.amount': 'Valor da Retirada',
+    'withdraw.amount_placeholder': 'Introduzir valor (Mín. 3.000 Kz)',
+    'withdraw.bank_acc': 'Conta Bancária',
+    'withdraw.password': 'Senha de Segurança',
+    'withdraw.tax': 'Taxa de Serviço (14%)',
+    'withdraw.total_net': 'Total Líquido',
+    'withdraw.btn_request': 'Solicitar',
   },
   en: {
     // Navigation
@@ -1018,6 +1046,34 @@ const translations: Record<Language, Record<string, string>> = {
     'support.msg_placeholder': 'Describe your problem or suggestion here...',
     'support.send_msg': 'Send Message',
     'support.encrypted_ticket': 'Encrypted Support Ticket',
+
+    // IdentityAuth
+    'identity.title': 'Identity Verification',
+    'identity.pgp': 'PGP Protection Active',
+    'identity.auth_account': 'Authenticate your account',
+    'identity.auth_desc': 'To ensure transaction security, we need to validate your official documents.',
+    'identity.status_pending': 'Verification in Progress',
+    'identity.status_pending_desc': 'Your documents have been received and are being analyzed. This can take up to 24h.',
+    'identity.status_verified': 'Verified Account',
+    'identity.status_verified_desc': 'Your identity was successfully authenticated by Microsoft servers.',
+    'identity.full_name': 'Full Name (As on ID)',
+    'identity.id_number': 'ID Number (14 Characters)',
+    'identity.front': 'Front of ID',
+    'identity.back': 'Back of ID',
+    'identity.province': 'Province of Residence',
+    'identity.btn_send': 'Send for Verification',
+
+    // Withdraw
+    'withdraw.title': 'Request Withdrawal',
+    'withdraw.min_amount': 'The minimum withdrawal amount is 3,000 Kz',
+    'withdraw.insufficient': 'Insufficient balance.',
+    'withdraw.amount': 'Withdrawal Amount',
+    'withdraw.amount_placeholder': 'Enter amount (Min. 3,000 Kz)',
+    'withdraw.bank_acc': 'Bank Account',
+    'withdraw.password': 'Security Password',
+    'withdraw.tax': 'Service Fee (14%)',
+    'withdraw.total_net': 'Net Total',
+    'withdraw.btn_request': 'Request',
   },
   fr: {
     // Navigation
@@ -1522,6 +1578,34 @@ const translations: Record<Language, Record<string, string>> = {
     'support.msg_placeholder': 'Décrivez votre problème ou suggestion ici...',
     'support.send_msg': 'Envoyer le Message',
     'support.encrypted_ticket': 'Ticket de Support Crypté',
+
+    // IdentityAuth
+    'identity.title': 'Vérification d\'Identité',
+    'identity.pgp': 'Protection PGP Active',
+    'identity.auth_account': 'Authentifiez votre compte',
+    'identity.auth_desc': 'Pour garantir la sécurité des transactions, nous devons valider vos documents officiels.',
+    'identity.status_pending': 'Vérification en Cours',
+    'identity.status_pending_desc': 'Vos documents ont été reçus et sont en cours d\'analyse. Cela peut prendre jusqu\'à 24h.',
+    'identity.status_verified': 'Compte Vérifié',
+    'identity.status_verified_desc': 'Votre identité a été authentifiée avec succès par les serveurs Microsoft.',
+    'identity.full_name': 'Nom Complet (Selon la pièce d\'identité)',
+    'identity.id_number': 'Numéro d\'Identité (14 Caractères)',
+    'identity.front': 'Recto de la pièce d\'identité',
+    'identity.back': 'Verso de la pièce d\'identité',
+    'identity.province': 'Province de Résidence',
+    'identity.btn_send': 'Envoyer pour Vérification',
+
+    // Withdraw
+    'withdraw.title': 'Demander un Retrait',
+    'withdraw.min_amount': 'Le montant minimum de retrait est de 3 000 Kz',
+    'withdraw.insufficient': 'Solde insuffisant.',
+    'withdraw.amount': 'Montant du Retrait',
+    'withdraw.amount_placeholder': 'Entrer le montant (Min. 3 000 Kz)',
+    'withdraw.bank_acc': 'Compte Bancaire',
+    'withdraw.password': 'Mot de Passe de Sécurité',
+    'withdraw.tax': 'Frais de Service (14%)',
+    'withdraw.total_net': 'Total Net',
+    'withdraw.btn_request': 'Demander',
   },
 };
 
