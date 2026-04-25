@@ -21,14 +21,14 @@ export default function Navbar() {
         <NavLink
           key={item.path}
           to={item.path}
-          className={({ isActive }) =>
+          className={({ isActive }: { isActive: boolean }) =>
             cn(
               'flex flex-col items-center justify-center gap-0.5 transition-all w-full h-full relative group',
               isActive ? 'text-[#0067b8]' : 'text-[#9e9e9e] hover:text-[#0067b8]'
             )
           }
         >
-          {({ isActive }) => (
+          {({ isActive }: { isActive: boolean }) => (
             <>
               {isActive && (
                 <motion.div
