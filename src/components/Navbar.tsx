@@ -1,50 +1,57 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, Server, Users, UserCircle } from 'lucide-react';
+import { House, LayoutGrid, UserPlus, CircleUserRound } from 'lucide-react';
 import { motion } from 'motion/react';
 import { cn } from '../lib/utils';
 import { useLanguage } from '../contexts/LanguageContext';
 
 export default function Navbar() {
   const { t } = useLanguage();
+
   const navItems = [
-    { name: t('nav.home'), path: '/home', icon: Home },
-    { name: t('nav.products'), path: '/produtos', icon: Server },
-    { name: t('nav.invite'), path: '/convite', icon: Users },
-    { name: t('nav.profile'), path: '/perfil', icon: UserCircle },
+    { name: t('nav.home'),     path: '/home',    icon: House },
+    { name: t('nav.products'), path: '/produtos', icon: LayoutGrid },
+    { name: t('nav.invite'),   path: '/convite',  icon: UserPlus },
+    { name: t('nav.profile'),  path: '/perfil',   icon: CircleUserRound },
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-[#e5e5e5] h-[58px] flex items-center justify-around pb-safe">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-[#e5e5e5] h-[52px] flex items-center justify-around">
       {navItems.map((item) => (
         <NavLink
           key={item.path}
           to={item.path}
           className={({ isActive }) =>
             cn(
-              'flex flex-col items-center justify-center transition-all w-full h-full relative group',
-              isActive ? 'text-[#0067b8]' : 'text-[#616161] hover:text-[#0067b8]'
+              'flex flex-col items-center justify-center gap-0.5 transition-all w-full h-full relative group',
+              isActive ? 'text-[#0067b8]' : 'text-[#9e9e9e] hover:text-[#0067b8]'
             )
           }
         >
           {({ isActive }) => (
             <>
-              <item.icon 
-                strokeWidth={isActive ? 2.5 : 2}
-                className={cn("w-5 h-5 mb-1 transition-all duration-300", isActive && "scale-110")} 
-              />
+              {isActive && (
+                <motion.div
+                  layoutId="nav-pill"
+                  className="absolute -top-[1px] w-6 h-[2px] rounded-full bg-[#0067b8]"
+                  transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                />
+              )}
+              <motion.div
+                animate={isActive ? { scale: 1.1, y: -1 } : { scale: 1, y: 0 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+              >
+                <item.icon
+                  strokeWidth={isActive ? 2 : 1.6}
+                  className="w-[18px] h-[18px]"
+                />
+              </motion.div>
               <span className={cn(
-                "text-[10px] font-bold uppercase tracking-widest transition-all",
-                isActive ? "opacity-100" : "opacity-80"
+                'text-[9px] font-semibold uppercase tracking-[0.08em] transition-all',
+                isActive ? 'opacity-100' : 'opacity-60'
               )}>
                 {item.name}
               </span>
-              {isActive && (
-                <motion.div 
-                  layoutId="nav-indicator"
-                  className="absolute -top-[1px] w-8 h-[2px] bg-[#0067b8]"
-                />
-              )}
             </>
           )}
         </NavLink>
