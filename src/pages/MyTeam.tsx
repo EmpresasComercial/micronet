@@ -17,37 +17,41 @@ export default function MyTeam() {
     level2: [],
     level3: []
   });
-  const [totalCommissions, setTotalCommissions] = useState(0);
+  const [stats, setStats] = useState({
+    total_comissao_equipe: 0,
+    team_count: 0
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchTeam() {
+    async function fetchData() {
       try {
-        const { data, error } = await supabase.rpc('get_my_team_detailed');
-        if (error) throw error;
+        setLoading(true);
+        // Fetch detailed team list
+        const { data: teamList } = await supabase.rpc('get_my_team_detailed');
+        if (teamList) {
+          setTeamData({
+            level1: teamList.filter((m: any) => m.nivel === 1),
+            level2: teamList.filter((m: any) => m.nivel === 2),
+            level3: teamList.filter((m: any) => m.nivel === 3),
+          });
+        }
 
-        if (data) {
-          const categorized = {
-            level1: data.filter((m: any) => m.nivel === 1),
-            level2: data.filter((m: any) => m.nivel === 2),
-            level3: data.filter((m: any) => m.nivel === 3),
-          };
-          setTeamData(categorized);
-          
-          // Cálculo de comissões baseado nas novas taxas (12%, 6%, 1%)
-          const comms = data.reduce((acc: number, m: any) => {
-            const rate = m.nivel === 1 ? 0.12 : m.nivel === 2 ? 0.06 : 0.01;
-            return acc + (Number(m.total_investido) * rate);
-          }, 0);
-          setTotalCommissions(comms);
+        // Fetch official commission stats
+        const { data: accData } = await supabase.rpc('get_my_account_data');
+        if (accData && accData.length > 0) {
+          setStats({
+            total_comissao_equipe: Number(accData[0].total_comissao_equipe) || 0,
+            team_count: (teamList?.length || 0)
+          });
         }
       } catch (err: any) {
-        console.error('Erro ao carregar equipe:', err);
+        console.error('Erro ao carregar dados da equipe:', err);
       } finally {
         setLoading(false);
       }
     }
-    fetchTeam();
+    fetchData();
   }, []);
 
   const maskPhone = (phone: string) => {
@@ -84,7 +88,7 @@ export default function MyTeam() {
           <div className="relative z-10 text-left">
             <p className="text-[10px] font-bold text-ms-blue uppercase tracking-widest mb-1 italic">{t('team.stats_total')}</p>
             <h2 className="text-3xl font-bold text-[#323130]">
-              {teamData.level1.length + teamData.level2.length + teamData.level3.length}
+              {loading ? '...' : stats.team_count}
             </h2>
             <div className="mt-4 flex items-center justify-between">
               <div className="flex items-center space-x-1">
@@ -98,7 +102,7 @@ export default function MyTeam() {
               </div>
               <div className="text-right">
                 <p className="text-[8px] font-bold text-ms-blue uppercase tracking-widest mb-0.5 italic">{t('team.stats_com')}</p>
-                <p className="text-xs font-bold text-[#323130]">{totalCommissions.toLocaleString()},00 AOA</p>
+                <p className="text-xs font-bold text-[#323130]">{loading ? '...' : stats.total_comissao_equipe.toLocaleString()},00 Kz</p>
               </div>
             </div>
           </div>
