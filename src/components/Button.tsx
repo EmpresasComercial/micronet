@@ -21,7 +21,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={disabled || isLoading}
         className={cn(
-          'relative flex items-center justify-center transition-all duration-200 px-6 py-3 font-semibold text-sm active:scale-[0.98] disabled:pointer-events-none rounded-sm',
+          'relative flex items-center justify-center transition-all duration-200 px-6 h-[45px] font-semibold text-sm active:scale-[0.98] disabled:pointer-events-none rounded-sm',
           variant !== 'primary' && variantClasses[variant],
           variant === 'primary' && 'ms-btn-primary',
           className

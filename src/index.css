@@ -14,11 +14,11 @@
 
 @layer components {
   .ms-card {
-    @apply bg-white shadow-[0_2px_4px_rgba(0,0,0,0.1)] border border-black/5;
+    @apply bg-white shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-black/5 rounded-sm;
   }
 
   .ms-btn-primary {
-    @apply bg-ms-blue text-white px-6 py-2 font-semibold transition-all duration-200 active:scale-[0.98] active:brightness-90 hover:opacity-90 disabled:opacity-50 disabled:pointer-events-none;
+    @apply bg-ms-blue text-white px-6 h-[45px] flex items-center justify-center font-semibold transition-all duration-200 active:scale-[0.98] active:brightness-90 hover:opacity-90 disabled:opacity-50 disabled:pointer-events-none rounded-sm shadow-md shadow-ms-blue/10;
   }
 
   .input-field {

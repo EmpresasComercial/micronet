@@ -69,12 +69,12 @@ export const AnnouncementPopup: React.FC<AnnouncementPopupProps> = ({ isOpen, on
               </button>
             </div>
 
-            <div className="px-6 pb-2 space-y-3 relative z-10">
-              <div className="space-y-2 max-h-[220px] overflow-y-auto pr-2 custom-scrollbar">
-                <h3 className="text-xl font-bold text-[#2b2b2b] leading-tight pr-4">
+            <div className="px-6 pb-6 space-y-4 relative z-10">
+              <div className="space-y-4 max-h-[260px] overflow-y-auto pr-2 custom-scrollbar">
+                <h3 className="text-2xl font-semibold text-[#2b2b2b] leading-tight pr-6">
                   {announcements[popupIndex].title}
                 </h3>
-                <div className="text-[13px] text-[#444] leading-relaxed whitespace-pre-line font-medium">
+                <div className="text-sm text-[#444] leading-relaxed whitespace-pre-line font-medium">
                   {announcements[popupIndex].content}
                 </div>
               </div>

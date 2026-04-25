@@ -82,7 +82,7 @@ export default function Home() {
           </div>
           <Button 
             onClick={() => navigate('/operacoes')}
-            className="w-full py-4 shadow-lg shadow-ms-blue/20"
+            className="w-full h-[54px] shadow-lg shadow-ms-blue/20"
           >
             <div className="flex items-center space-x-3">
               <Activity size={20} strokeWidth={1.5} />
