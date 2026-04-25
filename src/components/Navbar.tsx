@@ -30,13 +30,6 @@ export default function Navbar() {
         >
           {({ isActive }: { isActive: boolean }) => (
             <>
-              {isActive && (
-                <motion.div
-                  layoutId="nav-pill"
-                  className="absolute -top-[1px] w-6 h-[2px] rounded-full bg-[#0067b8]"
-                  transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                />
-              )}
               <motion.div
                 animate={isActive ? { scale: 1.1, y: -1 } : { scale: 1, y: 0 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 20 }}

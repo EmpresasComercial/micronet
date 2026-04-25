@@ -25,12 +25,21 @@ export default function SupportFeedback() {
       return;
     }
 
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      showToast('Sessão expirada. Faça login novamente.', 'error');
+      return;
+    }
+
     setIsSubmitting(true);
     
     try {
-      const { data, error } = await supabase.rpc('submit_support_feedback_mcpn', {
-        p_mensagem: feedback
-      });
+      const { error } = await supabase
+        .from('support_feedback_mcpn')
+        .insert({
+          user_id: session.user.id,
+          mensagem: feedback
+        });
 
       if (error) throw error;
 
@@ -38,6 +47,7 @@ export default function SupportFeedback() {
       setFeedback('');
       setTimeout(() => navigate('/suporte'), 1500);
     } catch (err: any) {
+      console.error('Feedback Error:', err);
       showToast('Erro ao enviar feedback. Tente novamente mais tarde.', 'error');
     } finally {
       setIsSubmitting(false);
