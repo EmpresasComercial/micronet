@@ -3,13 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { ProductCard } from './components/ProductCard';
 import { supabase } from '../../lib/supabase';
-import { ReceiptText, Monitor, ShieldCheck, Zap } from 'lucide-react';
+import { ReceiptText, Monitor, ShieldCheck, Zap, Terminal } from 'lucide-react';
 
 const ICON_MAP: Record<string, React.ReactNode> = {
   'product.win7': <Monitor className="w-10 h-10 text-blue-500" />,
   'product.win8': <ShieldCheck className="w-10 h-10 text-blue-600" />,
   'product.win10': <Zap className="w-10 h-10 text-blue-700" />,
   'product.win11': <Monitor className="w-10 h-10 text-blue-800" />,
+  'product.mas': <Terminal className="w-10 h-10 text-gray-700" />,
 };
 
 export default function Products() {
