@@ -11,6 +11,7 @@ import { supabase } from '../lib/supabase';
 export default function Login() {
   const navigate = useNavigate();
   const { showToast } = useToast();
+  const { t } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   
@@ -31,12 +32,12 @@ export default function Login() {
     e.preventDefault();
     
     if (!formData.phone || formData.phone.length !== 9) {
-      showToast('O telefone deve ter exatamente 9 dígitos.', 'error');
+      showToast(t('auth.phone_error_length'), 'error');
       return;
     }
 
     if (!formData.password) {
-      showToast('Introduza a sua palavra-passe.', 'error');
+      showToast(t('auth.password_error_empty'), 'error');
       return;
     }
 
@@ -73,20 +74,20 @@ export default function Login() {
             alt="Microsoft" 
             className="h-6 mb-10"
           />
-          <h1 className="text-2xl font-semibold tracking-tight">Entrar</h1>
-          <p className="text-sm text-gray-500 mt-2">Use sua conta Microsoft Exchange para continuar.</p>
+          <h1 className="text-2xl font-semibold tracking-tight">{t('auth.login')}</h1>
+          <p className="text-sm text-gray-500 mt-2">{t('auth.welcome_back')}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-4">
             <div>
-              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Telefone</label>
+              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">{t('auth.phone_label')}</label>
               <div className="relative">
                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-xs">+244</span>
                 <input
                   name="phone"
                   type="tel"
-                  placeholder="900 000 000"
+                  placeholder={t('auth.phone_placeholder')}
                   className="input-field pl-14"
                   value={formData.phone}
                   onChange={handleChange}
@@ -96,12 +97,12 @@ export default function Login() {
             </div>
 
             <div>
-              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Palavra-passe</label>
+              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">{t('auth.password_label')}</label>
               <div className="relative">
                 <input
                   name="password"
                   type={showPassword ? "text" : "password"}
-                  placeholder="Introduza sua senha"
+                  placeholder={t('auth.password_placeholder')}
                   className="input-field pr-10"
                   value={formData.password}
                   onChange={handleChange}
@@ -110,8 +111,8 @@ export default function Login() {
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
-                  title={showPassword ? "Ocultar senha" : "Mostrar senha"}
-                  aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                  title={t('auth.enter_password')}
+                  aria-label={t('auth.enter_password')}
                 >
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
@@ -121,7 +122,7 @@ export default function Login() {
 
           <div className="pt-4 space-y-4">
             <Button type="submit" className="w-full h-[45px]" isLoading={isSubmitting}>
-              Entrar
+              {t('auth.login')}
             </Button>
             
             <div className="flex items-center justify-center space-x-2 text-[10px] text-gray-400 font-bold uppercase tracking-widest">
@@ -131,7 +132,7 @@ export default function Login() {
 
             <div className="text-center pt-4 border-t border-gray-100">
               <p className="text-sm text-gray-600">
-                Não tem uma conta? <Link to="/cadastro" className="text-ms-blue font-bold hover:underline">Criar uma</Link>
+                {t('auth.no_account')} <Link to="/cadastro" className="text-ms-blue font-bold hover:underline">{t('auth.create_one')}</Link>
               </p>
             </div>
           </div>

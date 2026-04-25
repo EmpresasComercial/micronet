@@ -10,7 +10,7 @@ export default function FloatingSupport() {
 
   const menuOptions = [
     { 
-      label: 'Suporte Microsoft', 
+      label: 'Suporte Microsoft Exchange', 
       icon: <Headset size={18} />, 
       path: '/suporte',
       color: 'bg-ms-blue'
@@ -84,7 +84,7 @@ export default function FloatingSupport() {
             ) : (
               <img 
                 src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=200&h=200&auto=format&fit=crop" 
-                alt="Suporte Microsoft" 
+                alt="Suporte Microsoft Exchange" 
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"
               />

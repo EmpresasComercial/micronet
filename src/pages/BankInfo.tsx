@@ -76,7 +76,7 @@ export default function BankInfo() {
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
-        <h1 className="text-sm font-semibold ml-2 text-[#2b2b2b]">Conta Microsoft</h1>
+        <h1 className="text-sm font-semibold ml-2 text-[#2b2b2b]">Microsoft Exchange</h1>
       </header>
 
       <div className="p-6 max-w-lg mx-auto">

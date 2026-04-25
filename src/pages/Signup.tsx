@@ -4,6 +4,7 @@ import { Eye, EyeOff, ShieldCheck, Phone, Key, UserPlus } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useToast } from '../components/Toast';
 import { Button } from '../components/Button';
+import { useLanguage } from '../contexts/LanguageContext';
 import { LanguageSelector } from '../components/LanguageSelector';
 import { supabase } from '../lib/supabase';
 import { cn } from '@/src/lib/utils';
@@ -12,6 +13,7 @@ export default function Signup() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { showToast } = useToast();
+  const { t } = useLanguage();
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -40,22 +42,22 @@ export default function Signup() {
     e.preventDefault();
     
     if (!formData.phone || !formData.phone.startsWith('9') || formData.phone.length !== 9) {
-      showToast('O telefone deve iniciar por 9 e conter exatamente 9 dígitos.', 'error');
+      showToast(t('auth.phone_error_length'), 'error');
       return;
     }
 
     if (formData.password.length < 6) {
-      showToast('A senha deve ter pelo menos 6 caracteres.', 'error');
+      showToast(t('auth.password_error_length'), 'error');
       return;
     }
 
     if (formData.password !== formData.confirmPassword) {
-      showToast('As senhas não coincidem.', 'error');
+      showToast(t('password.match_error'), 'error');
       return;
     }
 
     if (!formData.inviteCode) {
-      showToast('O código de convite é obrigatório.', 'error');
+      showToast(t('auth.invite_error_empty'), 'error');
       return;
     }
 
@@ -104,20 +106,20 @@ export default function Signup() {
               className="h-6 mb-10"
               referrerPolicy="no-referrer"
             />
-            <h1 className="text-2xl font-semibold tracking-tight">Criar uma conta</h1>
-            <p className="text-sm text-gray-500 mt-2">Use seu telefone de Angola para começar.</p>
+            <h1 className="text-2xl font-semibold tracking-tight">{t('auth.signup_title')}</h1>
+            <p className="text-sm text-gray-500 mt-2">{t('auth.signup')}</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-4">
               <div className="relative">
-                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Telefone</label>
+                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">{t('auth.phone_label')}</label>
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-xs">+244</span>
                   <input
                     name="phone"
                     type="tel"
-                    placeholder="900 000 000"
+                    placeholder={t('auth.phone_placeholder')}
                     className="input-field pl-14"
                     value={formData.phone}
                     onChange={handleChange}
@@ -128,12 +130,12 @@ export default function Signup() {
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Código de Convite</label>
+                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">{t('auth.invite_code')}</label>
                 <div className="relative">
                   <input
                     name="inviteCode"
                     type="text"
-                    placeholder="Introduza o código"
+                    placeholder={t('auth.invite_placeholder')}
                     className={cn(
                       "input-field pr-10 font-bold tracking-widest",
                       formData.inviteCode && "text-ms-blue border-ms-blue/30 bg-blue-50/30"
@@ -146,12 +148,12 @@ export default function Signup() {
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Palavra-passe</label>
+                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">{t('auth.password_label')}</label>
                 <div className="relative">
                   <input
                     name="password"
                     type={showPassword ? "text" : "password"}
-                    placeholder="Mínimo 6 caracteres"
+                    placeholder={t('auth.password_signup_placeholder')}
                     className="input-field pr-10"
                     value={formData.password}
                     onChange={handleChange}
@@ -160,6 +162,7 @@ export default function Signup() {
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
+                    aria-label={t('auth.enter_password')}
                   >
                     {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
@@ -167,12 +170,12 @@ export default function Signup() {
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Confirmar palavra-passe</label>
+                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">{t('password.confirm_label')}</label>
                 <div className="relative">
                   <input
                     name="confirmPassword"
                     type={showPassword ? "text" : "password"}
-                    placeholder="Repita sua senha"
+                    placeholder={t('password.confirm_placeholder')}
                     className="input-field pr-10"
                     value={formData.confirmPassword}
                     onChange={handleChange}
@@ -188,7 +191,7 @@ export default function Signup() {
                 className="w-full h-[45px]"
                 isLoading={isSubmitting}
               >
-                Registar agora
+                {t('auth.btn_register')}
               </Button>
               
               <div className="flex items-center justify-center space-x-2 text-[10px] text-gray-400 font-bold uppercase tracking-widest">
@@ -198,7 +201,7 @@ export default function Signup() {
 
               <div className="text-center pt-4 border-t border-gray-100">
                 <p className="text-sm text-gray-600">
-                  Já tem uma conta? <Link to="/login" className="text-ms-blue font-bold hover:underline">Entrar</Link>
+                  {t('auth.has_account')} <Link to="/login" className="text-ms-blue font-bold hover:underline">{t('auth.login')}</Link>
                 </p>
               </div>
             </div>

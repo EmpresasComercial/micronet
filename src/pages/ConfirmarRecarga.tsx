@@ -305,7 +305,7 @@ export default function ConfirmarRecarga() {
               </Button>
               <div className="flex items-center justify-center space-x-2 text-[10px] text-gray-400 font-bold uppercase tracking-widest">
                 <ShieldCheck size={14} className="text-green-600" />
-                <span>Segurança Certificada Microsoft</span>
+                <span>Segurança Certificada Microsoft Exchange</span>
               </div>
             </div>
           </form>
