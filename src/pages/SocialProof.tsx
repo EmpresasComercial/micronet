@@ -7,6 +7,7 @@ import { Button } from '../components/Button';
 import { supabase } from '../lib/supabase';
 import { EmptyState } from '../components/EmptyState';
 import { SmartImage } from '../components/SmartImage';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface Proof {
   id: string;
@@ -20,6 +21,7 @@ interface Proof {
 export default function SocialProof() {
   const navigate = useNavigate();
   const { showToast } = useToast();
+  const { t } = useLanguage();
 
   const [proofs, setProofs] = useState<Proof[]>([]);
   const [loading, setLoading] = useState(true);
@@ -146,17 +148,17 @@ export default function SocialProof() {
           <button 
             onClick={() => navigate(-1)} 
             className="p-2 -ml-2 text-gray-600 hover:text-ms-blue transition-colors"
-            aria-label="Voltar"
-            title="Voltar"
+            aria-label={t('common.back')}
+            title={t('common.back')}
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
-          <span className="ml-4 text-sm font-semibold text-gray-900 uppercase tracking-widest">Prova Social</span>
+          <span className="ml-4 text-sm font-semibold text-gray-900 uppercase tracking-widest">{t('social.proof_title')}</span>
         </div>
         <button 
           onClick={() => setShowForm(!showForm)}
-          aria-label={showForm ? "Fechar formulário" : "Adicionar prova social"}
-          title={showForm ? "Fechar" : "Adicionar"}
+          aria-label={showForm ? t('common.close') : t('social.proof_title')}
+          title={showForm ? t('common.close') : t('social.proof_title')}
           className={`p-2 rounded-sm transition-colors ${showForm ? 'bg-ms-blue text-white' : 'text-gray-600 hover:bg-gray-100'}`}
         >
           {showForm ? <X className="w-5 h-5" /> : <Edit3 className="w-5 h-5" />}
@@ -174,13 +176,13 @@ export default function SocialProof() {
               className="space-y-8"
             >
               <div className="text-center">
-                <h2 className="text-2xl font-bold text-gray-900 tracking-tight">Compartilhe seu sucesso</h2>
-                <p className="text-sm text-gray-500">Ajude outros usuários e ganhe bônus de visibilidade.</p>
+                <h2 className="text-2xl font-bold text-gray-900 tracking-tight">{t('social.share_success')}</h2>
+                <p className="text-sm text-gray-500">{t('social.help_others')}</p>
               </div>
 
               <form onSubmit={handleSubmit} className="bg-white border border-[#e1e1e1] p-8 space-y-6">
                 <div className="space-y-4">
-                  <label className="block text-[11px] font-bold text-[#666] uppercase tracking-wider">Foto do Comprovativo</label>
+                  <label className="block text-[11px] font-bold text-[#666] uppercase tracking-wider">{t('social.photo_label')}</label>
                   <input 
                     type="file" 
                     accept="image/*" 
@@ -217,34 +219,34 @@ export default function SocialProof() {
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-bold text-[#666] uppercase tracking-wider mb-1">Valor Recebido (Kz)</label>
+                  <label className="block text-[11px] font-bold text-[#666] uppercase tracking-wider mb-1">{t('social.received_value')}</label>
                   <input type="text" placeholder="Ex: 15000" className="input-field" value={amount} onChange={handleAmountChange} />
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-bold text-[#666] uppercase tracking-wider mb-1">Seu Comentário</label>
-                  <textarea placeholder="O que você achou da plataforma?" className="input-field min-h-[100px] py-3 resize-none" value={comment} onChange={handleCommentChange} />
+                  <label className="block text-[11px] font-bold text-[#666] uppercase tracking-wider mb-1">{t('social.your_comment')}</label>
+                  <textarea placeholder="" className="input-field min-h-[100px] py-3 resize-none" value={comment} onChange={handleCommentChange} />
                 </div>
 
                 <Button type="submit" isLoading={isSubmitting} className="w-full h-14">
-                  Enviar Comprovativo
+                  {t('social.send_proof')}
                 </Button>
               </form>
             </motion.div>
           ) : (
             <div className="space-y-6">
                <div className="bg-blue-50 border-l-4 border-ms-blue p-4">
-                  <p className="text-[10px] font-bold uppercase text-ms-blue tracking-widest mb-1">Mural da Transparência</p>
-                  <p className="text-xs text-gray-600">Veja as provas de pagamentos reais dos nossos usuários Microsoft Exchange.</p>
+                  <p className="text-[10px] font-bold uppercase text-ms-blue tracking-widest mb-1">{t('social.transparency_wall')}</p>
+                  <p className="text-xs text-gray-600">{t('social.see_proofs')}</p>
                </div>
                
                {loading ? (
-                  <div className="py-20 text-center text-gray-400 italic font-medium">Buscando comprovativos...</div>
+                  <div className="py-20 text-center text-gray-400 italic font-medium">{t('common.loading')}</div>
                ) : proofs.length === 0 ? (
                   <EmptyState 
                     icon={<MessageCircle size={40} className="text-gray-100" />}
-                    message="Nenhum comprovativo ainda"
-                    description="Seja o primeiro a compartilhar seu sucesso e inspirar a comunidade!"
+                    message={t('social.proof_title')}
+                    description={t('social.empty_proofs')}
                   />
                ) : (
                   proofs.map(proof => (

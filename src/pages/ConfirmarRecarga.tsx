@@ -6,10 +6,12 @@ import { supabase } from '../lib/supabase';
 import { useToast } from '../components/Toast';
 import { Button } from '../components/Button';
 import { cn } from '../lib/utils';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export default function ConfirmarRecarga() {
   const navigate = useNavigate();
   const { showToast } = useToast();
+  const { t } = useLanguage();
   const [searchParams] = useSearchParams();
   const rechargeId = searchParams.get('id');
   const amount = searchParams.get('amount');
@@ -43,7 +45,7 @@ export default function ConfirmarRecarga() {
     navigator.clipboard.writeText(text);
     setCopiedField(field);
     setTimeout(() => setCopiedField(null), 2000);
-    showToast('Copiado para a área de transferência', 'success');
+    showToast(t('common.success'), 'success');
   };
 
   const compressImage = async (file: File): Promise<Blob> => {
@@ -109,9 +111,8 @@ export default function ConfirmarRecarga() {
         // Otimização real
         const optimizedBlob = await compressImage(file);
         setProofFile(optimizedBlob);
-        showToast(`Imagem otimizada: ${(file.size / 1024).toFixed(0)}KB → ${(optimizedBlob.size / 1024).toFixed(0)}KB`, 'success');
       } catch (err) {
-        showToast('Erro ao processar imagem.', 'error');
+        showToast(t('common.error'), 'error');
         setProofFile(file); // Fallback para original
       } finally {
         setIsOptimizing(false);
@@ -123,7 +124,7 @@ export default function ConfirmarRecarga() {
     e.preventDefault();
 
     if (!proofFile) {
-      showToast('Por favor, carregue o comprovativo do pagamento.', 'error');
+      showToast(t('common.error'), 'error');
       return;
     }
 
@@ -132,7 +133,7 @@ export default function ConfirmarRecarga() {
 
     try {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('Não autenticado');
+      if (!user) throw new Error(t('common.error'));
 
       // 1. Upload da Imagem Otimizada
       const fileName = `${user.id}/${rechargeId}_${Date.now()}.jpg`;
@@ -157,13 +158,13 @@ export default function ConfirmarRecarga() {
       setUploadProgress(100);
 
       if (data.success) {
-        showToast(data.message || 'Comprovativo enviado com sucesso!', 'success');
+        showToast(t('common.success'), 'success');
         setTimeout(() => navigate('/registro-recarga'), 1500);
       } else {
         showToast(data.message, 'error');
       }
     } catch (err: any) {
-      showToast(err.message || 'Erro ao confirmar pagamento.', 'error');
+      showToast(err.message || t('common.error'), 'error');
     } finally {
       setIsSubmitting(false);
     }
@@ -172,10 +173,10 @@ export default function ConfirmarRecarga() {
   return (
     <div className="min-h-screen bg-[#f2f2f2] pb-20">
       <header className="bg-white p-4 flex items-center border-b border-[#e1e1e1] sticky top-0 z-50">
-        <button onClick={() => navigate('/recarregar')} className="p-2 -ml-2 text-gray-600" title="Voltar">
+        <button onClick={() => navigate('/recarregar')} className="p-2 -ml-2 text-gray-600" title={t('common.back')}>
           <ChevronLeft className="w-6 h-6" />
         </button>
-        <h1 className="text-sm font-semibold ml-2 text-[#2b2b2b]">Finalizar Depósito</h1>
+        <h1 className="text-sm font-semibold ml-2 text-[#2b2b2b]">{t('recharge.confirm_title')}</h1>
       </header>
 
       <div className="p-6 max-w-lg mx-auto">
@@ -201,7 +202,7 @@ export default function ConfirmarRecarga() {
 
           <div className="space-y-6">
             <div className="text-center space-y-2 pb-6 border-b border-gray-100">
-              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">Montante a Transferir</p>
+              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">{t('recharge.amount_requested')}</p>
               <div className="flex items-center justify-center space-x-2">
                 <h2 className="text-4xl font-light text-ms-blue tracking-tight">
                   {Number(amount).toLocaleString()},00 <span className="text-sm font-bold">Kz</span>
@@ -218,15 +219,15 @@ export default function ConfirmarRecarga() {
             {bankDetails && (
               <div className="bg-[#fbfbfb] border border-gray-100 p-6 rounded-sm space-y-4">
                 <div className="space-y-0.5">
-                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Banco Destinatário</p>
+                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{t('recharge.bank_dest')}</p>
                   <p className="text-sm font-bold text-gray-800 uppercase">{bankDetails.nome_banco}</p>
                 </div>
                 <div className="space-y-0.5">
-                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Beneficiário</p>
+                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{t('recharge.beneficiary')}</p>
                   <p className="text-sm font-bold text-gray-800 uppercase">{bankDetails.nome_proprietario}</p>
                 </div>
                 <div className="space-y-0.5 relative">
-                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">IBAN para Depósito</p>
+                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{t('recharge.iban_deposit')}</p>
                   <div className="flex items-center justify-between">
                     <p className="text-xs font-mono font-bold text-ms-blue select-all">{bankDetails.iban}</p>
                     <button 
@@ -244,10 +245,10 @@ export default function ConfirmarRecarga() {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="flex items-center justify-between text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3">
-                <span>Anexar Comprovativo</span>
+                <span>{t('recharge.proof_label')}</span>
                 {isOptimizing && (
                   <span className="text-ms-blue flex items-center normal-case animate-pulse">
-                    <Loader2 size={10} className="animate-spin mr-1" /> Otimizando...
+                    <Loader2 size={10} className="animate-spin mr-1" /> {t('common.loading')}
                   </span>
                 )}
               </label>
@@ -291,8 +292,8 @@ export default function ConfirmarRecarga() {
                   <>
                     <Camera className="text-ms-blue w-12 h-12 mb-3" />
                     <div className="text-center">
-                      <p className="text-xs font-bold text-gray-700">Clique para anexar arquivo</p>
-                      <p className="text-[9px] text-gray-400 uppercase font-bold tracking-tighter">Processamento Inteligente Ativo</p>
+                      <p className="text-xs font-bold text-gray-700">{t('recharge.upload_btn')}</p>
+                      <p className="text-[9px] text-gray-400 uppercase font-bold tracking-tighter">{t('recharge.processing')}</p>
                     </div>
                   </>
                 )}
@@ -301,11 +302,11 @@ export default function ConfirmarRecarga() {
 
             <div className="pt-4 space-y-4">
               <Button type="submit" className="w-full h-14" isLoading={isSubmitting}>
-                {isSubmitting ? `Enviando (${uploadProgress}%)...` : "Confirmar Pagamento"}
+                {isSubmitting ? `(${uploadProgress}%)...` : t('recharge.btn_confirm_deposit')}
               </Button>
               <div className="flex items-center justify-center space-x-2 text-[10px] text-gray-400 font-bold uppercase tracking-widest">
                 <ShieldCheck size={14} className="text-green-600" />
-                <span>Segurança Certificada Microsoft Exchange</span>
+                <span>{t('recharge.security_badge')}</span>
               </div>
             </div>
           </form>

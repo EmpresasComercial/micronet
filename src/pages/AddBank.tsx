@@ -5,6 +5,7 @@ import { motion } from 'motion/react';
 import { useToast } from '../components/Toast';
 import { Button } from '../components/Button';
 import { supabase } from '../lib/supabase';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const BANKS = [
   'BAI - Banco Angolano de Investimentos',
@@ -18,6 +19,7 @@ const BANKS = [
 export default function AddBank() {
   const navigate = useNavigate();
   const { showToast } = useToast();
+  const { t } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   const [formData, setFormData] = useState({
@@ -43,15 +45,15 @@ export default function AddBank() {
     e.preventDefault();
     
     if (!formData.bankName) {
-      showToast('Selecione o seu banco.', 'error');
+      showToast(t('common.error'), 'error'); // Generic error, could be better
       return;
     }
     if (formData.holderName.length < 5) {
-      showToast('Insira seu nome completo.', 'error');
+      showToast(t('common.error'), 'error');
       return;
     }
     if (formData.iban.length < 21) {
-      showToast('IBAN inválido. Verifique os dados.', 'error');
+      showToast(t('common.error'), 'error');
       return;
     }
 
@@ -67,13 +69,13 @@ export default function AddBank() {
       if (error) throw error;
 
       if (data.success) {
-        showToast('Dados bancários guardados com segurança!', 'success');
+        showToast(t('common.success'), 'success');
         navigate('/perfil');
       } else {
         showToast(data.message, 'error');
       }
     } catch (err: any) {
-      showToast(err.message || 'Erro ao guardar dados bancários.', 'error');
+      showToast(err.message || t('common.error'), 'error');
     } finally {
       setIsSubmitting(false);
     }
@@ -85,18 +87,18 @@ export default function AddBank() {
         <button 
           onClick={() => navigate('/perfil')} 
           className="p-2 -ml-2 text-[#616161]"
-          aria-label="Voltar para o perfil"
-          title="Voltar"
+          aria-label={t('common.back')}
+          title={t('common.back')}
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
-        <h1 className="text-sm font-semibold ml-2 text-[#2b2b2b]">Conta Bancária</h1>
+        <h1 className="text-sm font-semibold ml-2 text-[#2b2b2b]">{t('bank.title')}</h1>
       </header>
 
       <div className="p-6 max-w-lg mx-auto">
         <div className="mb-10 text-left">
-          <h2 className="text-3xl font-light text-[#2b2b2b] mb-3">Vincular Banco</h2>
-          <p className="text-sm text-[#616161]">Certifique-se de que os dados coincidem com o seu BI para evitar atrasos nos saques.</p>
+          <h2 className="text-3xl font-light text-[#2b2b2b] mb-3">{t('bank.bind')}</h2>
+          <p className="text-sm text-[#616161]">{t('bank.desc')}</p>
         </div>
 
         <motion.div 
@@ -107,16 +109,16 @@ export default function AddBank() {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-4">
               <div>
-                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Banco</label>
+                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">{t('bank.name')}</label>
                 <select 
                   name="bankName"
                   className="input-field appearance-none cursor-pointer"
                   value={formData.bankName}
                   onChange={handleChange}
-                  aria-label="Selecionar Banco"
-                  title="Banco"
+                  aria-label={t('bank.name')}
+                  title={t('bank.name')}
                 >
-                  <option value="">Selecionar Instituição</option>
+                  <option value="">{t('bank.select')}</option>
                   {BANKS.map(bank => (
                     <option key={bank} value={bank}>{bank}</option>
                   ))}
@@ -124,13 +126,13 @@ export default function AddBank() {
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Nome do Titular</label>
+                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">{t('bank.holder')}</label>
                 <div className="relative">
                   <input
                     name="holderName"
                     type="text"
                     className="input-field pr-10"
-                    placeholder="Ex: João Manuel Silva"
+                    placeholder={t('bank.holder_placeholder')}
                     value={formData.holderName}
                     onChange={handleChange}
                   />
@@ -139,7 +141,7 @@ export default function AddBank() {
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">IBAN Angolano</label>
+                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">{t('bank.iban')}</label>
                 <div className="relative">
                   <input
                     name="iban"
@@ -157,7 +159,7 @@ export default function AddBank() {
 
             <div className="pt-4 space-y-4">
               <Button type="submit" className="w-full h-[45px]" isLoading={isSubmitting}>
-                Guardar Dados
+                {t('bank.save_btn')}
               </Button>
             </div>
           </form>
@@ -166,3 +168,4 @@ export default function AddBank() {
     </div>
   );
 }
+

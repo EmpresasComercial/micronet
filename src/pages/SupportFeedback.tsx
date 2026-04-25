@@ -5,10 +5,12 @@ import { motion } from 'motion/react';
 import { useToast } from '../components/Toast';
 import { Button } from '../components/Button';
 import { supabase } from '../lib/supabase';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export default function SupportFeedback() {
   const navigate = useNavigate();
   const { showToast } = useToast();
+  const { t } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedback, setFeedback] = useState('');
 
@@ -21,13 +23,13 @@ export default function SupportFeedback() {
     e.preventDefault();
     
     if (feedback.length < 10) {
-      showToast('Por favor, descreva sua dúvida com mais detalhes.', 'error');
+      showToast(t('common.error'), 'error');
       return;
     }
 
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) {
-      showToast('Sessão expirada. Faça login novamente.', 'error');
+      showToast(t('common.error'), 'error');
       return;
     }
 
@@ -43,12 +45,12 @@ export default function SupportFeedback() {
 
       if (error) throw error;
 
-      showToast('Sua mensagem foi enviada à equipe técnica!', 'success');
+      showToast(t('common.success'), 'success');
       setFeedback('');
       setTimeout(() => navigate('/suporte'), 1500);
     } catch (err: any) {
       console.error('Feedback Error:', err);
-      showToast('Erro ao enviar feedback. Tente novamente mais tarde.', 'error');
+      showToast(t('common.error'), 'error');
     } finally {
       setIsSubmitting(false);
     }
@@ -60,18 +62,18 @@ export default function SupportFeedback() {
         <button 
           onClick={() => navigate('/suporte')} 
           className="p-2 -ml-2 text-gray-600 hover:text-ms-blue transition-colors"
-          aria-label="Voltar para o suporte"
-          title="Voltar"
+          aria-label={t('common.back')}
+          title={t('common.back')}
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
-        <h1 className="text-sm font-semibold ml-2 text-[#2b2b2b]">Feedback Técnica</h1>
+        <h1 className="text-sm font-semibold ml-2 text-[#2b2b2b]">{t('support.feedback_title')}</h1>
       </header>
 
       <div className="p-6 max-w-lg mx-auto">
         <div className="mb-10 text-left">
-          <h2 className="text-3xl font-light text-[#2b2b2b] mb-3">Como podemos melhorar?</h2>
-          <p className="text-sm text-[#616161]">Relate bugs, sugira melhorias ou peça ajuda técnica diretamente aos nossos desenvolvedores.</p>
+          <h2 className="text-3xl font-light text-[#2b2b2b] mb-3">{t('support.feedback_question')}</h2>
+          <p className="text-sm text-[#616161]">{t('support.feedback_desc')}</p>
         </div>
 
         <motion.div 
@@ -81,10 +83,10 @@ export default function SupportFeedback() {
         >
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Sua Mensagem</label>
+              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">{t('support.your_msg')}</label>
               <textarea
                 className="input-field min-h-[150px] py-4 resize-none"
-                placeholder="Descreva seu problema ou sugestão aqui..."
+                placeholder={t('support.msg_placeholder')}
                 value={feedback}
                 onChange={handleFeedbackChange}
               />
@@ -95,11 +97,11 @@ export default function SupportFeedback() {
 
             <div className="pt-4 space-y-4">
               <Button type="submit" className="w-full h-14" isLoading={isSubmitting}>
-                Enviar Mensagem
+                {t('support.send_msg')}
               </Button>
               <div className="flex items-center justify-center space-x-2 text-[10px] text-gray-400 font-bold uppercase tracking-widest">
                 <ShieldCheck size={14} className="text-ms-blue" />
-                <span>Ticket de Suporte Criptografado</span>
+                <span>{t('support.encrypted_ticket')}</span>
               </div>
             </div>
           </form>

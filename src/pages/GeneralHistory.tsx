@@ -5,6 +5,7 @@ import { motion } from 'motion/react';
 import { cn } from '../lib/utils';
 import { supabase } from '../lib/supabase';
 import { useToast } from '../components/Toast';
+import { useLanguage } from '../contexts/LanguageContext';
 
 type HistoryType = 'recargas' | 'retiradas' | 'renda_diaria' | 'bonus_equipe' | 'cupom' | '';
 
@@ -20,6 +21,7 @@ interface HistoryItem {
 export default function GeneralHistory() {
   const navigate = useNavigate();
   const { showToast } = useToast();
+  const { t } = useLanguage();
   const [filter, setFilter] = useState<HistoryType>('');
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -81,44 +83,44 @@ export default function GeneralHistory() {
 
   const getStatusLabel = (status: string) => {
     const s = status.toLowerCase();
-    if (s === 'completed' || s === 'confirmado' || s === 'aprovado') return 'Concluído';
-    if (s === 'pending' || s === 'pendente') return 'Em Análise';
-    return 'Falhou';
+    if (s === 'completed' || s === 'confirmado' || s === 'aprovado') return t('history.completed');
+    if (s === 'pending' || s === 'pendente') return t('history.pending');
+    return t('history.failed');
   };
 
   return (
     <div className="min-h-screen bg-[#f2f2f2] pb-20">
       <header className="bg-white p-4 flex items-center sticky top-0 z-50 border-b border-[#e1e1e1]">
-        <button onClick={() => navigate('/perfil')} className="p-2 -ml-2 text-gray-600" title="Voltar">
+        <button onClick={() => navigate('/perfil')} className="p-2 -ml-2 text-gray-600" title={t('common.back')}>
           <ChevronLeft className="w-6 h-6" />
         </button>
-        <h1 className="text-sm font-semibold ml-2 text-[#2b2b2b]">Histórico de Atividades</h1>
+        <h1 className="text-sm font-semibold ml-2 text-[#2b2b2b]">{t('history.general_title')}</h1>
       </header>
 
       <div className="p-6 max-w-lg mx-auto space-y-6">
         <div className="mb-8">
-          <h2 className="text-3xl font-light text-[#2b2b2b]">Atividades</h2>
-          <p className="text-sm text-[#616161] mt-2">Registro completo de suas operações financeiras na nuvem.</p>
+          <h2 className="text-3xl font-light text-[#2b2b2b]">{t('history.general_title').split(' ')[0]}</h2>
+          <p className="text-sm text-[#616161] mt-2">{t('history.general_desc')}</p>
         </div>
 
         <div className="bg-white border border-[#e1e1e1] p-6 shadow-sm rounded-sm">
           <div className="flex items-center space-x-2 mb-4">
             <Filter size={14} className="text-ms-blue" />
-            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Filtrar Categoria</p>
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{t('history.filter_cat')}</p>
           </div>
           <div className="relative">
             <select 
               className="w-full bg-[#fbfbfb] border border-gray-100 py-3 px-4 rounded-sm outline-none font-bold text-xs text-gray-700 appearance-none cursor-pointer hover:bg-gray-50 transition-colors"
               value={filter}
               onChange={(e) => setFilter(e.target.value as HistoryType)}
-              title="Filtrar por tipo"
+              title={t('history.filter_cat')}
             >
-              <option value="">Apresentar Tudo (Visão Geral)</option>
-              <option value="recargas">Recargas de Saldo</option>
-              <option value="retiradas">Levantamentos</option>
-              <option value="renda_diaria">Rendimentos Diários</option>
-              <option value="bonus_equipe">Comissões & Bónus de Equipe</option>
-              <option value="cupom">Resgate de Cupons</option>
+              <option value="">{t('history.filter_all')}</option>
+              <option value="recargas">{t('history.filter_recharge')}</option>
+              <option value="retiradas">{t('history.filter_withdraw')}</option>
+              <option value="renda_diaria">{t('history.filter_income')}</option>
+              <option value="bonus_equipe">{t('history.filter_team')}</option>
+              <option value="cupom">{t('history.filter_coupon')}</option>
             </select>
             <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ms-blue pointer-events-none" />
           </div>
@@ -129,17 +131,17 @@ export default function GeneralHistory() {
             <div className="flex items-center space-x-2">
               <LayoutGrid size={14} className="text-ms-blue" />
               <h3 className="text-[10px] font-bold text-gray-900 uppercase tracking-widest">
-                {filter ? `Filtrado: ${filter}` : 'Lista Completa'}
+                {filter ? `${t('history.filtered')}: ${filter}` : t('history.full_list')}
               </h3>
             </div>
-            <span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Tempo Real</span>
+            <span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">{t('history.real_time')}</span>
           </div>
 
           <div className="space-y-3">
             {loading ? (
               <div className="bg-white border border-[#e1e1e1] p-12 flex flex-col items-center justify-center rounded-sm">
                 <div className="w-6 h-6 border-2 border-ms-blue border-t-transparent rounded-full animate-spin mb-4" />
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">Sincronizando Atividades...</p>
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">{t('history.syncing')}</p>
               </div>
             ) : filteredData.length > 0 ? (
               filteredData.map((item, idx) => {
@@ -187,7 +189,7 @@ export default function GeneralHistory() {
               <div className="bg-white border border-dashed border-gray-200 p-16 flex flex-col items-center justify-center rounded-sm text-center">
                 <History size={32} className="text-gray-100 mb-4" />
                 <p className="text-xs font-bold text-gray-400 uppercase tracking-widest leading-relaxed">
-                  Nenhuma atividade registrada<br/>nesta categoria.
+                  {t('history.empty_cat')}
                 </p>
               </div>
             )}

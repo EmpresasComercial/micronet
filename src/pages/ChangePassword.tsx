@@ -5,10 +5,12 @@ import { motion } from 'motion/react';
 import { useToast } from '../components/Toast';
 import { Button } from '../components/Button';
 import { supabase } from '../lib/supabase';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export default function ChangePassword() {
   const navigate = useNavigate();
   const { showToast } = useToast();
+  const { t } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPass, setShowPass] = useState(false);
   
@@ -25,14 +27,13 @@ export default function ChangePassword() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (formData.newPassword.length < 6) {
-      showToast('A nova senha deve ter pelo menos 6 caracteres.', 'error');
+      showToast(t('auth.password_error_length'), 'error');
       return;
     }
 
     if (formData.newPassword !== formData.confirmPassword) {
-      showToast('As novas senhas não coincidem.', 'error');
+      showToast(t('password.match_error'), 'error');
       return;
     }
 
@@ -45,10 +46,10 @@ export default function ChangePassword() {
 
       if (error) throw error;
 
-      showToast('Senha atualizada com sucesso!', 'success');
+      showToast(t('password.success'), 'success');
       setTimeout(() => navigate('/configuracoes-conta'), 1500);
     } catch (err: any) {
-      showToast(err.message || 'Erro ao atualizar senha.', 'error');
+      showToast(err.message || t('common.error'), 'error');
     } finally {
       setIsSubmitting(false);
     }
@@ -60,18 +61,18 @@ export default function ChangePassword() {
         <button 
           onClick={() => navigate('/configuracoes-conta')} 
           className="p-2 -ml-2 text-[#616161]"
-          aria-label="Voltar para configurações"
-          title="Voltar"
+          aria-label={t('common.back')}
+          title={t('common.back')}
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
-        <h1 className="text-sm font-semibold ml-2 text-[#2b2b2b]">Segurança da Conta</h1>
+        <h1 className="text-sm font-semibold ml-2 text-[#2b2b2b]">{t('password.security')}</h1>
       </header>
 
       <div className="p-6 max-w-lg mx-auto">
         <div className="mb-10 text-left">
-          <h2 className="text-3xl font-light text-[#2b2b2b] mb-3">Alterar Senha</h2>
-          <p className="text-sm text-[#616161]">Recomendamos o uso de letras e números para maior segurança.</p>
+          <h2 className="text-3xl font-light text-[#2b2b2b] mb-3">{t('password.title')}</h2>
+          <p className="text-sm text-[#616161]">{t('password.recommendation')}</p>
         </div>
 
         <motion.div 
@@ -82,13 +83,13 @@ export default function ChangePassword() {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-4">
               <div>
-                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Senha Atual</label>
+                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">{t('password.old_label')}</label>
                 <div className="relative">
                   <input
                     name="currentPassword"
                     type={showPass ? "text" : "password"}
                     className="input-field pr-10"
-                    placeholder="Introduza a senha atual"
+                    placeholder={t('password.old_placeholder')}
                     value={formData.currentPassword}
                     onChange={handleChange}
                   />
@@ -97,13 +98,13 @@ export default function ChangePassword() {
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Nova Senha</label>
+                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">{t('password.new_label')}</label>
                 <div className="relative">
                   <input
                     name="newPassword"
                     type={showPass ? "text" : "password"}
                     className="input-field pr-10"
-                    placeholder="Mínimo 6 caracteres"
+                    placeholder={t('password.new_placeholder')}
                     value={formData.newPassword}
                     onChange={handleChange}
                   />
@@ -120,12 +121,12 @@ export default function ChangePassword() {
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Confirmar Nova Senha</label>
+                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">{t('password.confirm_label')}</label>
                 <input
                   name="confirmPassword"
                   type={showPass ? "text" : "password"}
                   className="input-field"
-                  placeholder="Repita a nova senha"
+                  placeholder={t('password.confirm_placeholder')}
                   value={formData.confirmPassword}
                   onChange={handleChange}
                 />
@@ -134,11 +135,11 @@ export default function ChangePassword() {
 
             <div className="pt-4 space-y-4">
               <Button type="submit" className="w-full h-[45px]" isLoading={isSubmitting}>
-                Atualizar Senha
+                {t('password.btn_update')}
               </Button>
               <div className="flex items-center justify-center space-x-2 text-[10px] text-gray-400 font-bold uppercase tracking-widest">
                 <ShieldCheck size={14} className="text-ms-blue" />
-                <span>Proteção Criptografada</span>
+                <span>{t('password.protection')}</span>
               </div>
             </div>
           </form>

@@ -5,9 +5,11 @@ import { motion } from 'motion/react';
 import { supabase } from '../lib/supabase';
 import { cn } from '../lib/utils';
 import { EmptyState } from '../components/EmptyState';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export default function WithdrawalHistory() {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [history, setHistory] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -61,20 +63,20 @@ export default function WithdrawalHistory() {
   return (
     <div className="min-h-screen bg-[#f2f2f2] pb-20">
       <header className="bg-white p-4 flex items-center border-b border-[#e1e1e1]">
-        <button onClick={() => navigate('/retirada')} className="p-2 -ml-2 text-[#616161]" title="Voltar">
+        <button onClick={() => navigate('/retirada')} className="p-2 -ml-2 text-[#616161]" title={t('common.back')}>
           <ChevronLeft className="w-6 h-6" />
         </button>
-        <h1 className="text-sm font-semibold ml-2 text-[#2b2b2b]">Registro de retirada</h1>
+        <h1 className="text-sm font-semibold ml-2 text-[#2b2b2b]">{t('withdraw.history_title')}</h1>
       </header>
 
       <div className="p-6 max-w-lg mx-auto space-y-6">
         <div className="mb-8">
-          <h2 className="text-2xl font-light text-[#2b2b2b]">Histórico de saques</h2>
-          <p className="text-xs text-[#616161] mt-1">Visualize o status e detalhes das suas solicitações de retirada.</p>
+          <h2 className="text-2xl font-light text-[#2b2b2b]">{t('withdraw.history_title')}</h2>
+          <p className="text-xs text-[#616161] mt-1">{t('withdraw.history_desc')}</p>
         </div>
 
         {loading ? (
-          <div className="text-center py-20 text-gray-400 italic">Carregando seus registros...</div>
+          <div className="text-center py-20 text-gray-400 italic">{t('common.loading')}</div>
         ) : history.map((item) => (
           <motion.div
             key={item.id}
@@ -99,7 +101,7 @@ export default function WithdrawalHistory() {
                     item.status === 'pendente' ? "text-[#a66d00]" : 
                     item.status === 'sucesso' ? "text-green-600" : "text-red-500"
                   )}>
-                    {item.status === 'pendente' ? 'Em Análise' : item.status === 'sucesso' ? 'Processado' : 'Rejeitado'}
+                    {item.status === 'pendente' ? t('history.pending') : item.status === 'sucesso' ? t('history.completed') : t('history.failed')}
                   </p>
                 </div>
               </div>
@@ -108,17 +110,17 @@ export default function WithdrawalHistory() {
                 <div className="grid grid-cols-1 gap-y-3">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">Valor Bruto</p>
+                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">{t('withdraw.gross_amount')}</p>
                       <p className="text-sm text-[#2b2b2b]">{Number(item.valor_solicitado).toLocaleString()} Kz</p>
                     </div>
                     <div>
-                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">Valor Líquido</p>
+                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">{t('withdraw.net_amount')}</p>
                       <p className="text-sm font-bold text-ms-blue">{Number(item.valor_receber).toLocaleString()} Kz</p>
                     </div>
                   </div>
 
                   <div>
-                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">Data da Solicitação</p>
+                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">{t('withdraw.req_date')}</p>
                     <p className="text-sm text-[#2b2b2b]">{formatFullDate(item.created_at)}</p>
                   </div>
 
@@ -126,8 +128,8 @@ export default function WithdrawalHistory() {
                     <div className="bg-[#fff8f0] p-3 rounded-sm border border-[#ffebcc] flex items-start space-x-3">
                       <Clock size={16} className="text-[#a66d00] mt-0.5 shrink-0" />
                       <div>
-                        <p className="text-[10px] font-bold text-[#a66d00] uppercase tracking-widest leading-none mb-1">Estimativa de Pagamento</p>
-                        <p className="text-xs text-[#a66d00] font-medium">Até {formatFullDate(calculateEstimatePayment(item.created_at)).split(',')[1]}</p>
+                        <p className="text-[10px] font-bold text-[#a66d00] uppercase tracking-widest leading-none mb-1">{t('withdraw.est_payment')}</p>
+                        <p className="text-xs text-[#a66d00] font-medium">{t('withdraw.until')} {formatFullDate(calculateEstimatePayment(item.created_at)).split(',')[1]}</p>
                       </div>
                     </div>
                   )}
@@ -145,7 +147,7 @@ export default function WithdrawalHistory() {
         {history.length === 0 && !loading && (
           <EmptyState 
             message="Nenhum registro encontrado"
-            description="Você ainda não realizou solicitações de retirada nesta conta."
+            description={t('withdraw.empty')}
           />
         )}
       </div>
