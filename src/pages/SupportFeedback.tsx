@@ -35,7 +35,7 @@ export default function SupportFeedback() {
     
     try {
       const { error } = await supabase
-        .from('support_feedback_mcpn')
+        .from('suporte_feedback_mcpn')
         .insert({
           user_id: session.user.id,
           mensagem: feedback
