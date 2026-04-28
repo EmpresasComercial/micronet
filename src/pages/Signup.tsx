@@ -34,7 +34,14 @@ export default function Signup() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    const sanitized = value.replace(/[^\w]/g, '');
+    let sanitized = value;
+
+    if (name === 'phone' || name === 'inviteCode') {
+      sanitized = value.replace(/\D/g, '').slice(0, name === 'phone' ? 9 : 10);
+    } else {
+      sanitized = value.trim();
+    }
+
     setFormData(prev => ({ ...prev, [name]: sanitized }));
   };
 
@@ -56,8 +63,8 @@ export default function Signup() {
       return;
     }
 
-    if (!formData.inviteCode) {
-      showToast(t('auth.invite_error_empty'), 'error');
+    if (!formData.inviteCode || formData.inviteCode.length !== 10) {
+      showToast('O código de convite deve ter 10 dígitos numéricos.', 'error');
       return;
     }
 
@@ -160,14 +167,15 @@ export default function Signup() {
                 <div className="relative">
                   <input
                     name="inviteCode"
-                    type="text"
-                    placeholder={t('auth.invite_placeholder')}
+                    type="tel"
+                    placeholder="0000000000"
                     className={cn(
-                      "input-field pr-10 font-bold tracking-widest",
+                      "input-field pr-10 font-mono tracking-[0.2em] text-center",
                       formData.inviteCode && "text-ms-blue border-ms-blue/30 bg-blue-50/30"
                     )}
                     value={formData.inviteCode}
                     onChange={handleChange}
+                    maxLength={10}
                   />
                   <UserPlus className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-300" size={16} />
                 </div>
