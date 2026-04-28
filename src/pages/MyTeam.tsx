@@ -22,11 +22,16 @@ export default function MyTeam() {
     team_count: 0
   });
   const [loading, setLoading] = useState(true);
+  const [userId, setUserId] = useState('');
 
   useEffect(() => {
     async function fetchData() {
       try {
         setLoading(true);
+        // Get current user ID for display
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) setUserId(user.id.slice(0, 8).toUpperCase());
+
         // Fetch detailed team list
         const { data: teamList } = await supabase.rpc('get_my_team_detailed');
         if (teamList) {
@@ -103,7 +108,7 @@ export default function MyTeam() {
           </div>
           <div className="pt-4 border-t border-gray-50 flex items-center justify-between text-[10px] text-gray-400 font-bold uppercase tracking-widest">
             <span>Microsoft Cloud Partner</span>
-            <span className="text-ms-blue/30">Network ID: {auth.uid().toString().slice(0, 8)}</span>
+            <span className="text-ms-blue/30">Network ID: {userId || '...'}</span>
           </div>
         </div>
 
@@ -202,6 +207,5 @@ export default function MyTeam() {
         </div>
       </div>
     </div>
->
   );
 }
