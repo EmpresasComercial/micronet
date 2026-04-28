@@ -13,6 +13,7 @@ export default function Invite() {
   const { t } = useLanguage();
   const [activeLevel, setActiveLevel] = useState<'level1' | 'level2' | 'level3'>('level1');
   const [teamData, setTeamData] = useState<any>({ level1: [], level2: [], level3: [] });
+  const [stats, setStats] = useState({ total_comissao_equipe: 0, team_count: 0 });
   const [inviteCode, setInviteCode] = useState<string>('---');
   const [baseUrl, setBaseUrl] = useState<string>(window.location.origin);
   const [loading, setLoading] = useState(true);
@@ -36,6 +37,15 @@ export default function Invite() {
             level1: teamList.filter((m: any) => m.nivel === 1),
             level2: teamList.filter((m: any) => m.nivel === 2),
             level3: teamList.filter((m: any) => m.nivel === 3),
+          });
+        }
+
+        // Fetch team stats
+        const { data: accData } = await supabase.rpc('get_my_account_data');
+        if (accData && accData.length > 0) {
+          setStats({
+            total_comissao_equipe: Number(accData[0].total_comissao_equipe) || 0,
+            team_count: teamList?.length || 0
           });
         }
 
@@ -67,7 +77,12 @@ export default function Invite() {
     <div className="min-h-screen bg-[#f7f8fa] pb-10">
       {/* Header */}
       <header className="bg-white px-4 h-14 flex items-center justify-between sticky top-0 z-50">
-        <button onClick={() => navigate(-1)} className="p-2 -ml-2 text-gray-800">
+        <button 
+          onClick={() => navigate(-1)} 
+          aria-label={t('common.back') || 'Voltar'}
+          title={t('common.back') || 'Voltar'}
+          className="p-2 -ml-2 text-gray-800"
+        >
           <ChevronLeft className="w-6 h-6" />
         </button>
         <h1 className="text-lg font-bold text-gray-900">Convite</h1>
@@ -94,6 +109,16 @@ export default function Invite() {
 
         {/* Team Section */}
         <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+          <div className="px-6 py-4 border-b border-gray-50 flex items-center justify-between">
+            <div className="flex flex-col">
+              <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Total Equipe</span>
+              <span className="text-xl font-bold text-gray-900">{loading ? '...' : stats.team_count}</span>
+            </div>
+            <div className="text-right flex flex-col">
+              <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Comissão Acumulada</span>
+              <span className="text-sm font-black text-[#f04a43]">{loading ? '...' : stats.total_comissao_equipe.toLocaleString()} Kz</span>
+            </div>
+          </div>
           <div className="flex border-b border-gray-100">
             {['level1', 'level2', 'level3'].map((lvl) => (
               <button

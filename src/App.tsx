@@ -31,7 +31,6 @@ import RechargeHistoryUSDT from './pages/RechargeHistoryUSDT';
 import GeneralHistory from './pages/GeneralHistory';
 import RedeemCoupon from './pages/RedeemCoupon';
 import PurchaseHistory from './pages/PurchaseHistory';
-import MyTeam from './pages/MyTeam';
 import Operations from './pages/Operations';
 import RechargeUSDT from './pages/RechargeUSDT';
 import ProductDetails from './pages/ProductDetails';
@@ -74,7 +73,6 @@ export default function App() {
                 <Route path="historico-atividades" element={<GeneralHistory />} />
                 <Route path="resgate" element={<RedeemCoupon />} />
                 <Route path="minhas-compras" element={<PurchaseHistory />} />
-                <Route path="equipe" element={<MyTeam />} />
                 <Route path="operacoes" element={<Operations />} />
                 <Route path="recharge-usdt" element={<RechargeUSDT />} />
                 <Route path="sobre-microsoft" element={<AboutMicrosoft />} />
