@@ -90,11 +90,11 @@ export default function IdentityAuth() {
     e.preventDefault();
     
     if (!formData.fullName || formData.fullName.length < 5) {
-      showToast('Por favor, insira o nome completo conforme o seu BI.', 'error');
+      showToast(t('identity.error_name'), 'error');
       return;
     }
     if (formData.idNumber.length !== 14) {
-      showToast('O número do BI deve ter exatamente 14 caracteres.', 'error');
+      showToast(t('identity.error_id_length'), 'error');
       return;
     }
     if (!formData.province) {
@@ -194,7 +194,7 @@ export default function IdentityAuth() {
                   <input
                     type="text"
                     className="input-field pr-10"
-                    placeholder="Introduza seu nome completo"
+                    placeholder={t('identity.placeholder_name')}
                     value={formData.fullName}
                     onChange={(e) => setFormData({...formData, fullName: e.target.value})}
                   />
@@ -208,13 +208,13 @@ export default function IdentityAuth() {
                   <input
                     type="text"
                     className="input-field pr-10 font-mono tracking-wider"
-                    placeholder="Ex: 004123456LA048"
+                    placeholder={t('identity.placeholder_id')}
                     value={formData.idNumber}
                     onChange={handleIdChange}
                   />
                   <CreditCard className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                 </div>
-                <p className="text-[9px] text-gray-400 mt-1 font-bold">Dígitos: {formData.idNumber.length} / 14</p>
+                <p className="text-[9px] text-gray-400 mt-1 font-bold">{t('identity.digits')}: {formData.idNumber.length} / 14</p>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
@@ -224,8 +224,8 @@ export default function IdentityAuth() {
                   className="hidden" 
                   accept="image/*"
                   onChange={(e) => handleFileChange(e, 'frente')}
-                  title="Foto da Frente do BI"
-                  aria-label="Carregar foto da frente do BI"
+                  title={t('identity.front')}
+                  aria-label={t('identity.aria_front')}
                 />
                 <input 
                   type="file" 
@@ -233,8 +233,8 @@ export default function IdentityAuth() {
                   className="hidden" 
                   accept="image/*"
                   onChange={(e) => handleFileChange(e, 'verso')}
-                  title="Foto do Verso do BI"
-                  aria-label="Carregar foto do verso do BI"
+                  title={t('identity.back')}
+                  aria-label={t('identity.aria_back')}
                 />
                 
                 <div 

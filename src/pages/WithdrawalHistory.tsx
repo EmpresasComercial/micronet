@@ -71,7 +71,7 @@ export default function WithdrawalHistory() {
           >
             <ChevronLeft className="w-6 h-6" />
           </button>
-          <h1 className="text-xl font-black text-gray-900 tracking-tight ml-1">Histórico de Saques</h1>
+          <h1 className="text-xl font-black text-gray-900 tracking-tight ml-1">{t('withdraw.history_title')}</h1>
         </div>
         <div className="px-4">
            <ReceiptText size={18} className="text-ms-blue" />
@@ -80,7 +80,7 @@ export default function WithdrawalHistory() {
 
       <div className="px-[4px] py-4 space-y-[4px]">
         {loading ? (
-          <div className="text-center py-20 text-gray-400 italic font-bold uppercase tracking-widest">Carregando histórico...</div>
+          <div className="text-center py-20 text-gray-400 italic font-bold uppercase tracking-widest">{t('common.loading')}</div>
         ) : history.map((item) => (
           <motion.div
             key={item.id}
@@ -94,8 +94,8 @@ export default function WithdrawalHistory() {
                   <Banknote size={20} className="text-gray-400" />
                 </div>
                 <div>
-                  <p className="text-sm font-black text-gray-900 tracking-tight">{item.banco_nome || 'Conta Bancária'}</p>
-                  <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Via IBAN</p>
+                  <p className="text-sm font-black text-gray-900 tracking-tight">{item.banco_nome || t('withdraw.bank_acc')}</p>
+                  <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">{t('withdraw.via_iban')}</p>
                 </div>
               </div>
               <div className="text-right">
@@ -111,21 +111,21 @@ export default function WithdrawalHistory() {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-[10px] font-black text-gray-400 tracking-widest uppercase mb-1">Valor Bruto</p>
+                <p className="text-[10px] font-black text-gray-400 tracking-widest uppercase mb-1">{t('withdraw.gross_amount')}</p>
                 <p className="text-sm font-bold text-gray-700">{Number(item.valor_solicitado).toLocaleString()} Kz</p>
               </div>
               <div className="text-right">
-                <p className="text-[10px] font-black text-gray-400 tracking-widest uppercase mb-1">Valor Líquido</p>
+                <p className="text-[10px] font-black text-gray-400 tracking-widest uppercase mb-1">{t('withdraw.net_amount')}</p>
                 <p className="text-sm font-black text-ms-blue">{Number(item.valor_receber).toLocaleString()} Kz</p>
               </div>
             </div>
 
             <div className="flex justify-between items-center text-[10px] pt-2">
-               <span className="text-gray-400 font-medium">Solicitado em {formatFullDate(item.created_at)}</span>
+               <span className="text-gray-400 font-medium">{t('withdraw.requested_at')} {formatFullDate(item.created_at)}</span>
                {item.status === 'pendente' && (
                  <div className="flex items-center text-orange-500 font-bold">
                    <Clock size={12} className="mr-1" />
-                   <span>Análise 24h</span>
+                   <span>{t('history.pending')}</span>
                  </div>
                )}
             </div>
@@ -135,7 +135,7 @@ export default function WithdrawalHistory() {
         {history.length === 0 && !loading && (
           <div className="bg-white p-20 text-center border border-gray-100">
              <ReceiptText size={48} className="mx-auto text-gray-200 mb-4" />
-             <p className="text-xs text-gray-400 font-bold uppercase tracking-widest">Nenhum registro encontrado</p>
+             <p className="text-xs text-gray-400 font-bold uppercase tracking-widest">{t('withdraw.empty')}</p>
           </div>
         )}
       </div>
