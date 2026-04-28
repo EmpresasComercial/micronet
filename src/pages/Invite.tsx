@@ -5,7 +5,7 @@ import { Button } from '../components/Button';
 import { useToast } from '../components/Toast';
 import { useLanguage } from '../contexts/LanguageContext';
 import { supabase } from '../lib/supabase';
-import { cn } from '@/src/lib/utils';
+import { cn } from '../lib/utils';
 
 export default function Invite() {
   const navigate = useNavigate();
@@ -99,7 +99,7 @@ export default function Invite() {
         {/* Top Invite Card */}
         <div className="bg-white p-8 border border-gray-100 text-center space-y-8">
           <div className="flex flex-col items-center justify-center space-y-1">
-            <span className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Seu Código</span>
+            <span className="text-[10px] font-black text-gray-400 tracking-[0.2em]">Seu Código</span>
             <span className="text-5xl font-black text-[#f04a43] tracking-tighter">
               {loading ? '...' : inviteCode}
             </span>
@@ -107,7 +107,7 @@ export default function Invite() {
 
           <button
             onClick={() => copyToClipboard(inviteLink)}
-            className="w-full h-14 bg-[#f04a43] text-white text-xs font-black uppercase tracking-[0.2em] transition-transform active:scale-[0.98] shadow-lg shadow-[#f04a43]/20"
+            className="w-full h-14 bg-[#f04a43] text-white text-xs font-black tracking-[0.2em] transition-transform active:scale-[0.98] shadow-lg shadow-[#f04a43]/20"
           >
             Copiar Link de Convite
           </button>
@@ -117,11 +117,11 @@ export default function Invite() {
         <div className="bg-white border border-gray-100">
           <div className="px-6 py-5 border-b border-gray-50 flex items-center justify-between">
             <div className="flex flex-col">
-              <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Equipe Total</span>
+              <span className="text-[10px] font-black text-gray-400 tracking-widest">Equipe Total</span>
               <span className="text-2xl font-black text-gray-900 tracking-tight">{loading ? '...' : stats.team_count}</span>
             </div>
             <div className="text-right flex flex-col">
-              <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Comissões</span>
+              <span className="text-[10px] font-black text-gray-400 tracking-widest">Comissões</span>
               <span className="text-base font-black text-[#f04a43]">{loading ? '...' : stats.total_comissao_equipe.toLocaleString()} Kz</span>
             </div>
           </div>
@@ -132,7 +132,7 @@ export default function Invite() {
                 key={lvl}
                 onClick={() => setActiveLevel(lvl as any)}
                 className={cn(
-                  "flex-1 py-4 text-[10px] font-black uppercase tracking-tighter transition-all relative",
+                  "flex-1 py-4 text-[10px] font-black tracking-tighter transition-all relative",
                   activeLevel === lvl ? "text-[#f04a43] bg-white" : "text-gray-400"
                 )}
               >
@@ -155,7 +155,7 @@ export default function Invite() {
                       </div>
                       <div className="flex flex-col">
                         <span className="text-sm font-bold text-gray-900 tracking-tight">{maskPhone(person.telefone)}</span>
-                        <span className="text-[9px] font-bold text-gray-400 uppercase">Membro desde {new Date(person.created_at).toLocaleDateString()}</span>
+                        <span className="text-[9px] font-bold text-gray-400">Membro desde {new Date(person.created_at).toLocaleDateString()}</span>
                       </div>
                     </div>
                     <div className="text-right">
@@ -164,7 +164,7 @@ export default function Invite() {
                       </span>
                       <div className="flex items-center justify-end space-x-1 mt-0.5">
                          <div className={cn("w-1.5 h-1.5 rounded-full", Number(person.total_investido) > 0 ? "bg-green-500" : "bg-gray-300")} />
-                         <span className="text-[8px] font-black uppercase text-gray-400">{Number(person.total_investido) > 0 ? 'Ativo' : 'Inativo'}</span>
+                         <span className="text-[8px] font-black text-gray-400">{Number(person.total_investido) > 0 ? 'Ativo' : 'Inativo'}</span>
                       </div>
                     </div>
                   </div>
@@ -175,7 +175,7 @@ export default function Invite() {
                 <div className="w-32 h-32 mx-auto opacity-10">
                    <Users size={128} className="text-gray-900" />
                 </div>
-                <p className="text-[10px] font-black text-gray-300 uppercase tracking-widest italic">Sem dados registrados no momento</p>
+                <p className="text-[10px] font-black text-gray-300 tracking-widest italic">Sem dados registrados no momento</p>
               </div>
             )}
           </div>

@@ -54,7 +54,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index, onBuy 
             <h3 className="text-[15px] font-bold text-gray-900 truncate">
               {t(`${product.key}.name`)}
             </h3>
-            <p className="text-[11px] text-gray-400 uppercase font-bold tracking-tight mb-1">
+            <p className="text-[11px] text-gray-400 font-bold tracking-tight mb-1">
               {t(`${product.key}.version`)}
             </p>
           </div>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { ChevronLeft, ChevronDown, ChevronUp, HelpCircle, ArrowRight, Home, BookOpen, ExternalLink } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { cn } from '@/src/lib/utils';
+import { cn } from '../lib/utils';
 import { useToast } from '../components/Toast';
 import { useLanguage } from '../contexts/LanguageContext';
 

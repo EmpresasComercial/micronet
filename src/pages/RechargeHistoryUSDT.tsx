@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, Filter, Search, MoreHorizontal, CheckCircle2, Clock, AlertCircle, Coins } from 'lucide-react';
 import { motion } from 'motion/react';
-import { cn } from '@/src/lib/utils';
+import { cn } from '../lib/utils';
 import { supabase } from '../lib/supabase';
 import { useEffect, useState } from 'react';
 

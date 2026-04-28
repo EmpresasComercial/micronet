@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { AlertCircle, CheckCircle2, Info, X } from 'lucide-react';
-import { cn } from '@/src/lib/utils';
+import { cn } from '../lib/utils';
+import { useLanguage } from '../contexts/LanguageContext';
 
 type ToastType = 'success' | 'error' | 'info' | 'warning';
 
@@ -12,6 +13,7 @@ interface ToastContextType {
 const ToastContext = createContext<ToastContextType | undefined>(undefined);
 
 export function ToastProvider({ children }: { children: React.ReactNode }) {
+  const { t } = useLanguage();
   const [toast, setToast] = useState<{ message: string; type: ToastType } | null>(null);
 
   const showToast = useCallback((message: string, type: ToastType = 'info') => {
@@ -56,6 +58,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
               <button 
                 onClick={() => setToast(null)}
                 className="text-gray-400 hover:text-gray-600 transition-colors"
+                title={t('common.close')}
               >
                 <X size={16} />
               </button>

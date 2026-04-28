@@ -26,7 +26,7 @@
   }
   
   .product-badge {
-    @apply bg-[#e6e6e6] px-2 py-0.5 text-[11px] rounded-[2px] font-semibold text-[#1b1b1b] uppercase;
+    @apply bg-[#e6e6e6] px-2 py-0.5 text-[11px] rounded-[2px] font-semibold text-[#1b1b1b];
   }
 }
 

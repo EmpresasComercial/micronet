@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, Cpu, Activity, Zap, CheckCircle2 } from 'lucide-react';
 import { motion } from 'motion/react';
-import { cn } from '@/src/lib/utils';
+import { cn } from '../lib/utils';
 import { Button } from '../components/Button';
 import { useToast } from '../components/Toast';
 import { useLanguage } from '../contexts/LanguageContext';

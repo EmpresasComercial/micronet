@@ -62,23 +62,32 @@ export default function Withdraw() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    const withdrawAmount = parseInt(amount);
+
+    // Time Check
+    const now = new Date();
+    const hour = now.getHours();
+    if (hour < 10 || hour >= 16) {
+      showToast(t('withdraw.time_error'), 'error');
+      return;
+    }
+
     if (!isVerified) {
-      showToast('Sua conta precisa estar verificada para realizar saques.', 'error');
+      showToast(t('withdraw.verify_required'), 'error');
+      navigate('/autenticacao');
       return;
     }
 
     if (!hasBank) {
-      showToast('Por favor, cadastre uma conta bancária primeiro.', 'error');
+      showToast(t('withdraw.bank_required'), 'error');
       navigate('/adicionar-banco');
       return;
     }
 
     if (!password) {
-      showToast('Por favor, insira sua senha de segurança.', 'error');
+      showToast(t('auth.password_error_empty'), 'error');
       return;
     }
-
-    const withdrawAmount = parseInt(amount);
 
     if (!amount || withdrawAmount < 3000) {
       showToast('O valor mínimo de saque é 3.000 Kz.', 'error');
@@ -93,6 +102,21 @@ export default function Withdraw() {
     setIsSubmitting(true);
     
     try {
+      // Verificar a senha de login re-autenticando
+      const { data: userData } = await supabase.auth.getUser();
+      if (!userData.user?.email) throw new Error('Sessão expirada.');
+
+      const { error: authError } = await supabase.auth.signInWithPassword({
+        email: userData.user.email,
+        password: password,
+      });
+
+      if (authError) {
+        showToast(t('auth.password_error_wrong'), 'error');
+        setIsSubmitting(false);
+        return;
+      }
+
       const { data, error } = await supabase.rpc('process_withdrawal_request', {
         p_amount: withdrawAmount,
         p_bank_id: bankId,
@@ -115,92 +139,83 @@ export default function Withdraw() {
   };
 
   if (isLoading) {
-    return <div className="min-h-screen bg-[#f4f4f4] flex items-center justify-center text-gray-400">Carregando...</div>;
+    return <div className="min-h-screen bg-[#f4f4f4] flex items-center justify-center text-gray-400 font-bold italic uppercase tracking-widest">{t('common.loading')}</div>;
   }
 
   return (
-    <div className="min-h-screen bg-[#f4f4f4]">
-      <header className="bg-white p-4 flex items-center justify-between border-b border-gray-200 sticky top-0 z-50">
+    <div className="min-h-screen bg-[#f8f9fa]">
+      <header className="bg-white px-[4px] h-14 flex items-center justify-between sticky top-0 z-50 border-b border-gray-100">
         <div className="flex items-center">
           <button 
             onClick={() => navigate('/perfil')} 
-            className="p-1 text-gray-600 hover:text-ms-blue transition-colors"
-            title="Voltar ao perfil"
-            aria-label="Voltar ao perfil"
+            className="p-3 text-gray-800"
+            title="Voltar"
           >
             <ChevronLeft className="w-6 h-6" />
           </button>
-          <h1 className="text-sm font-bold ml-4 text-gray-800">{t('withdraw.title')}</h1>
+          <h1 className="text-xl font-black text-gray-900 tracking-tight ml-1">Retirada</h1>
         </div>
         <button 
           onClick={() => navigate('/registro-retirada')} 
-          className="p-1 text-gray-400 hover:text-ms-blue"
-          title="Histórico de retiradas"
-          aria-label="Histórico de retiradas"
+          className="p-3 text-gray-400"
+          title="Histórico"
         >
           <ReceiptText className="w-6 h-6" />
         </button>
       </header>
 
-      <main className="p-6 flex flex-col items-center">
-        <motion.div 
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="w-full max-w-md bg-white p-8 shadow-sm border border-gray-100 rounded-sm"
-        >
-          {/* Logo Microsoft */}
-          <div className="flex mb-8">
-            <img 
-              src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" 
-              alt="Microsoft" 
-              className="h-5"
-              referrerPolicy="no-referrer"
-            />
-          </div>
+      <main className="px-[4px] py-4 space-y-[4px]">
+        {/* Balance Card */}
+        <div className="bg-white p-6 border border-gray-100 flex items-center justify-between">
+           <div className="flex flex-col">
+              <span className="text-[10px] font-black text-gray-400 tracking-widest uppercase mb-1">{t('profile.balance')}</span>
+              <span className="text-2xl font-black text-ms-blue tracking-tight">{formatCurrency(balance, 'KZ')}</span>
+           </div>
+           <div className="w-12 h-12 bg-blue-50 flex items-center justify-center">
+              <Landmark className="text-ms-blue" size={24} />
+           </div>
+        </div>
 
+        <div className="bg-white p-8 border border-gray-100 space-y-8">
           <form onSubmit={handleSubmit} className="space-y-8">
-            {/* Valor */}
+            {/* Hour Restriction Info */}
+            <div className="bg-orange-50/50 border border-orange-100 p-4 flex items-start space-x-3">
+              <Info size={16} className="text-orange-500 mt-0.5 shrink-0" />
+              <div>
+                <p className="text-[10px] font-black text-orange-600 uppercase tracking-widest leading-none mb-1">Horário de Saque</p>
+                <p className="text-[11px] text-orange-600/70 font-medium leading-relaxed">Os saques são processados diariamente das 10h às 16h (Horário de Luanda).</p>
+              </div>
+            </div>
+
             <div>
-              <label className="block text-[10px] font-black text-gray-500 uppercase tracking-wider mb-2">{t('withdraw.amount')}</label>
+              <label className="block text-[10px] font-black text-gray-400 tracking-widest mb-1">{t('withdraw.amount')}</label>
               <input 
                 type="text" 
                 placeholder={t('withdraw.amount_placeholder')}
-                className="w-full py-3 text-sm border-b border-gray-200 focus:border-ms-blue outline-none transition-colors placeholder:text-gray-300"
+                className="w-full py-3 text-sm border-b border-gray-200 focus:border-ms-blue outline-none transition-colors placeholder:text-gray-300 font-bold"
                 value={amount}
                 onChange={handleAmountChange}
               />
             </div>
 
-            {/* Conta Bancária */}
             <div onClick={() => !hasBank && navigate('/adicionar-banco')} className="cursor-pointer">
-              <label className="block text-[10px] font-black text-gray-500 uppercase tracking-wider mb-2">{t('withdraw.bank_acc')}</label>
-              <div className="relative group">
-                <select 
-                  className="w-full py-3 text-sm border-b border-gray-200 focus:border-ms-blue outline-none bg-transparent appearance-none cursor-pointer"
-                  disabled={!hasBank}
-                  defaultValue={hasBank ? "default" : "none"}
-                  title="Selecionar conta bancária"
-                  aria-label="Selecionar conta bancária"
-                >
-                  {hasBank ? (
-                    <option value="default">{bankName}</option>
-                  ) : (
-                    <option value="none">Vincular conta bancária</option>
-                  )}
-                </select>
-                <div className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none text-gray-300">
+              <label className="block text-[10px] font-black text-gray-400 tracking-widest mb-1">{t('withdraw.bank_acc')}</label>
+              <div className="relative group border-b border-gray-200">
+                <div className="py-3 text-sm font-bold text-gray-700">
+                   {hasBank ? bankName : t('bank.bind')}
+                </div>
+                <div className="absolute right-0 top-1/2 -translate-y-1/2 text-gray-300">
                   <ChevronLeft className="w-4 h-4 -rotate-90" />
                 </div>
               </div>
             </div>
 
-            {/* Senha */}
             <div>
-              <label className="block text-[10px] font-black text-gray-500 uppercase tracking-wider mb-2">{t('withdraw.password')}</label>
+              <label className="block text-[10px] font-black text-gray-400 tracking-widest mb-1">{t('withdraw.password')}</label>
               <div className="relative">
                 <input 
                   type={showPassword ? "text" : "password"} 
-                  placeholder="Introduzir senha de login"
+                  placeholder={t('withdraw.security_pass_placeholder')}
                   className="w-full py-3 text-sm border-b border-gray-200 focus:border-ms-blue outline-none transition-colors placeholder:text-gray-300"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -208,32 +223,29 @@ export default function Withdraw() {
                 <button 
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-0 top-1/2 -translate-y-1/2 text-gray-300 hover:text-gray-600"
-                  title={showPassword ? "Ocultar senha" : "Mostrar senha"}
-                  aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                  className="absolute right-0 top-1/2 -translate-y-1/2 text-gray-300"
                 >
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
             </div>
 
-            {/* Resumo */}
-            <div className="bg-[#f8f8f8] p-4 rounded-sm space-y-3">
-              <div className="flex justify-between items-center text-[11px]">
-                <span className="text-gray-400 font-medium tracking-tight">{t('withdraw.tax')}</span>
-                <span className="text-red-500 font-bold">-{formatCurrency(calculateTax(), 'KZ')}</span>
+            <div className="bg-[#f8f9fa] p-5 space-y-4">
+              <div className="flex justify-between items-center">
+                <span className="text-[10px] font-black text-gray-400 tracking-widest uppercase">{t('withdraw.tax')}</span>
+                <span className="text-xs font-black text-red-500">-{formatCurrency(calculateTax(), 'KZ')}</span>
               </div>
-              <div className="flex justify-between items-center text-[13px] pt-2 border-t border-gray-100">
-                <span className="text-gray-800 font-black tracking-tight uppercase">{t('withdraw.total_net')}</span>
-                <span className="text-ms-blue font-black">{formatCurrency(calculateNet(), 'KZ')}</span>
+              <div className="flex justify-between items-center pt-3 border-t border-gray-100">
+                <span className="text-[10px] font-black text-gray-800 tracking-widest uppercase">{t('withdraw.total_net')}</span>
+                <span className="text-lg font-black text-ms-blue">{formatCurrency(calculateNet(), 'KZ')}</span>
               </div>
             </div>
 
-            <Button type="submit" isLoading={isSubmitting} className="w-full h-12 text-sm font-bold shadow-none">
+            <Button type="submit" isLoading={isSubmitting} className="w-full h-14 text-xs font-black uppercase tracking-[0.2em] shadow-lg shadow-ms-blue/20">
               {t('withdraw.btn_request')}
             </Button>
           </form>
-        </motion.div>
+        </div>
       </main>
     </div>
   );

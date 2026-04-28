@@ -7,7 +7,7 @@ import { Button } from '../components/Button';
 import { useLanguage } from '../contexts/LanguageContext';
 import { LanguageSelector } from '../components/LanguageSelector';
 import { supabase } from '../lib/supabase';
-import { cn } from '@/src/lib/utils';
+import { cn } from '../lib/utils';
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -64,7 +64,7 @@ export default function Signup() {
     }
 
     if (!formData.inviteCode || formData.inviteCode.length !== 10) {
-      showToast('O código de convite deve ter 10 dígitos numéricos.', 'error');
+      showToast(t('auth.invite_error_length'), 'error');
       return;
     }
 
@@ -153,7 +153,7 @@ export default function Signup() {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-4">
               <div className="relative">
-                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">{t('auth.phone_label')}</label>
+                <label className="block text-[10px] font-bold text-gray-400 tracking-widest mb-1">{t('auth.phone_label')}</label>
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-xs">+244</span>
                   <input
@@ -170,7 +170,7 @@ export default function Signup() {
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">{t('auth.invite_code')}</label>
+                <label className="block text-[10px] font-bold text-gray-400 tracking-widest mb-1">{t('auth.invite_code')}</label>
                 <div className="relative">
                   <input
                     name="inviteCode"
@@ -189,7 +189,7 @@ export default function Signup() {
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">{t('auth.password_label')}</label>
+                <label className="block text-[10px] font-bold text-gray-400 tracking-widest mb-1">{t('auth.password_label')}</label>
                 <div className="relative">
                   <input
                     name="password"
@@ -211,7 +211,7 @@ export default function Signup() {
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">{t('password.confirm_label')}</label>
+                <label className="block text-[10px] font-bold text-gray-400 tracking-widest mb-1">{t('password.confirm_label')}</label>
                 <div className="relative">
                   <input
                     name="confirmPassword"
@@ -235,7 +235,7 @@ export default function Signup() {
                 {t('auth.btn_register')}
               </Button>
               
-              <div className="flex items-center justify-center space-x-2 text-[10px] text-gray-400 font-bold uppercase tracking-widest">
+              <div className="flex items-center justify-center space-x-2 text-[10px] text-gray-400 font-bold tracking-widest">
                 <ShieldCheck size={14} className="text-green-600" />
                 <span>Proteção Microsoft Exchange</span>
               </div>
