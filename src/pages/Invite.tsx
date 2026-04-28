@@ -61,72 +61,75 @@ export default function Invite() {
   };
 
   return (
-    <div className="p-6 max-w-2xl mx-auto space-y-6">
-      <header className="mb-8 flex items-center justify-between">
-        <div>
+    <div className="px-[4px] py-4 w-full bg-[#f8f9fa] min-h-screen">
+      <header className="mb-6 mt-2 px-3 flex items-center justify-between">
+        <div className="flex items-center space-x-2">
           <img 
             src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" 
             alt="MS" 
-            className="h-5 mb-6"
+            className="h-4"
             referrerPolicy="no-referrer"
           />
-          <h1 className="text-2xl font-semibold">{t('invite.title')}</h1>
+          <span className="w-px h-3 bg-gray-300 mx-1"></span>
+          <h1 className="text-xl font-bold text-[#1b1b1b]">{t('invite.title')}</h1>
         </div>
         <button 
           onClick={() => navigate('/equipe')}
-          className="p-3 bg-white border border-[#e1e1e1] text-gray-600 rounded-sm shadow-sm hover:text-ms-blue transition-colors"
+          className="w-10 h-10 bg-white border border-gray-100 flex items-center justify-center active:bg-gray-50 transition-colors shadow-sm"
           title={t('invite.team_btn')}
+          aria-label={t('invite.team_btn')}
         >
-          <Users size={20} />
+          <Users size={20} className="text-gray-600" />
         </button>
       </header>
 
-      <div className="ms-card p-8">
-        <h2 className="text-lg font-semibold mb-6">{t('invite.partnership')}</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="space-y-4">
-            <div>
-              <label className="text-xs font-bold text-gray-500 uppercase">{t('invite.link_label')}</label>
-              <div className="flex items-center border-b border-gray-400 py-2">
-                <span className="text-sm text-ms-blue flex-grow truncate">{loading ? t('common.loading') : inviteLink}</span>
-                <button 
-                  onClick={() => copyToClipboard(inviteLink)} 
-                  className="ml-2 text-gray-400 hover:text-ms-blue transition-colors"
-                  title={t('common.copy')}
-                  aria-label={t('common.copy')}
-                >
-                  <Copy className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-          </div>
-          <div className="space-y-4">
-            <div>
-              <label className="text-xs font-bold text-gray-500 uppercase">{t('invite.code_label')}</label>
-              <div className="flex items-center border-b border-gray-400 py-2">
-                <span className="text-xl font-mono flex-grow">{loading ? '...' : inviteCode}</span>
-                <button 
-                  onClick={() => copyToClipboard(inviteCode)} 
-                  className="ml-2 text-gray-400 hover:text-ms-blue transition-colors"
-                  title={t('common.copy')}
-                  aria-label={t('common.copy')}
-                >
-                  <Copy className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
+      <div className="space-y-4 px-2">
+        {/* Link Section */}
+        <div className="bg-white p-5 border border-gray-100">
+          <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-4">
+            {t('invite.link_label')}
+          </label>
+          <div className="flex items-center space-x-3 bg-gray-50 p-3 rounded-sm border border-dashed border-gray-200">
+            <span className="text-xs text-ms-blue font-bold truncate flex-1">
+              {loading ? t('common.loading') : inviteLink}
+            </span>
+            <button 
+              onClick={() => copyToClipboard(inviteLink)} 
+              className="w-8 h-8 flex items-center justify-center bg-white border border-gray-200 active:bg-gray-100 transition-colors"
+              aria-label={t('common.copy')}
+            >
+              <Copy className="w-4 h-4 text-gray-500" />
+            </button>
           </div>
         </div>
-      </div>
 
-      <div className="pt-4">
-        <Button 
-          onClick={handleShare}
-          className="w-full"
-          isLoading={isSharing}
-        >
-          <span>{t('invite.btn_share')}</span>
-        </Button>
+        {/* Code Section */}
+        <div className="bg-white p-5 border border-gray-100">
+          <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-4">
+            {t('invite.code_label')}
+          </label>
+          <div className="flex items-center justify-between">
+            <span className="text-4xl font-black text-gray-900 tracking-tighter">
+              {loading ? '...' : inviteCode}
+            </span>
+            <button 
+              onClick={() => copyToClipboard(inviteCode)} 
+              className="px-4 py-2 bg-ms-blue/5 text-ms-blue text-xs font-bold uppercase tracking-widest active:bg-ms-blue/10 transition-colors"
+            >
+              {t('common.copy')}
+            </button>
+          </div>
+        </div>
+
+        <div className="pt-8">
+          <Button 
+            onClick={handleShare}
+            className="w-full h-14 shadow-lg shadow-ms-blue/20"
+            isLoading={isSharing}
+          >
+            <span className="uppercase tracking-[0.2em] font-bold">{t('invite.btn_share')}</span>
+          </Button>
+        </div>
       </div>
     </div>
   );

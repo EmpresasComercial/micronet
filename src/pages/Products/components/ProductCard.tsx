@@ -26,59 +26,60 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index, onBuy 
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1 }}
-      className="bg-white border border-gray-200 p-4 flex flex-col h-full transition-all active:scale-[0.99] rounded-sm"
+      initial={{ opacity: 0, x: -10 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: index * 0.05 }}
+      onClick={() => onBuy(product.id)}
+      className="bg-white border-y border-gray-100 p-4 flex items-center space-x-4 active:bg-gray-50 transition-all cursor-pointer"
     >
-      <div className="-mx-4 -mt-4 mb-4 bg-white border-b border-gray-100 overflow-hidden">
-        <div className="h-32 w-full flex items-center justify-center">
-          {product.imagem_url ? (
-            <SmartImage 
-              src={product.imagem_url} 
-              alt={t(`${product.key}.name`)} 
-              className="w-full h-full mix-blend-multiply opacity-90"
-            />
-          ) : (
-            <div className="transform scale-150">
-              {product.icon}
-            </div>
-          )}
-        </div>
+      {/* Product Image / Icon */}
+      <div className="w-24 h-24 bg-gray-50 flex items-center justify-center p-2">
+        {product.imagem_url ? (
+          <SmartImage 
+            src={product.imagem_url} 
+            alt={t(`${product.key}.name`)} 
+            className="w-full h-full object-contain"
+          />
+        ) : (
+          <div className="text-ms-blue/50">
+            {product.icon}
+          </div>
+        )}
       </div>
 
-      <h3 className="text-xl font-semibold text-gray-900 leading-tight mb-2">
-        {t(`${product.key}.name`)}
-      </h3>
-      <p className="text-sm text-gray-500 mb-6">{t(`${product.key}.version`)}</p>
+      {/* Product Details */}
+      <div className="flex-1 min-w-0">
+        <div className="flex justify-between items-start">
+          <div>
+            <h3 className="text-[15px] font-bold text-gray-900 truncate">
+              {t(`${product.key}.name`)}
+            </h3>
+            <p className="text-[11px] text-gray-400 uppercase font-bold tracking-tight mb-1">
+              {t(`${product.key}.version`)}
+            </p>
+          </div>
+        </div>
 
-      <div className="space-y-1 mb-6 flex-1 text-sm text-gray-600">
-        <div className="flex justify-between items-center border-b border-black/5 pb-2">
-          <span>{t('products.price')}:</span>
-          <span className="font-bold text-gray-900">
+        <div className="mt-2 flex items-baseline space-x-2">
+          <span className="text-lg font-black text-ms-blue">
             {formatCurrency(product.priceValue, 'KZ')}
           </span>
-        </div>
-        <div className="flex justify-between items-center border-b border-black/5 pb-2">
-          <span>{t('products.daily')}:</span>
-          <span className="font-bold text-green-600">
-            {formatCurrency(product.priceValue * 0.05, 'KZ')} / {t('product.unit.day')}
+          <span className="text-[10px] text-gray-400 font-bold">
+            / {product.durationDays}{t('product.unit.days').slice(0,1)}
           </span>
         </div>
-        <div className="flex justify-between items-center border-b border-black/5 pb-2">
-          <span>{t('products.duration')}:</span>
-          <span className="text-gray-900">
-            {product.durationDays} {product.durationDays === 1 ? t('product.unit.day') : t('product.unit.days')}
+
+        <div className="mt-1 text-[11px] font-bold flex items-center space-x-2">
+          <span className="text-green-600 bg-green-50 px-1.5 py-0.5">
+            +{formatCurrency(product.priceValue * 0.05, 'KZ')} {t('product.unit.day')}
           </span>
         </div>
       </div>
 
-      <Button 
-        onClick={() => onBuy(product.id)}
-        className="w-full"
-      >
-        {t('products.btn_buy')}
-      </Button>
+      {/* Direct Action Icon */}
+      <div className="w-8 h-8 rounded-full bg-ms-blue/5 flex items-center justify-center">
+        <div className="w-2 h-2 border-t-2 border-r-2 border-ms-blue rotate-45" />
+      </div>
     </motion.div>
   );
 };

@@ -66,132 +66,142 @@ export default function MyTeam() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#f3f2f1] pb-20">
-      <header className="bg-white p-4 flex items-center justify-between border-b border-[#edebe9] sticky top-0 z-50">
-        <div className="flex items-center">
-          <button onClick={() => navigate('/convite')} className="p-2 -ml-2 text-gray-600 hover:text-ms-blue transition-colors" title="Voltar">
+    <div className="px-[4px] py-4 w-full bg-[#f8f9fa] min-h-screen">
+      <header className="mb-6 mt-2 px-3 flex items-center justify-between">
+        <div className="flex items-center space-x-2">
+          <button onClick={() => navigate('/convite')} className="p-1 -ml-1 text-gray-600 active:text-ms-blue transition-colors">
             <ChevronLeft className="w-6 h-6" />
           </button>
-          <h1 className="text-lg font-semibold ml-2 text-[#323130]">{t('team.header')}</h1>
+          <span className="w-px h-3 bg-gray-300 mx-1"></span>
+          <h1 className="text-xl font-bold text-[#1b1b1b]">{t('team.header')}</h1>
         </div>
-        <div className="p-2">
+        <div className="w-10 h-10 bg-white border border-gray-100 flex items-center justify-center">
           <BarChart3 className="w-5 h-5 text-ms-blue" />
         </div>
       </header>
 
-      <div className="p-5 max-w-2xl mx-auto space-y-5">
-        <motion.div 
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-white border border-[#edebe9] p-6 rounded-[2px] shadow-sm relative overflow-hidden"
-        >
-          <div className="relative z-10 text-left">
-            <p className="text-[10px] font-bold text-ms-blue uppercase tracking-widest mb-1 italic">{t('team.stats_total')}</p>
-            <h2 className="text-3xl font-bold text-[#323130]">
-              {loading ? '...' : stats.team_count}
-            </h2>
-            <div className="mt-4 flex items-center justify-between">
-              <div className="flex items-center space-x-1">
-                <img 
-                  src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" 
-                  alt="MS" 
-                  className="h-3.5 grayscale opacity-30"
-                  referrerPolicy="no-referrer"
-                />
-                <span className="text-[9px] text-gray-400 font-bold uppercase tracking-[0.2em] pt-0.5">Cloud Partner Network</span>
-              </div>
-              <div className="text-right">
-                <p className="text-[8px] font-bold text-ms-blue uppercase tracking-widest mb-0.5 italic">{t('team.stats_com')}</p>
-                <p className="text-xs font-bold text-[#323130]">{loading ? '...' : stats.total_comissao_equipe.toLocaleString()},00 Kz</p>
-              </div>
+      <div className="space-y-4 px-1">
+        {/* Stats Section */}
+        <div className="bg-white p-5 border border-gray-100">
+          <div className="flex justify-between items-start mb-6">
+            <div>
+              <p className="text-[10px] font-black text-ms-blue uppercase tracking-widest mb-1">
+                {t('team.stats_total')}
+              </p>
+              <h2 className="text-4xl font-black text-gray-900 tracking-tighter">
+                {loading ? '...' : stats.team_count}
+              </h2>
+            </div>
+            <div className="text-right">
+              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">
+                {t('team.stats_com')}
+              </p>
+              <p className="text-lg font-black text-gray-900">
+                {loading ? '...' : stats.total_comissao_equipe.toLocaleString()} Kz
+              </p>
             </div>
           </div>
-          <Users className="absolute right-[-20px] top-[-20px] w-40 h-40 text-ms-blue opacity-[0.03]" />
-        </motion.div>
+          <div className="pt-4 border-t border-gray-50 flex items-center justify-between text-[10px] text-gray-400 font-bold uppercase tracking-widest">
+            <span>Microsoft Cloud Partner</span>
+            <span className="text-ms-blue/30">Network ID: {auth.uid().toString().slice(0, 8)}</span>
+          </div>
+        </div>
 
-        <div className="flex border-b border-[#edebe9] bg-white rounded-t-sm">
+        {/* Tabs */}
+        <div className="flex bg-white border-y border-gray-100">
           {levels.map((lvl) => (
             <button
               key={lvl.id}
               onClick={() => setActiveLevel(lvl.id as any)}
               className={cn(
-                "flex-1 py-4 text-[10px] font-bold uppercase tracking-widest transition-all relative border-b-2",
+                "flex-1 py-4 text-[10px] font-black uppercase tracking-tighter transition-all relative",
                 activeLevel === lvl.id 
-                  ? "border-ms-blue text-ms-blue bg-blue-50/20" 
-                  : "border-transparent text-[#605e5c] hover:bg-gray-50"
+                  ? "text-ms-blue" 
+                  : "text-gray-400"
               )}
             >
               {lvl.label}
               {lvl.count > 0 && (
-                <span className="ml-1.5 opacity-50">({lvl.count})</span>
+                <span className="ml-1 opacity-50">({lvl.count})</span>
+              )}
+              {activeLevel === lvl.id && (
+                <motion.div 
+                  layoutId="activeTab"
+                  className="absolute bottom-0 left-4 right-4 h-1 bg-ms-blue" 
+                />
               )}
             </button>
           ))}
         </div>
 
-        <div className="relative">
+        {/* Search */}
+        <div className="relative px-2">
           <input 
             type="text" 
             placeholder={t('team.search_placeholder')} 
-            className="w-full bg-white border border-[#edebe9] pl-10 pr-4 py-2.5 text-xs text-gray-600 rounded-[2px] outline-none focus:border-ms-blue transition-colors"
+            className="w-full bg-white border-b border-gray-200 pl-8 pr-4 py-3 text-sm text-gray-600 outline-none focus:border-ms-blue transition-colors"
           />
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300" />
         </div>
 
-        <div className="space-y-2">
+        {/* List */}
+        <div className="space-y-[1px] bg-gray-100">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeLevel}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="space-y-2"
+              className="space-y-[1px]"
             >
               {teamData[activeLevel].map((person: any, i: number) => (
-                <motion.div 
+                <div 
                   key={i} 
-                  initial={{ opacity: 0, y: 5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.05 }}
-                  className="bg-white border border-[#edebe9] p-4 flex items-center justify-between hover:bg-[#faf9f8] transition-colors"
+                  className="bg-white px-4 py-4 flex items-center justify-between active:bg-gray-50 transition-colors"
                 >
-                  <div className="flex items-center space-x-3 text-left">
-                    <div className="w-10 h-10 rounded-full border border-[#edebe9] bg-[#f3f2f1] flex items-center justify-center text-[#605e5c]">
-                      <Users size={18} />
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 bg-gray-50 flex items-center justify-center">
+                      <Users size={18} className="text-gray-300" />
                     </div>
                     <div>
-                      <div className="flex items-center space-x-1.5">
-                        <span className="text-sm font-semibold text-[#323130] tracking-tight">{maskPhone(person.telefone)}</span>
-                        <div className="w-1 h-1 bg-green-500 rounded-full animate-pulse" />
+                      <div className="flex items-center space-x-2">
+                        <span className="text-sm font-bold text-gray-900">{maskPhone(person.telefone)}</span>
+                        <div className={cn(
+                          "w-1.5 h-1.5 rounded-full",
+                          Number(person.total_investido) > 0 ? "bg-green-500" : "bg-gray-300"
+                        )} />
                       </div>
-                      <p className="text-[8.5px] font-medium text-gray-400 mt-0.5">
+                      <p className="text-[10px] text-gray-400 font-bold uppercase tracking-tight">
                         {t('team.member_since')} {new Date(person.created_at).toLocaleDateString('pt-AO')}
                       </p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className={cn(
-                      "text-[10px] font-bold px-2 py-0.5 rounded-sm inline-block mb-1",
-                      Number(person.total_investido) === 0 ? "bg-gray-100 text-gray-500 border border-gray-200" : "bg-green-50 text-green-700 border border-green-100"
+                    <p className="text-sm font-black text-gray-900">{Number(person.total_investido).toLocaleString()} Kz</p>
+                    <p className={cn(
+                      "text-[9px] font-black uppercase tracking-widest",
+                      Number(person.total_investido) === 0 ? "text-gray-300" : "text-green-600"
                     )}>
                       {Number(person.total_investido) === 0 ? t('team.inactive') : t('team.active')}
-                    </div>
-                    <p className="text-xs font-bold text-[#323130]">{Number(person.total_investido).toLocaleString()},00 Kz</p>
+                    </p>
                   </div>
-                </motion.div>
+                </div>
               ))}
               
               {teamData[activeLevel].length === 0 && !loading && (
-                <EmptyState 
-                  icon={<Users size={40} className="text-gray-100" />}
-                  message={t('team.empty')}
-                  description="Ainda não existem parceiros registrados neste nível da sua rede."
-                />
+                <div className="bg-white py-20">
+                  <EmptyState 
+                    icon={<Users size={40} className="text-gray-100" />}
+                    message={t('team.empty')}
+                    description="Rede de parceiros vazia neste nível."
+                  />
+                </div>
               )}
             </motion.div>
           </AnimatePresence>
         </div>
       </div>
     </div>
+>
   );
 }

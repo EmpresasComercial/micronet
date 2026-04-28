@@ -51,28 +51,31 @@ export default function Products() {
   }
 
   return (
-    <div className="p-4 max-w-2xl mx-auto">
-      <header className="mb-8 mt-4">
-        <img 
-          src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" 
-          alt="MS" 
-          className="h-5 mb-4"
-          referrerPolicy="no-referrer"
-        />
+    <div className="px-[4px] py-4 w-full bg-[#f8f9fa] min-h-screen">
+      <header className="mb-6 mt-2 px-3">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-[#1b1b1b]">{t('products.title')}</h1>
+          <div className="flex items-center space-x-2">
+            <img 
+              src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" 
+              alt="MS" 
+              className="h-4"
+              referrerPolicy="no-referrer"
+            />
+            <span className="w-px h-3 bg-gray-300 mx-1"></span>
+            <h1 className="text-xl font-bold text-[#1b1b1b]">{t('products.title')}</h1>
+          </div>
           <button 
             onClick={() => navigate('/minhas-compras')}
+            aria-label={t('profile.history')}
             title={t('profile.history')}
-            className="p-2 text-gray-400 hover:text-ms-blue transition-colors flex items-center space-x-1"
+            className="w-10 h-10 bg-white border border-gray-100 flex items-center justify-center active:bg-gray-50 transition-colors"
           >
-            <ReceiptText className="w-6 h-6" strokeWidth={1.5} />
+            <ReceiptText className="w-5 h-5 text-gray-600" />
           </button>
         </div>
-        <p className="text-gray-500 text-sm">{t('products.sub')}</p>
       </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-8">
+      <div className="space-y-3 pb-24">
         {products.map((product, idx) => (
           <ProductCard 
             key={product.id}

@@ -101,19 +101,19 @@ export default function ProductDetails() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#f8f8f8] pb-32">
-      <header className="bg-white/80 backdrop-blur-md p-4 flex items-center border-b border-[#e1e1e1] sticky top-0 z-50">
+    <div className="min-h-screen bg-[#f8f9fa] pb-32">
+      <header className="bg-white p-4 flex items-center border-b border-gray-100 sticky top-0 z-50">
         <button 
           onClick={() => navigate('/produtos')} 
-          className="p-2 -ml-2 text-[#616161] hover:text-ms-blue transition-colors"
+          className="p-2 -ml-2 text-gray-500 hover:text-ms-blue transition-colors"
           aria-label="Voltar"
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
-        <h1 className="text-sm font-bold ml-2 text-[#2b2b2b]">Detalhes da Licença</h1>
+        <h1 className="text-sm font-bold ml-2 text-gray-900 uppercase tracking-widest">{t('products.overview')}</h1>
       </header>
 
-      <main className="max-w-2xl mx-auto">
+      <main className="px-[4px] w-full">
         <div className="bg-white">
           <motion.div 
             initial={{ opacity: 0, y: 10 }}
@@ -198,7 +198,7 @@ export default function ProductDetails() {
       </main>
 
       {/* Botão de Compra Fixo no Rodapé para Mobile */}
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-white/90 backdrop-blur-lg border-t border-gray-200 z-50 flex items-center justify-between max-w-2xl mx-auto shadow-[0_-8px_30px_rgb(0,0,0,0.04)]">
+      <div className="fixed bottom-0 left-0 right-0 p-4 bg-white/95 backdrop-blur-lg border-t border-gray-100 z-50 flex items-center justify-between shadow-[0_-8px_30px_rgb(0,0,0,0.04)]">
         <div className="flex flex-col">
           <span className="text-[10px] font-bold text-gray-400 uppercase tracking-tight">{t('products.total_price')}</span>
           <span className="text-xl font-black text-[#1b1b1b]">
