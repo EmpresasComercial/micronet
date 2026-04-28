@@ -114,7 +114,14 @@ export default function Signup() {
       }
     } catch (err: any) {
       console.error('Signup error:', err);
-      showToast(err.message || 'Falha ao processar registo.', 'error');
+      let errorMessage = err.message || 'Falha ao processar registo.';
+      
+      // Traduzir erros técnicos do Supabase para mensagens amigáveis
+      if (errorMessage.includes('email rate limit exceeded')) {
+        errorMessage = 'Muitas tentativas de cadastro seguidas. Por favor, aguarde 1 minuto e tente novamente.';
+      }
+      
+      showToast(errorMessage, 'error');
     } finally {
       setIsSubmitting(false);
     }
