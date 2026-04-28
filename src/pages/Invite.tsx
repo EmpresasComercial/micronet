@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Copy, Users } from 'lucide-react';
+import { Copy, Users, ChevronLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/Button';
 import { useToast } from '../components/Toast';
 import { useLanguage } from '../contexts/LanguageContext';
 import { supabase } from '../lib/supabase';
+import { cn } from '@/src/lib/utils';
 
 export default function Invite() {
   const navigate = useNavigate();
   const { showToast } = useToast();
   const { t } = useLanguage();
-  const [isSharing, setIsSharing] = useState(false);
+  const [activeLevel, setActiveLevel] = useState<'level1' | 'level2' | 'level3'>('level1');
+  const [teamData, setTeamData] = useState<any>({ level1: [], level2: [], level3: [] });
   const [inviteCode, setInviteCode] = useState<string>('---');
   const [baseUrl, setBaseUrl] = useState<string>(window.location.origin);
   const [loading, setLoading] = useState(true);
@@ -27,15 +29,19 @@ export default function Invite() {
           setInviteCode(settingsData[0].invite_code || '---');
         }
 
-        // Fetch official base URL from atendimento_links
-        const { data: linksData } = await supabase
-          .from('atendimento_links')
-          .select('link_app_atualizado')
-          .limit(1)
-          .maybeSingle();
+        // Fetch team list
+        const { data: teamList } = await supabase.rpc('get_my_team_detailed');
+        if (teamList) {
+          setTeamData({
+            level1: teamList.filter((m: any) => m.nivel === 1),
+            level2: teamList.filter((m: any) => m.nivel === 2),
+            level3: teamList.filter((m: any) => m.nivel === 3),
+          });
+        }
 
+        // Fetch official base URL
+        const { data: linksData } = await supabase.from('atendimento_links').select('link_app_atualizado').maybeSingle();
         if (linksData?.link_app_atualizado) {
-          // Remove trailing slash if present
           setBaseUrl(linksData.link_app_atualizado.replace(/\/$/, ''));
         }
       } catch (err: any) {
@@ -52,83 +58,86 @@ export default function Invite() {
     showToast(t('invite.copy_toast'), 'info');
   };
 
-  const handleShare = () => {
-    setIsSharing(true);
-    setTimeout(() => {
-      setIsSharing(false);
-      showToast(t('invite.toast_share'), 'success');
-    }, 1500);
+  const maskPhone = (phone: string) => {
+    if (!phone) return '*** *** ***';
+    return phone.substring(0, 3) + ' *** ' + phone.substring(6);
   };
 
   return (
-    <div className="px-[4px] py-4 w-full bg-[#f8f9fa] min-h-screen">
-      <header className="mb-6 mt-2 px-3 flex items-center justify-between">
-        <div className="flex items-center space-x-2">
-          <img 
-            src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" 
-            alt="MS" 
-            className="h-4"
-            referrerPolicy="no-referrer"
-          />
-          <span className="w-px h-3 bg-gray-300 mx-1"></span>
-          <h1 className="text-xl font-bold text-[#1b1b1b]">{t('invite.title')}</h1>
-        </div>
-        <button 
-          onClick={() => navigate('/equipe')}
-          className="w-10 h-10 bg-white border border-gray-100 flex items-center justify-center active:bg-gray-50 transition-colors shadow-sm"
-          title={t('invite.team_btn')}
-          aria-label={t('invite.team_btn')}
-        >
-          <Users size={20} className="text-gray-600" />
+    <div className="min-h-screen bg-[#f7f8fa] pb-10">
+      {/* Header */}
+      <header className="bg-white px-4 h-14 flex items-center justify-between sticky top-0 z-50">
+        <button onClick={() => navigate(-1)} className="p-2 -ml-2 text-gray-800">
+          <ChevronLeft className="w-6 h-6" />
         </button>
+        <h1 className="text-lg font-bold text-gray-900">Convite</h1>
+        <div className="w-8" /> {/* Spacer */}
       </header>
 
-      <div className="space-y-4 px-2">
-        {/* Link Section */}
-        <div className="bg-white p-5 border border-gray-100">
-          <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-4">
-            {t('invite.link_label')}
-          </label>
-          <div className="flex items-center space-x-3 bg-gray-50 p-3 rounded-sm border border-dashed border-gray-200">
-            <span className="text-xs text-ms-blue font-bold truncate flex-1">
-              {loading ? t('common.loading') : inviteLink}
-            </span>
-            <button 
-              onClick={() => copyToClipboard(inviteLink)} 
-              className="w-8 h-8 flex items-center justify-center bg-white border border-gray-200 active:bg-gray-100 transition-colors"
-              aria-label={t('common.copy')}
-            >
-              <Copy className="w-4 h-4 text-gray-500" />
-            </button>
-          </div>
-        </div>
-
-        {/* Code Section */}
-        <div className="bg-white p-5 border border-gray-100">
-          <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-4">
-            {t('invite.code_label')}
-          </label>
-          <div className="flex items-center justify-between">
-            <span className="text-4xl font-black text-gray-900 tracking-tighter">
+      <div className="p-4 space-y-4">
+        {/* Top Invite Card */}
+        <div className="bg-white rounded-xl p-8 shadow-sm text-center space-y-8">
+          <div className="flex items-center justify-center space-x-3">
+            <span className="text-gray-900 font-medium">Código de convite</span>
+            <span className="text-3xl font-bold text-[#f04a43] tracking-tight">
               {loading ? '...' : inviteCode}
             </span>
-            <button 
-              onClick={() => copyToClipboard(inviteCode)} 
-              className="px-4 py-2 bg-ms-blue/5 text-ms-blue text-xs font-bold uppercase tracking-widest active:bg-ms-blue/10 transition-colors"
-            >
-              {t('common.copy')}
-            </button>
           </div>
+
+          <button
+            onClick={() => copyToClipboard(inviteLink)}
+            className="w-full h-12 bg-[#ffe4cc] text-[#cc7a33] font-bold rounded-full transition-transform active:scale-[0.98]"
+          >
+            Copiar link de convite
+          </button>
         </div>
 
-        <div className="pt-8">
-          <Button 
-            onClick={handleShare}
-            className="w-full h-14 shadow-lg shadow-ms-blue/20"
-            isLoading={isSharing}
-          >
-            <span className="uppercase tracking-[0.2em] font-bold">{t('invite.btn_share')}</span>
-          </Button>
+        {/* Team Section */}
+        <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+          <div className="flex border-b border-gray-100">
+            {['level1', 'level2', 'level3'].map((lvl) => (
+              <button
+                key={lvl}
+                onClick={() => setActiveLevel(lvl as any)}
+                className={cn(
+                  "flex-1 py-4 text-sm font-medium transition-colors relative",
+                  activeLevel === lvl ? "text-[#f04a43]" : "text-gray-400"
+                )}
+              >
+                Nível {lvl.slice(-1)}
+                {activeLevel === lvl && (
+                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-1 bg-[#f04a43] rounded-full" />
+                )}
+              </button>
+            ))}
+          </div>
+
+          <div className="p-10 flex flex-col items-center justify-center min-h-[300px]">
+            {teamData[activeLevel].length > 0 ? (
+              <div className="w-full space-y-3">
+                {teamData[activeLevel].map((person: any, i: number) => (
+                  <div key={i} className="flex items-center justify-between py-3 border-b border-gray-50 last:border-0">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center">
+                        <Users size={18} className="text-gray-300" />
+                      </div>
+                      <span className="text-sm font-bold text-gray-700">{maskPhone(person.telefone)}</span>
+                    </div>
+                    <span className="text-xs font-bold text-[#f04a43]">
+                      {Number(person.total_investido).toLocaleString()} Kz
+                    </span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center space-y-6">
+                <div className="w-48 h-48 mx-auto relative opacity-40 grayscale">
+                   <img src="/collection.png" alt="folder" className="w-full h-full object-contain" />
+                </div>
+                <p className="text-gray-400 text-sm">Sem dados~</p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

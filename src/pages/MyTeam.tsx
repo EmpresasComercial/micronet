@@ -74,7 +74,12 @@ export default function MyTeam() {
     <div className="px-[4px] py-4 w-full bg-[#f8f9fa] min-h-screen">
       <header className="mb-6 mt-2 px-3 flex items-center justify-between">
         <div className="flex items-center space-x-2">
-          <button onClick={() => navigate('/convite')} className="p-1 -ml-1 text-gray-600 active:text-ms-blue transition-colors">
+          <button 
+            onClick={() => navigate('/convite')} 
+            aria-label={t('common.back') || 'Voltar'}
+            title={t('common.back') || 'Voltar'}
+            className="p-1 -ml-1 text-gray-600 active:text-ms-blue transition-colors"
+          >
             <ChevronLeft className="w-6 h-6" />
           </button>
           <span className="w-px h-3 bg-gray-300 mx-1"></span>
