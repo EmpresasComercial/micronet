@@ -64,6 +64,22 @@ export default function Signup() {
     setIsSubmitting(true);
     
     try {
+      // 1. Validar convite e telefone via RPC antes de criar conta no Auth
+      // Isso evita criar usuários órfãos se os dados de negócio forem inválidos
+      const { data: validation, error: vError } = await supabase.rpc('secure_registration_mcpn', {
+        p_phone: formData.phone,
+        p_invite_code: formData.inviteCode.toUpperCase()
+      });
+
+      if (vError) throw vError;
+      
+      if (validation && !validation.success) {
+        showToast(validation.message || 'Dados de convite inválidos.', 'error');
+        setIsSubmitting(false);
+        return;
+      }
+
+      // 2. Prosseguir com o cadastro no Supabase Auth
       const { data, error } = await supabase.auth.signUp({
         email: `${formData.phone}@user.com`,
         password: formData.password,
@@ -76,13 +92,21 @@ export default function Signup() {
         }
       });
 
-      if (error) throw error;
+      if (error) {
+        if (error.message.includes('already registered')) {
+          showToast(t('auth.phone_error_exists') || 'Este número já está registrado.', 'error');
+        } else {
+          throw error;
+        }
+        return;
+      }
 
       if (data.user) {
         showToast(t('auth.signup_success') || 'Conta criada com sucesso!', 'success');
         navigate('/home');
       }
     } catch (err: any) {
+      console.error('Signup error:', err);
       showToast(err.message || 'Falha ao processar registo.', 'error');
     } finally {
       setIsSubmitting(false);
