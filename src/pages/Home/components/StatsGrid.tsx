@@ -1,6 +1,5 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Wallet, ArrowDownLeft, ArrowUpRight } from 'lucide-react';
 import { useLanguage } from '../../../contexts/LanguageContext';
 import { formatCurrency } from '../../../lib/currency';
 
@@ -17,20 +16,17 @@ export const StatsGrid: React.FC<StatsGridProps> = ({ totalUsdt, totalRecarregad
     {
       label: 'SALDO USDT',
       value: formatCurrency(totalUsdt, 'USDT'),
-      icon: Wallet,
-      color: 'text-ms-blue',
+      img: '/investment.png',
     },
     {
       label: 'RECARREGADO',
       value: formatCurrency(totalRecarregado, 'KZ'),
-      icon: ArrowDownLeft,
-      color: 'text-green-500',
+      img: '/recharge.png',
     },
     {
       label: 'RETIRADA',
       value: formatCurrency(totalRetirado, 'KZ'),
-      icon: ArrowUpRight,
-      color: 'text-orange-500',
+      img: '/withdraw.png',
     },
   ];
 
@@ -44,7 +40,7 @@ export const StatsGrid: React.FC<StatsGridProps> = ({ totalUsdt, totalRecarregad
           transition={{ delay: 0.2 + i * 0.1 }}
           className="ms-card pt-6 pb-4 px-2 flex flex-col items-center text-center"
         >
-          <stat.icon className={`w-5 h-5 mb-2 ${stat.color}`} />
+          <img src={stat.img} alt={stat.label} className="w-5 h-5 mb-2 object-contain" />
           <span className="text-base font-bold text-gray-900 text-[11px] leading-tight">{stat.value}</span>
           <span className="text-[10px] text-gray-400 uppercase font-bold mt-1">{stat.label}</span>
         </motion.div>

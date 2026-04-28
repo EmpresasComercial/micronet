@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Activity, Megaphone, ArrowDownLeft, ArrowUpRight } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Button } from '../components/Button';
-import { useCarousel } from '../hooks/useCarousel';
 import { usePopup } from '../hooks/usePopup';
-import { CAROUSEL_IMAGES } from '../constants/images';
 import { APP_CONFIG } from '../constants/config';
 import { supabase } from '../lib/supabase';
 import { HeroSection } from './Home/components/HeroSection';
@@ -29,10 +26,6 @@ export default function Home() {
     });
   }, []);
 
-  const { currentIndex } = useCarousel({ 
-    itemsCount: CAROUSEL_IMAGES.length, 
-    interval: APP_CONFIG.CAROUSEL_INTERVAL 
-  });
 
   const { isOpen: showPopup, close: closePopup } = usePopup({
     initialDelay: APP_CONFIG.POPUP_INITIAL_DELAY,
@@ -91,52 +84,6 @@ export default function Home() {
           </Button>
         </div>
 
-        <div>
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold text-gray-900">{t('home.news')}</h2>
-            <Link to="/provas-social" className="text-sm font-semibold text-ms-blue decoration-ms-blue underline underline-offset-4 decoration-2">
-              <span>{t('home.social_proof')}</span>
-            </Link>
-          </div>
-          
-          <div className="relative h-[240px] w-full overflow-hidden rounded-sm border border-[#e1e1e1] bg-[#f2f2f2]">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentIndex}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="absolute inset-0 w-full h-full"
-              >
-                <img 
-                  src={CAROUSEL_IMAGES[currentIndex]} 
-                  className="absolute inset-0 w-full h-full object-cover blur-xl opacity-30 scale-110" 
-                  alt=""
-                />
-                
-                <motion.img
-                  src={CAROUSEL_IMAGES[currentIndex]}
-                  initial={{ x: 50, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  exit={{ x: -50, opacity: 0 }}
-                  transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-                  className="relative z-10 h-full w-full object-contain"
-                  referrerPolicy="no-referrer"
-                  alt={`Slide ${currentIndex + 1}`}
-                />
-              </motion.div>
-            </AnimatePresence>
-            
-            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex space-x-1.5 z-20">
-              {CAROUSEL_IMAGES.map((_, i) => (
-                <div 
-                  key={i} 
-                  className={`h-1 rounded-full transition-all ${i === currentIndex ? 'w-4 bg-white shadow-sm' : 'w-1 bg-white/50'}`}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
 
         <div className="ms-card p-8 text-center border-dashed">
            <h3 className="text-gray-900 font-semibold mb-2">{t('home.doubts')}</h3>

@@ -79,6 +79,8 @@ export default function Signup() {
       if (error) throw error;
 
       if (data.user) {
+        showToast(t('auth.signup_success') || 'Conta criada com sucesso!', 'success');
+        navigate('/home');
       }
     } catch (err: any) {
       showToast(err.message || 'Falha ao processar registo.', 'error');

@@ -1,19 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  ArrowUpRight,
-  ArrowDownLeft,
-  Settings2,
-  LogOut,
-  ChevronRight,
-  UserCheck,
-  Ticket,
-  Activity,
-  Coins,
-  Landmark,
-  Info,
-  Globe,
-  ScrollText,
-} from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { BalanceCard } from './components/BalanceCard';
@@ -76,29 +62,35 @@ export default function Profile() {
   };
 
   const sections = [
-    { name: t('profile.withdraw'), icon: ArrowUpRight, path: '/retirada' },
-    { name: t('profile.recharge'), icon: ArrowDownLeft, path: '/recarregar' },
-    { name: t('profile.recharge_usdt'), icon: Coins, path: '/recharge-usdt' },
-    { name: t('profile.operations'), icon: Activity, path: '/operacoes' },
-    { name: t('settings.authenticate'), icon: UserCheck, path: '/autenticacao' },
-    { name: t('profile.bank_link'), icon: Landmark, path: '/adicionar-banco' },
-    { name: t('profile.bank_info'), icon: Info, path: '/informacao-bancaria' },
-    { name: t('profile.history'), icon: ScrollText, path: '/historico-atividades' },
-    { name: t('profile.coupons'), icon: Ticket, path: '/resgate' },
-    { name: t('profile.about'), icon: Globe, path: '/sobre-microsoft' },
-    { name: t('profile.settings'), icon: Settings2, path: '/configuracoes-conta' },
+    { name: t('profile.withdraw'),      img: '/withdraw.png',        path: '/retirada' },
+    { name: t('profile.recharge'),      img: '/recharge.png',        path: '/recarregar' },
+    { name: t('profile.recharge_usdt'), img: '/investment.png',      path: '/recharge-usdt' },
+    { name: t('profile.operations'),    img: '/collection.png',      path: '/operacoes' },
+    { name: t('settings.authenticate'), img: '/customerService.png', path: '/autenticacao' },
+    { name: t('profile.bank_link'),     img: '/bankCard.png',        path: '/adicionar-banco' },
+    { name: t('profile.bank_info'),     img: '/introduce.png',       path: '/informacao-bancaria' },
+    { name: t('profile.history'),       img: '/room.png',            path: '/historico-atividades' },
+    { name: t('profile.coupons'),       img: '/invite.png',          path: '/resgate' },
+    { name: t('profile.about'),         img: '/language.png',        path: '/sobre-microsoft' },
+    { name: t('profile.settings'),      img: '/chatRoom.png',        path: '/configuracoes-conta' },
   ];
 
   return (
-    <div className="p-6 max-w-2xl mx-auto space-y-6">
-      <header className="mb-8">
+    <div className="w-full px-1 py-4 mx-auto space-y-4 pb-24">
+      <header className="mb-6 px-3 flex items-center justify-between">
         <img
           src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg"
           alt="MS"
-          className="h-5 mb-6"
+          className="h-5"
           referrerPolicy="no-referrer"
         />
-        <h1 className="text-2xl font-semibold">{t('nav.profile')}</h1>
+        <button
+          onClick={() => navigate('/configuracoes-conta')}
+          className="active:opacity-60 transition-opacity"
+          aria-label="Configurações"
+        >
+          <img src="/ingrenagem.pbg.png" alt="Configurações" className="w-6 h-6 object-contain" />
+        </button>
       </header>
 
       <BalanceCard
@@ -119,15 +111,15 @@ export default function Profile() {
             <div
               key={idx}
               onClick={() => navigate(item.path)}
-              className="flex items-center justify-between px-6 py-4 cursor-pointer group hover:bg-gray-50 transition-colors"
+              className="flex items-center justify-between px-4 py-3.5 cursor-pointer active:bg-gray-100 transition-colors"
             >
-              <div className="flex items-center space-x-6">
-                <div className="flex-shrink-0 transition-transform group-hover:scale-110">
-                  <item.icon className="w-7 h-7 text-gray-700" strokeWidth={1.5} />
+              <div className="flex items-center space-x-4">
+                <div className="flex-shrink-0">
+                  <img src={item.img} alt={item.name} className="w-6 h-6 object-contain" />
                 </div>
                 <span className="text-[15px] font-medium text-gray-700">{item.name}</span>
               </div>
-              <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-ms-blue transition-colors" />
+              <ChevronRight className="w-4 h-4 text-gray-300" />
             </div>
           ))}
         </div>
@@ -135,9 +127,9 @@ export default function Profile() {
 
       <button
         onClick={handleLogout}
-        className="w-full flex items-center justify-center space-x-2 py-4 text-red-600 font-bold border border-red-100 rounded-sm hover:bg-red-50 transition-colors uppercase text-xs tracking-widest"
+        className="w-full flex items-center justify-center space-x-2 py-4 text-red-600 font-bold border border-red-100 rounded-sm active:bg-red-50 transition-colors uppercase text-xs tracking-widest"
       >
-        <LogOut className="w-5 h-5" />
+        <img src="/withdraw.png" alt="logout" className="w-5 h-5 object-contain opacity-70" />
         <span>{t('profile.logout')}</span>
       </button>
 

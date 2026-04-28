@@ -35,8 +35,8 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({
   ];
 
   return (
-    <div className="space-y-4">
-      <div className="ms-card p-10 flex flex-col relative">
+    <div className="space-y-3">
+      <div className="ms-card p-5 flex flex-col relative">
         <div className="space-y-4">
           <div className="flex flex-col">
             <span className="text-xs text-gray-500 uppercase font-bold tracking-wider">{t('profile.balance')}</span>

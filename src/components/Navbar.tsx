@@ -1,6 +1,5 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { House, LayoutGrid, UserPlus, CircleUserRound } from 'lucide-react';
 import { motion } from 'motion/react';
 import { cn } from '../lib/utils';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -9,10 +8,10 @@ export default function Navbar() {
   const { t } = useLanguage();
 
   const navItems = [
-    { name: t('nav.home'),     path: '/home',    icon: House },
-    { name: t('nav.products'), path: '/produtos', icon: LayoutGrid },
-    { name: t('nav.invite'),   path: '/convite',  icon: UserPlus },
-    { name: t('nav.profile'),  path: '/perfil',   icon: CircleUserRound },
+    { name: t('nav.home'),     path: '/home',    img: '/home.png' },
+    { name: t('nav.products'), path: '/produtos', img: '/compar.pgn.png' },
+    { name: t('nav.invite'),   path: '/convite',  img: '/invite.png' },
+    { name: t('nav.profile'),  path: '/perfil',   img: '/perfil,pbg.webp' },
   ];
 
   return (
@@ -34,14 +33,18 @@ export default function Navbar() {
                 animate={isActive ? { scale: 1.1, y: -1 } : { scale: 1, y: 0 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 20 }}
               >
-                <item.icon
-                  strokeWidth={isActive ? 2 : 1.6}
-                  className="w-[18px] h-[18px]"
+                <img
+                  src={item.img}
+                  alt={item.name}
+                  className={cn(
+                    'w-[20px] h-[20px] object-contain transition-all',
+                    isActive ? 'opacity-100' : 'opacity-50'
+                  )}
                 />
               </motion.div>
               <span className={cn(
                 'text-[9px] font-semibold uppercase tracking-[0.08em] transition-all',
-                isActive ? 'opacity-100' : 'opacity-60'
+                isActive ? 'opacity-100 text-[#0067b8]' : 'opacity-60'
               )}>
                 {item.name}
               </span>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, Key, ShieldCheck, Phone, Globe, Copy, Check } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Copy, Check, Lock, Globe } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { LanguageSelector } from '../components/LanguageSelector';
 import { supabase } from '../lib/supabase';
@@ -48,120 +48,135 @@ export default function AccountSettings() {
     return 'MS';
   };
 
+  const infoRows = [
+    {
+      label: 'Apelido',
+      value: profile?.nickname || profile?.phone || '---',
+      locked: false,
+    },
+    {
+      label: 'Número de celular',
+      value: profile?.phone || '---',
+      locked: true,
+    },
+    {
+      label: 'Nome de usuário',
+      value: profile?.phone || '---',
+      locked: true,
+    },
+    {
+      label: 'ID',
+      value: profile?.invite_code || '---',
+      locked: true,
+    },
+  ];
+
   return (
-    <div className="min-h-screen bg-[#f2f2f2] pb-20">
-      <header className="bg-white p-4 flex items-center border-b border-[#e1e1e1] sticky top-0 z-10">
-        <button 
-          onClick={() => navigate('/perfil')} 
-          className="p-2 -ml-2 text-[#616161]"
+    <div className="min-h-screen bg-[#f5f5f5] pb-24">
+      {/* Header */}
+      <header className="bg-white sticky top-0 z-10 flex items-center px-2 py-3 border-b border-[#e8e8e8]">
+        <button
+          onClick={() => navigate('/perfil')}
+          className="p-2 text-gray-600 active:bg-gray-100 rounded-full transition-colors"
           aria-label={t('common.back')}
-          title={t('common.back')}
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
-        <h1 className="text-sm font-semibold ml-2 text-[#2b2b2b]">{t('settings.title')}</h1>
+        <h1 className="flex-1 text-center text-[15px] font-semibold text-[#1b1b1b]">
+          {t('settings.title')}
+        </h1>
+        <div className="w-10" />
       </header>
 
-      <div className="p-6 max-w-4xl mx-auto space-y-8">
-        <div className="pt-4">
-          <h2 className="text-4xl font-light text-[#2b2b2b] mb-2 tracking-tight">{t('settings.title')}</h2>
-          <p className="text-sm text-[#616161] max-w-md">{t('settings.hero_sub')}</p>
+      <div className="px-1 py-4 space-y-3">
+        {/* Avatar Section */}
+        <div className="bg-white mx-0 px-4 py-4 flex items-center justify-between">
+          <span className="text-[15px] text-[#1b1b1b] font-medium">Avatar</span>
+          <div className="relative">
+            <div className="w-14 h-14 rounded-lg overflow-hidden border border-gray-200 bg-gray-50">
+              <img
+                src="/perfil,pbg.webp"
+                alt="Avatar"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="absolute -top-1 -right-1 bg-gray-500 rounded-full w-4 h-4 flex items-center justify-center">
+              <span className="text-white text-[9px] font-bold">✕</span>
+            </div>
+          </div>
         </div>
 
-        <section className="bg-white border border-[#e1e1e1] rounded-sm shadow-sm overflow-hidden">
-          <div className="p-8 flex flex-col sm:flex-row items-center sm:items-start space-y-6 sm:space-y-0 sm:space-x-8">
-            <div className="w-24 h-24 bg-[#0067b8] rounded-full flex items-center justify-center border-4 border-white shadow-md shrink-0">
-              <span className="text-3xl font-light text-white uppercase tracking-tighter">{getInitials()}</span>
-            </div>
-            
-            <div className="flex-1 text-center sm:text-left">
-              <h3 className="text-2xl font-semibold text-[#2b2b2b] mb-1">
-                {loading ? t('common.loading') : t('profile.user_cloud')}
-              </h3>
-              
-              <div className="flex flex-col space-y-1 mb-6">
-                <div className="flex items-center justify-center sm:justify-start space-x-2 text-gray-500 text-xs font-medium">
-                  <Phone size={12} className="text-ms-blue" />
-                  <span>{profile?.phone}</span>
-                </div>
-
-                <div className="flex items-center justify-center sm:justify-start space-x-2 mt-2">
-                  <p className="text-[11px] font-bold text-gray-400 tracking-widest uppercase">
-                    {t('settings.invite_code')}: {profile?.invite_code || '---'}
-                  </p>
-                  <button 
-                    onClick={() => copyToClipboard(profile?.invite_code)}
-                    className="p-1 text-ms-blue hover:bg-ms-blue/5 rounded-sm transition-colors"
-                    title={t('common.copy')}
-                    aria-label={t('common.copy')}
+        {/* Info Rows */}
+        <div className="bg-white mx-0 divide-y divide-[#f0f0f0]">
+          {infoRows.map((row, idx) => (
+            <div key={idx} className="flex items-center justify-between px-4 py-[15px]">
+              <span className="text-[14px] text-[#1b1b1b] font-medium">{row.label}</span>
+              <div className="flex items-center space-x-2">
+                <span className="text-[13px] text-gray-400 truncate max-w-[150px]">
+                  {loading ? '...' : row.value}
+                </span>
+                {row.locked ? (
+                  <Lock className="w-3.5 h-3.5 text-gray-300" />
+                ) : (
+                  <button
+                    onClick={() => copyToClipboard(row.value)}
+                    className="text-gray-400 active:opacity-60"
                   >
-                    {copied ? <Check size={12} className="text-[#107c10]" /> : <Copy size={12} />}
+                    {copied ? <Check className="w-3.5 h-3.5 text-green-500" /> : <Copy className="w-3.5 h-3.5" />}
                   </button>
-                </div>
+                )}
               </div>
             </div>
-          </div>
-        </section>
+          ))}
+        </div>
 
-        <div className="grid grid-cols-1 gap-8">
-          <div className="space-y-4">
-            <h4 className="text-xs font-bold text-gray-400 uppercase tracking-[0.2em] px-1">{t('settings.security_personalization')}</h4>
-            <div className="bg-white border border-[#e1e1e1] rounded-sm overflow-hidden divide-y divide-[#f3f3f3]">
-              <div className="relative group">
-                <div className="w-full flex items-center justify-between p-5 group-hover:bg-[#f9f9f9] transition-colors">
-                  <div className="flex items-center space-x-5 text-left">
-                    <Globe size={24} className="text-[#616161]" strokeWidth={1.5} />
-                    <div>
-                      <p className="text-sm font-bold text-[#2b2b2b]">{t('settings.language')}</p>
-                      <p className="text-[11px] text-[#616161]">
-                        {language === 'pt' ? 'Português' : language === 'en' ? 'English' : 'Français'}
-                      </p>
-                    </div>
-                  </div>
-                  <LanguageSelector className="scale-90" variant="minimal" />
-                </div>
-              </div>
-
-              <button 
-                onClick={() => navigate('/alterar-senha')}
-                className="w-full flex items-center justify-between p-5 hover:bg-[#f9f9f9] transition-colors group"
-              >
-                <div className="flex items-center space-x-5 text-left">
-                  <Key size={24} className="text-[#616161] group-hover:text-ms-blue" strokeWidth={1.5} />
-                  <div>
-                    <p className="text-sm font-bold text-[#2b2b2b]">{t('settings.change_password')}</p>
-                    <p className="text-[11px] text-[#616161]">{t('settings.update_credentials')}</p>
-                  </div>
-                </div>
-              </button>
-
-              <button 
-                onClick={() => navigate('/autenticacao')}
-                className="w-full flex items-center justify-between p-5 hover:bg-[#f9f9f9] transition-colors group"
-              >
-                <div className="flex items-center space-x-5 text-left">
-                  <ShieldCheck size={24} className="text-[#616161] group-hover:text-ms-blue" strokeWidth={1.5} />
-                  <div>
-                    <p className="text-sm font-bold text-[#2b2b2b]">{t('settings.authenticate')}</p>
-                    <p className="text-[11px] text-[#616161]">{t('settings.identity_confirm')}</p>
-                  </div>
-                </div>
-              </button>
+        {/* Language */}
+        <div className="bg-white mx-0 divide-y divide-[#f0f0f0]">
+          <div className="flex items-center justify-between px-4 py-[15px]">
+            <div className="flex items-center space-x-3">
+              <Globe className="w-4 h-4 text-gray-400" />
+              <span className="text-[14px] text-[#1b1b1b] font-medium">{t('settings.language')}</span>
             </div>
+            <LanguageSelector variant="minimal" className="scale-90" />
           </div>
         </div>
 
-        <div className="pt-10">
-          <button 
+        {/* Action Rows */}
+        <div className="bg-white mx-0 divide-y divide-[#f0f0f0]">
+          <button
+            onClick={() => navigate('/alterar-senha')}
+            className="w-full flex items-center justify-between px-4 py-[15px] active:bg-gray-50 transition-colors"
+          >
+            <span className="text-[14px] text-[#1b1b1b] font-medium">{t('settings.change_password')}</span>
+            <ChevronRight className="w-4 h-4 text-gray-300" />
+          </button>
+          <button
+            onClick={() => navigate('/autenticacao')}
+            className="w-full flex items-center justify-between px-4 py-[15px] active:bg-gray-50 transition-colors"
+          >
+            <span className="text-[14px] text-[#1b1b1b] font-medium">{t('settings.authenticate')}</span>
+            <ChevronRight className="w-4 h-4 text-gray-300" />
+          </button>
+        </div>
+
+        {/* Buttons */}
+        <div className="px-4 pt-4 space-y-3">
+          <button
+            onClick={() => {}}
+            className="w-full py-4 rounded-full bg-[#f5d9b8] text-[#c07a2f] font-semibold text-[15px] active:opacity-80 transition-opacity"
+          >
+            Salvar
+          </button>
+          <button
             onClick={handleLogout}
-            className="w-full py-4 bg-white border border-red-100 text-red-600 text-xs font-bold uppercase tracking-[0.2em] hover:bg-red-50 transition-colors"
+            className="w-full py-4 rounded-full border border-[#e8c8a0] text-[#c07a2f] font-semibold text-[15px] bg-white active:opacity-80 transition-opacity"
           >
             {t('settings.logout')}
           </button>
         </div>
 
-        <div className="text-center pt-12 pb-16">
-          <p className="text-[10px] text-gray-300 uppercase font-bold tracking-[0.4em]">
+        <div className="text-center pt-6 pb-4">
+          <p className="text-[10px] text-gray-300 uppercase font-bold tracking-[0.3em]">
             Microsoft Exchange • 2026
           </p>
         </div>
